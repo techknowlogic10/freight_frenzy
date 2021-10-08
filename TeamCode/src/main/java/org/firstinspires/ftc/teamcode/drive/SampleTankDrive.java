@@ -27,6 +27,7 @@ import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigurationType;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequenceBuilder;
@@ -73,10 +74,16 @@ public class SampleTankDrive extends TankDrive {
     private BNO055IMU imu;
 
     private VoltageSensor batteryVoltageSensor;
+    Telemetry telemetry;
 
     public SampleTankDrive(HardwareMap hardwareMap) {
         super(kV, kA, kStatic, TRACK_WIDTH);
+        new SampleTankDrive(hardwareMap,null);
+    }
 
+    public SampleTankDrive(HardwareMap hardwareMap, Telemetry telemetry) {
+        super(kV, kA, kStatic, TRACK_WIDTH);
+this.telemetry = telemetry;
         follower = new TankPIDVAFollower(AXIAL_PID, CROSS_TRACK_PID,
                 new Pose2d(0.5, 0.5, Math.toRadians(5.0)), 0.5);
 
@@ -255,6 +262,7 @@ public class SampleTankDrive extends TankDrive {
         double leftSum = 0, rightSum = 0;
         for (DcMotorEx leftMotor : leftMotors) {
             leftSum += encoderTicksToInches(leftMotor.getCurrentPosition());
+
         }
         for (DcMotorEx rightMotor : rightMotors) {
             rightSum += encoderTicksToInches(rightMotor.getCurrentPosition());
@@ -266,6 +274,7 @@ public class SampleTankDrive extends TankDrive {
         double leftSum = 0, rightSum = 0;
         for (DcMotorEx leftMotor : leftMotors) {
             leftSum += encoderTicksToInches(leftMotor.getVelocity());
+            telemetry.addData("leftMotor ticks", leftSum);
         }
         for (DcMotorEx rightMotor : rightMotors) {
             rightSum += encoderTicksToInches(rightMotor.getVelocity());
