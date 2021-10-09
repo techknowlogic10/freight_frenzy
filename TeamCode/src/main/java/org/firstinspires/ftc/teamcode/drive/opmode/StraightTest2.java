@@ -16,23 +16,29 @@ import org.firstinspires.ftc.teamcode.drive.SampleTankDrive;
  */
 @Config
 @Autonomous(group = "drive")
-public class StraightTest extends LinearOpMode {
-    public static double DISTANCE = 10; // in
+public class StraightTest2 extends LinearOpMode {
+    public static double DISTANCE = 50; // in
+    public static double STARTING_X = 0;
+    public static double STARTING_Y = 0;
+    public static double STARTING_HEADING = 0;
 
     @Override
     public void runOpMode() throws InterruptedException {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
-        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
+        OurMecanumDrive drive = new OurMecanumDrive(hardwareMap);
 
+        Pose2d startingPosition = new Pose2d(STARTING_X, STARTING_Y, STARTING_HEADING);
 
-        Trajectory trajectory = drive.trajectoryBuilder(new Pose2d())
+        drive.setPoseEstimate(startingPosition);
+
+        Trajectory trajectory = drive.trajectoryBuilder(startingPosition)
                 .forward(DISTANCE)
                 .build();
 
         waitForStart();
 
-       // if (isStopRequested()) return;
+        // if (isStopRequested()) return;
 
         drive.followTrajectory(trajectory);
 
@@ -43,6 +49,6 @@ public class StraightTest extends LinearOpMode {
         telemetry.addData("finalHeading", poseEstimate.getHeading());
         telemetry.update();
 
-       // while (!isStopRequested() && opModeIsActive()) ;
+        // while (!isStopRequested() && opModeIsActive()) ;
     }
 }

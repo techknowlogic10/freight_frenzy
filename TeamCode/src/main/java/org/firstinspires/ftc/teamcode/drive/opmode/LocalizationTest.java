@@ -19,7 +19,7 @@ import org.firstinspires.ftc.teamcode.drive.SampleTankDrive;
 public class LocalizationTest extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
-        SampleTankDrive drive = new SampleTankDrive(hardwareMap);
+        OurMecanumDrive drive = new OurMecanumDrive(hardwareMap);
 
         drive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
