@@ -49,12 +49,12 @@ public class RedLeft extends LinearOpMode {
         driveTrain.followTrajectory(pathToShippingHub);
         sleep(2000);
         Trajectory forwardPath = driveTrain.trajectoryBuilder(pathToShippingHub.end(), false)
-                .forward(21)
+                .forward(22)
                 .build();
         driveTrain.followTrajectory(forwardPath);
 
         Trajectory strafeRight = driveTrain.trajectoryBuilder(forwardPath.end(),false)
-                .strafeRight(70)
+                .strafeRight(72)
                 .build();
         driveTrain.followTrajectory(strafeRight);
         sleep(2000);
