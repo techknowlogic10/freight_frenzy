@@ -38,28 +38,28 @@ public class RedLeft extends LinearOpMode {
         driveTrain.followTrajectory(trajectoryToShippingHub);*/
 
         Trajectory strafeLeft = driveTrain.trajectoryBuilder(startingPosition, false)
-                .strafeLeft(33)
+                .strafeLeft(36)
                 .build();
         driveTrain.followTrajectory(strafeLeft);
 
         Trajectory pathToShippingHub = driveTrain.trajectoryBuilder(strafeLeft.end(), false)
-                .back(24)
+                .back(26)
                 .build();
 
         driveTrain.followTrajectory(pathToShippingHub);
         sleep(2000);
         Trajectory forwardPath = driveTrain.trajectoryBuilder(pathToShippingHub.end(), false)
-                .forward(20)
+                .forward(21)
                 .build();
         driveTrain.followTrajectory(forwardPath);
 
         Trajectory strafeRight = driveTrain.trajectoryBuilder(forwardPath.end(),false)
-                .strafeRight(55)
+                .strafeRight(70)
                 .build();
         driveTrain.followTrajectory(strafeRight);
         sleep(2000);
         Trajectory reversePath = driveTrain.trajectoryBuilder(strafeRight.end(),false)
-                .back(26)
+                .back(24)
                 .build();
         driveTrain.followTrajectory(reversePath);
 
