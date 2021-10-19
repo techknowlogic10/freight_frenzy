@@ -124,7 +124,7 @@ public class DuckDetector extends LinearOpMode {
             Point point22 = new Point(270, 160);
 
             Imgproc.rectangle(input, point11, point12, new Scalar(0, 0, 255), 2);
-            Imgproc.rectangle(input, point21, point22, new Scalar(0, 0, 255), 2);
+            Imgproc.rectangle(input, point21, point22, new Scalar(0, 255, 0), 2);
 
             Mat inputInYCRCB = new Mat();
             Imgproc.cvtColor(input, inputInYCRCB, Imgproc.COLOR_RGB2YCrCb);
