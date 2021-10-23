@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
 
 @Autonomous
-public class CarousalSpinner extends LinearOpMode {
+public class CarousalSpinnerTest extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {

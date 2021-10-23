@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
 
 @Autonomous
 @Config
@@ -13,29 +14,74 @@ public class ElevatorTest extends LinearOpMode {
 
     public static int FLOOR_NUMBER = 1;
 
+    //level one 1000 ticks
+    //level two 2200 ticks
+    //level three 4000 ticks
+
     @Override
     public void runOpMode() throws InterruptedException {
 
         //Get elevator DCMotor
         DcMotorEx elevator = hardwareMap.get(DcMotorEx.class, "elevator");
-        elevator.setDirection(DcMotorSimple.Direction.FORWARD);
+        elevator.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        elevator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        elevator.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        DcMotorEx carriage = hardwareMap.get(DcMotorEx.class, "carriage");
-        carriage.setDirection(DcMotorSimple.Direction.FORWARD);
+        telemetry.log().add("current position.." + elevator.getCurrentPosition());
 
         waitForStart();
 
-        if(FLOOR_NUMBER == 1) {
-            elevator.setTargetPosition(2000);
-        } else if (FLOOR_NUMBER == 2) {
-            elevator.setTargetPosition(4000);
-        } else {
-            elevator.setTargetPosition(8000);
+        int desiredPosition = 0;
+
+        //elevator.setTargetPosition(-6000);
+        while(opModeIsActive()) {
+
+            reachToDesiredPosition(elevator, desiredPosition + 200);
+
+            desiredPosition = desiredPosition + 200;
+
+            sleep(2000);
         }
 
-        elevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//        int desiredPosition = 0;
+//
+//        while (opModeIsActive()) {
+//            elevator.setTargetPosition(desiredPosition + 100);
+//            elevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//            elevator.setPower(0.2);
+//
+//            telemetry.log().add("Reached..position.." + elevator.getCurrentPosition());
+//
+//            desiredPosition = elevator.getCurrentPosition();
+//            sleep(5000);
+//        }
 
-        carriage.setTargetPosition(1000);
-        carriage.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-    }
+        //telemetry.log().add("Reached..position.." + elevator.getCurrentPosition());
+
+//        sleep(5000);
+//
+//        elevator.setTargetPosition(elevator.getCurrentPosition()-5000);
+//        elevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//        elevator.setPower(0.2);
+//
+//        telemetry.log().add("Reached..position.." + elevator.getCurrentPosition());
+//
+//        sleep(5000);
+
+
+//        while (opModeIsActive()) {
+//            telemetry.log().add("position " + elevator.getCurrentPosition());
+//        }
+ }
+
+    private void reachToDesiredPosition(DcMotorEx elevator, int desiredPosition) {
+
+        elevator.setTargetPosition(desiredPosition);
+        elevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        elevator.setPower(0.2);
+
+        while(elevator.isBusy()) {
+            telemetry.log().add("current position.." + elevator.getCurrentPosition());
+        }
+     }
 }
