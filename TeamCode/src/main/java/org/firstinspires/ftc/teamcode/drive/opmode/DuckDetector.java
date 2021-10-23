@@ -21,8 +21,12 @@ public class DuckDetector extends LinearOpMode {
 
     OpenCvWebcam webcam;
 
-    Point point1 = new Point(10, 110);
-    Point point2 = new Point(10 + 80, 110 + 80);
+        Point leftRectanglePoint1 = new Point(20, 80);
+    Point leftRectanglePoint2 = new Point(107, 160);
+
+    Point rightRectanglePoint1 = new Point(190, 80);
+    Point rightRectanglePoint2 = new Point(270, 160);
+
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -69,93 +73,28 @@ public class DuckDetector extends LinearOpMode {
     class SamplePipeline extends OpenCvPipeline {
         boolean viewportPaused;
 
-        /*
-         * NOTE: if you wish to use additional Mat objects in your processing pipeline, it is
-         * highly recommended to declare them here as instance variables and re-use them for
-         * each invocation of processFrame(), rather than declaring them as new local variables
-         * each time through processFrame(). This removes the danger of causing a memory leak
-         * by forgetting to call mat.release(), and it also reduces memory pressure by not
-         * constantly allocating and freeing large chunks of memory.
-         */
-        /*
         @Override
-        public Mat processFrame(Mat input) {
+        public Mat processFrame(Mat frame) {
 
-            Point point11 = new Point(20,80);            Point point12 = new Point(107,160);
-            Point point21 = new Point(120,80);            Point point22 = new Point(217,160);
-            Point point31 = new Point(240,80);            Point point32 = new Point(320,160);
+            Imgproc.rectangle(frame, leftRectanglePoint1, leftRectanglePoint2, new Scalar(0, 0, 255), 2);
+            Imgproc.rectangle(frame, rightRectanglePoint1, rightRectanglePoint2, new Scalar(0, 255, 0), 2);
 
-
-
-            Imgproc.rectangle(input, point11, point12, new Scalar(0, 0, 255), 2);
-            Imgproc.rectangle(input, point21,point22, new Scalar(0, 0, 255), 2);
-            Imgproc.rectangle(input, point31,point32, new Scalar(0, 0, 255), 2);
             Mat inputInYCRCB = new Mat();
-            Imgproc.cvtColor(input, inputInYCRCB, Imgproc.COLOR_RGB2YCrCb);
+            Imgproc.cvtColor(frame, inputInYCRCB, Imgproc.COLOR_RGB2YCrCb);
 
             Mat inputInCB = new Mat();
             Core.extractChannel(inputInYCRCB, inputInCB, 1);
 
-            Mat rectangle1Mat = input.submat(new Rect(point11, point12));
-            Mat rectangle2Mat = input.submat(new Rect(point21,point22));
-            Mat rectangle3Mat = input.submat(new Rect(point31,point32));
+            Mat leftRectangleFrame = frame.submat(new Rect(leftRectanglePoint1, leftRectanglePoint2));
+            Mat rightRectangleFrame = frame.submat(new Rect(rightRectanglePoint1, rightRectanglePoint2));
 
-            int meanColorForRectangle1 = (int) Core.mean(rectangle1Mat).val[0];
-            int meanColorForRectangle2 = (int) Core.mean(rectangle2Mat).val[0];
-            int meanColorForRectangle3 = (int) Core.mean(rectangle3Mat).val[0];
+            int leftRectangleMean = (int) Core.mean(leftRectangleFrame).val[0];
+            int rightRectangleMean = (int) Core.mean(rightRectangleFrame).val[0];
 
-            telemetry.log().add("meanColorForRectangle1 is " + meanColorForRectangle1);
-            telemetry.log().add("meanColorForRectangle2 is " + meanColorForRectangle2);
-            telemetry.log().add("meanColorForRectangle3 is " + meanColorForRectangle3);
+            telemetry.log().add("leftRectangleMean is " + leftRectangleMean);
+            telemetry.log().add("rightRectangleMean is " + rightRectangleMean);
 
-
-            return input;
-        }*/
-
-        //Venkat
-
-        @Override
-        public Mat processFrame(Mat input) {
-            int pt1 = 1, pt2 = 1;
-
-            Point point11 = new Point(20, 80);
-            Point point12 = new Point(107, 160);
-            Point point21 = new Point(190, 80);
-            Point point22 = new Point(270, 160);
-
-            Imgproc.rectangle(input, point11, point12, new Scalar(0, 0, 255), 2);
-            Imgproc.rectangle(input, point21, point22, new Scalar(0, 255, 0), 2);
-
-            Mat inputInYCRCB = new Mat();
-            Imgproc.cvtColor(input, inputInYCRCB, Imgproc.COLOR_RGB2YCrCb);
-
-            Mat inputInCB = new Mat();
-            Core.extractChannel(inputInYCRCB, inputInCB, 1);
-
-            Mat rectangle1Mat = input.submat(new Rect(point11, point12));
-            Mat rectangle2Mat = input.submat(new Rect(point21, point22));
-
-            int meanColorForRectangle1 = (int) Core.mean(rectangle1Mat).val[0];
-            int meanColorForRectangle2 = (int) Core.mean(rectangle2Mat).val[0];
-
-            if (meanColorForRectangle1 > 110 && meanColorForRectangle1 < 120)
-                pt1 = 0;
-            if (meanColorForRectangle2 > 110 && meanColorForRectangle1 < 120)
-                pt2 = 0;
-
-            if (pt1 == pt2)
-                telemetry.log().add("duck in 1" + meanColorForRectangle1);
-            else if (pt1 > pt2)
-                telemetry.log().add("duck in 2" + meanColorForRectangle1);
-            else
-                telemetry.log().add("duck in 3" + meanColorForRectangle1);
-
-            telemetry.log().add("meanColorForRectangle1 is " + meanColorForRectangle1);
-            telemetry.log().add("meanColorForRectangle2 is " + meanColorForRectangle2);
-//            telemetry.log().add("meanColorForRectangle3 is " + meanColorForRectangle3);
-
-            // Empty 110 - 120
-            return input;
+            return frame;
         }
 
         @Override
@@ -181,6 +120,8 @@ public class DuckDetector extends LinearOpMode {
             }
         }
     }
+
+
 }
 
 
