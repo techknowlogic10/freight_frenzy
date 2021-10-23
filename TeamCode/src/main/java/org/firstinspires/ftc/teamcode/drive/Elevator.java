@@ -9,15 +9,19 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class Elevator {
 
-    /*
-        Through testing, we found out that we would need
-        1000 ticks to reach level one
-        2200 ticks to reach level two
-        4000 ticks to reach level three
-     */
-    public void raiseToTheLevel(int level, HardwareMap hardwareMap) {
+    private DcMotorEx elevator = null;
 
-        DcMotorEx elevator = hardwareMap.get(DcMotorEx.class, "elevator");
+    public Elevator(HardwareMap hardwareMap) {
+        this.elevator = hardwareMap.get(DcMotorEx.class, "elevator");
+    }
+
+    /*
+            Through testing, we found out that we would need
+            1000 ticks to reach level one
+            2200 ticks to reach level two
+            4000 ticks to reach level three
+         */
+    public void raiseToTheLevel(int level) {
         elevator.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         elevator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         elevator.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -28,7 +32,7 @@ public class Elevator {
         } else if (level == 2) {
             desiredPosition = 2200;
         } else {
-            desiredPosition = 4000;
+            desiredPosition = 4300;
         }
 
         raiseToDesiredPosition(elevator, desiredPosition);

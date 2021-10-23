@@ -43,10 +43,6 @@ public class TeamShippingElementDetector {
     }
 
     public String detectShippingElement() {
-
-        //int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        //webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam1"), cameraMonitorViewId);
-
         webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
             public void onOpened() {
@@ -62,10 +58,10 @@ public class TeamShippingElementDetector {
         while (true) {
             if (ELEMENT_POSITION == null) {
                 sleep(100);
-           } else {
+            } else {
                 webcam.stopStreaming();
                 break;
-           }
+            }
 
         }
 
@@ -73,9 +69,8 @@ public class TeamShippingElementDetector {
     }
 
     class SamplePipeline extends OpenCvPipeline {
-        boolean viewportPaused;
 
-         @Override
+        @Override
         public Mat processFrame(Mat frame) {
 
             Imgproc.rectangle(frame, leftRectanglePoint1, leftRectanglePoint2, new Scalar(0, 0, 255), 2);
@@ -93,12 +88,12 @@ public class TeamShippingElementDetector {
             int leftRectangleMean = (int) Core.mean(leftRectangleFrame).val[0];
             int rightRectangleMean = (int) Core.mean(rightRectangleFrame).val[0];
 
-             telemetry.log().add("leftRectangleMean is " + leftRectangleMean);
-             telemetry.log().add("rightRectangleMean is " + rightRectangleMean);
+            telemetry.log().add("leftRectangleMean is " + leftRectangleMean);
+            telemetry.log().add("rightRectangleMean is " + rightRectangleMean);
 
             if (leftRectangleMean < 90) {
                 ELEMENT_POSITION = "LEFT";
-            } else if(rightRectangleMean < 90) {
+            } else if (rightRectangleMean < 90) {
                 ELEMENT_POSITION = "RIGHT";
             } else {
                 ELEMENT_POSITION = "NEITHER";
@@ -107,29 +102,6 @@ public class TeamShippingElementDetector {
             telemetry.log().add("Element position " + ELEMENT_POSITION);
 
             return frame;
-        }
-
-        @Override
-        public void onViewportTapped() {
-            /*
-             * The viewport (if one was specified in the constructor) can also be dynamically "paused"
-             * and "resumed". The primary use case of this is to reduce CPU, memory, and power load
-             * when you need your vision pipeline running, but do not require a live preview on the
-             * robot controller screen. For instance, this could be useful if you wish to see the live
-             * camera preview as you are initializing your robot, but you no longer require the live
-             * preview after you have finished your initialization process; pausing the viewport does
-             * not stop running your pipeline.
-             *
-             * Here we demonstrate dynamically pausing/resuming the viewport when the user taps it
-             */
-
-            viewportPaused = !viewportPaused;
-
-            if (viewportPaused) {
-                webcam.pauseViewport();
-            } else {
-                webcam.resumeViewport();
-            }
         }
     }
 
