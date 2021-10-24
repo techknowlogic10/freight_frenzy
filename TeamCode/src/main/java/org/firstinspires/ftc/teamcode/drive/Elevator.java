@@ -53,8 +53,15 @@ public class Elevator {
     }
 
     public void dropFreight(){
-        carriage.setPosition(1.0);
 
+        long start = System.currentTimeMillis();
+
+        //It takes about 1 second to drop the freight
+        long end = start + 1*1000;
+
+        while (System.currentTimeMillis() < end) {
+            carriage.setPosition(0.6);
+        }
     }
 
     private final void sleep(long milliseconds) {
