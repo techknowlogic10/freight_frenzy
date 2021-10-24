@@ -66,7 +66,7 @@ public class RedLeft extends LinearOpMode {
 
     private void driveToStorageUnit(SampleMecanumDrive driveTrain) {
         Trajectory reversePath = driveTrain.trajectoryBuilder(new Pose2d(), false)
-                .back(24)
+                .back(DRIVE_TO_STORAGE_UNIT_BACK)
                 .build();
         driveTrain.followTrajectory(reversePath);
     }
