@@ -18,6 +18,9 @@ import org.firstinspires.ftc.teamcode.drive.TeamShippingElementDetector;
 public class RedLeft extends LinearOpMode {
 
     public static Pose2d startingPosition = new Pose2d(-30, -63, Math.toRadians(270));
+    public static double carousalStep1 = 24;
+    public static double carousalStep2 = 86;
+    public static double carousalStep3 = 5;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -25,7 +28,7 @@ public class RedLeft extends LinearOpMode {
         //Step-0 : Set the robot to starting position
 
         SampleMecanumDrive driveTrain = new SampleMecanumDrive(hardwareMap);
-        driveTrain.setPoseEstimate(startingPosition);
+        //driveTrain.setPoseEstimate(startingPosition);
 
         TeamShippingElementDetector detector = new TeamShippingElementDetector(hardwareMap, telemetry);
         CarousalSpinner carousalSpinner = new CarousalSpinner(hardwareMap);
@@ -39,12 +42,12 @@ public class RedLeft extends LinearOpMode {
 
         int elevatorLevel = getElevatorLevel(shippingElementPosition);
         telemetry.log().add("elevator level " + elevatorLevel);
-
+        //elevator.raiseToTheLevel(elevatorLevel);
         //Step-2 : Drive to Team Shipping Hub
         driveToShippingHub(driveTrain);
 
         //Step-3 : Drop the pre-loaded box in the appropriate level
-        elevator.raiseToTheLevel(elevatorLevel);
+
 
         //Step-4 Drive to carousal and spin
         driveToCarousal(driveTrain);
@@ -79,13 +82,13 @@ public class RedLeft extends LinearOpMode {
 //                .build();
 //        driveTrain.followTrajectory(trajectoryToShippingHub);
 
-        Trajectory strafeLeft = driveTrain.trajectoryBuilder(startingPosition, false)
+        Trajectory strafeLeft = driveTrain.trajectoryBuilder(new Pose2d(), false)
                 .strafeLeft(36)
                 .build();
         driveTrain.followTrajectory(strafeLeft);
 
-        Trajectory pathToShippingHub = driveTrain.trajectoryBuilder(strafeLeft.end(), false)
-                .back(30)
+        Trajectory pathToShippingHub = driveTrain.trajectoryBuilder(new Pose2d(), false)
+                .back(28)
                 .build();
 
         driveTrain.followTrajectory(pathToShippingHub);
@@ -94,14 +97,20 @@ public class RedLeft extends LinearOpMode {
     private void driveToCarousal(SampleMecanumDrive driveTrain) {
 
         Trajectory forwardPath = driveTrain.trajectoryBuilder(new Pose2d(), false)
-                .forward(22)
+                .forward(carousalStep1)
                 .build();
         driveTrain.followTrajectory(forwardPath);
 
         Trajectory strafeRight = driveTrain.trajectoryBuilder(new Pose2d(), false)
-                .strafeRight(72)
+                .strafeRight(carousalStep2)
                 .build();
+
         driveTrain.followTrajectory(strafeRight);
+        Trajectory straight = driveTrain.trajectoryBuilder(new Pose2d(), false)
+                .forward(carousalStep3)
+                .build();
+
+        driveTrain.followTrajectory(straight);
     }
 
 }

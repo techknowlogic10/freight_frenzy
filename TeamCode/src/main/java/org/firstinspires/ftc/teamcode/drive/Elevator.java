@@ -6,13 +6,16 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 
 public class Elevator {
 
     private DcMotorEx elevator = null;
+    private Servo carriage = null;
 
     public Elevator(HardwareMap hardwareMap) {
         this.elevator = hardwareMap.get(DcMotorEx.class, "elevator");
+        this.carriage = hardwareMap.get(Servo.class, "carriage");
     }
 
     /*
@@ -47,6 +50,11 @@ public class Elevator {
         while (elevator.isBusy()) {
             sleep(50);
         }
+    }
+
+    public void dropFreight(){
+        carriage.setPosition(1.0);
+
     }
 
     private final void sleep(long milliseconds) {

@@ -8,17 +8,17 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 public class CarousalSpinner {
 
-    private CRServo spinner = null;
+    private Servo spinner = null;
 
     public CarousalSpinner(HardwareMap hardwareMap) {
         super();
-        this.spinner = hardwareMap.get(CRServo.class, "spinner");
+        this.spinner = hardwareMap.get(Servo.class, "spinner");
     }
 
     public void spin() {
 
         //Spinner servo is on control hub -- port 5
-        spinner.setDirection(CRServo.Direction.REVERSE);
+        spinner.setDirection(Servo.Direction.REVERSE);
 
         long start = System.currentTimeMillis();
 
@@ -26,7 +26,7 @@ public class CarousalSpinner {
         long end = start + 5 * 1000;
 
         while (System.currentTimeMillis() < end) {
-            spinner.setPower(1.0);
+            spinner.setPosition(1.0);
         }
     }
 

@@ -1,17 +1,20 @@
 package org.firstinspires.ftc.teamcode.drive.opmode;
 
+
 import com.acmerobotics.dashboard.config.Config;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.Range;
 
 @TeleOp
 @Config
-public class ELevatorTeleOpTest extends OpMode {
 
+public class Vishal_TeleOp extends OpMode {
     DcMotor leftFront = null;
     DcMotor rightFront = null;
     DcMotor leftRear = null;
@@ -19,7 +22,7 @@ public class ELevatorTeleOpTest extends OpMode {
     DcMotor intake = null;
     DcMotor elevator = null;
     Servo carriagearm = null;
-    double ARM_SPEED = 50;
+    double ARM_SPEED = 0.1;
     double arm_Pos = 0.0;
 
     public final static double ARM_HOME = 0.0;
@@ -58,8 +61,6 @@ public class ELevatorTeleOpTest extends OpMode {
             arm_Pos += ARM_SPEED;
         else if (gamepad1.b)
             arm_Pos -= ARM_SPEED;
-        elevator.setTargetPosition((int) arm_Pos);
-
         arm_Pos = Range.clip(arm_Pos, 0.0,0.5);
         carriagearm.setPosition(arm_Pos);
 
@@ -80,6 +81,5 @@ public class ELevatorTeleOpTest extends OpMode {
         telemetry.addData("arm", "%.2f", arm_Pos);
         telemetry.update();
     }
-
 
 }
