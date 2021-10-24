@@ -19,14 +19,13 @@ public class RedLeft extends LinearOpMode {
 
     public static Pose2d startingPosition = new Pose2d(-30, -63, Math.toRadians(270));
 
-    public static double DRIVE_TO_HUB_STEP1_STRAFE_LEFT = 36;
-    public static double DRIVE_TO_HUB_STEP2_BACK = 28;
+    public static double DRIVE_TO_HUB_STEP1_STRAFE_LEFT = 32;
+    public static double DRIVE_TO_HUB_STEP2_BACK = 32.5;
 
-    public static double DRIVE_TO_CAROUSAL_STEP1_FORWARD = 24;
-    public static double DRIVE_TO_CAROUSAL_STEP2_STRAFE_RIGHT = 86;
-    public static double DRIVE_TO_CAROUSAL_STEP3_FORWARD = 5;
-
-    public static double DRIVE_TO_STORAGE_UNIT_BACK = 24;
+    public static double DRIVE_TO_CAROUSAL_STEP1_FORWARD = 28;
+    public static double DRIVE_TO_CAROUSAL_STEP2_STRAFE_RIGHT = 84;
+    public static double DRIVE_TO_CAROUSAL_STEP3_FORWARD = 11;
+    public static double DRIVE_TO_STORAGE_UNIT_BACK = 27;
 
     @Override
     public void runOpMode() throws InterruptedException {

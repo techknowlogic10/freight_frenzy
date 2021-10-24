@@ -20,7 +20,6 @@ public class CarousalSpinner {
     public void spin() {
 
         //Spinner REV Ultra Planitary is on control hub -- port 3
-        spinner.setDirection(DcMotorSimple.Direction.REVERSE);
 
         long start = System.currentTimeMillis();
 
@@ -28,7 +27,7 @@ public class CarousalSpinner {
         long end = start + 5 * 1000;
 
         while (System.currentTimeMillis() < end) {
-            spinner.setPower(0.5);
+            spinner.setPower(0.4);
         }
     }
 

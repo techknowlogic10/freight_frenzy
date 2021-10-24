@@ -33,7 +33,7 @@ public class Elevator {
         if (level == 1) {
             desiredPosition = 1000;
         } else if (level == 2) {
-            desiredPosition = 2200;
+            desiredPosition = 2700;
         } else {
             desiredPosition = 4300;
         }
@@ -45,7 +45,7 @@ public class Elevator {
 
         elevator.setTargetPosition(desiredPosition);
         elevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        elevator.setPower(0.2);
+        elevator.setPower(0.4);
 
         while (elevator.isBusy()) {
             sleep(50);
