@@ -7,67 +7,103 @@ import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
+import org.firstinspires.ftc.teamcode.drive.CarousalSpinner;
+import org.firstinspires.ftc.teamcode.drive.Elevator;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.drive.TeamShippingElementDetector;
 
-@Autonomous(name = "Red Right")
+@Autonomous(name = "Red Left")
 @Config
 public class RedRight extends LinearOpMode {
 
-    public static Pose2d startingPosition = new Pose2d(12, -62, Math.toRadians(270));
+    public static Pose2d startingPosition = new Pose2d(-30, -63, Math.toRadians(270));
 
-    private int elevatorPostion;
-    public static double ANGLE = 90;
+    public static double DRIVE_TO_HUB_STEP1_STRAFE_RIGHT = 32;
+    public static double DRIVE_TO_HUB_STEP2_BACK = 32.5;
+
+    public static double DRIVE_TO_WAREHOUSE_STEP1_FORWARD = 28;
+    public static double DRIVE_TO_WAREHOUSE_STEP2_FORWARD = 84;
+
+
     @Override
     public void runOpMode() throws InterruptedException {
 
+        //Step-0 : Set the robot to starting position
 
         SampleMecanumDrive driveTrain = new SampleMecanumDrive(hardwareMap);
-        driveTrain.setPoseEstimate(startingPosition);
+        //driveTrain.setPoseEstimate(startingPosition);
+
+        TeamShippingElementDetector detector = new TeamShippingElementDetector(hardwareMap, telemetry);
+        CarousalSpinner carousalSpinner = new CarousalSpinner(hardwareMap);
+        Elevator elevator = new Elevator(hardwareMap);
 
         waitForStart();
 
+        //Step-1 : Scan for duck or Team Shipping Element
+        String shippingElementPosition = detector.detectShippingElement();
+        telemetry.log().add("team shipping element position " + shippingElementPosition);
+
+        int elevatorLevel = getElevatorLevel(shippingElementPosition);
+        telemetry.log().add("elevator level " + elevatorLevel);
+
+        //Step-2 : Drive to Team Shipping Hub
+        driveToShippingHub(driveTrain);
+
+        //Step-3 : Drop the pre-loaded box in the appropriate level
+        elevator.raiseToTheLevel(elevatorLevel);
+        elevator.dropFreight();
+
+        //Step-4 Drive to warehouse
+        driveToWarehouse(driveTrain);
+
+    }
 
 
-        Trajectory strafeRight = driveTrain.trajectoryBuilder(startingPosition, false)
-                .strafeRight(27)
+
+    private int getElevatorLevel(String shippingElementPosition) {
+        if (shippingElementPosition.equals("LEFT")) {
+            return 2;
+        } else if (shippingElementPosition.equals("RIGHT")) {
+            return 1;
+        } else {
+            return 3;
+        }
+    }
+
+    private void driveToShippingHub(SampleMecanumDrive driveTrain) {
+
+//        Trajectory trajectoryToShippingHub = driveTrain.trajectoryBuilder(startingPosition, true)
+//                .splineTo(shippingHubVector, Math.toRadians(225))
+//                .build();
+//        driveTrain.followTrajectory(trajectoryToShippingHub);
+
+        Trajectory strafeRight = driveTrain.trajectoryBuilder(new Pose2d(), false)
+                .strafeRight(DRIVE_TO_HUB_STEP1_STRAFE_RIGHT)
                 .build();
         driveTrain.followTrajectory(strafeRight);
 
-        Trajectory pathToShippingHub = driveTrain.trajectoryBuilder(strafeRight.end(), false)
-                .back(26)
+        Trajectory pathToShippingHub = driveTrain.trajectoryBuilder(new Pose2d(), false)
+                .back(DRIVE_TO_HUB_STEP2_BACK)
                 .build();
 
         driveTrain.followTrajectory(pathToShippingHub);
+    }
 
+    private void driveToWarehouse(SampleMecanumDrive driveTrain) {
 
-        //Step-1 : Scan for duck or Team Shipping Element
-        TeamShippingElementDetector detector = new TeamShippingElementDetector(hardwareMap, telemetry);
-        String position = detector.detectShippingElement();
-
-        telemetry.log().add("team shipping element position "+position);
-
-        if(position.equals("LEFT")){
-            elevatorPostion = 1;
-        } else if(position.equals("RIGHT")){
-            elevatorPostion = 2;
-        } else {
-            elevatorPostion = 3;
-        }
-
-        telemetry.log().add("elevator level "+elevatorPostion);
-        sleep(2000);
-        Trajectory forwardPath = driveTrain.trajectoryBuilder(pathToShippingHub.end(), false)
-                .forward(24)
+        Trajectory forwardPath = driveTrain.trajectoryBuilder(new Pose2d(), false)
+                .forward(DRIVE_TO_WAREHOUSE_STEP1_FORWARD)
                 .build();
-
         driveTrain.followTrajectory(forwardPath);
-        driveTrain.turn(Math.toRadians(ANGLE));
-        Trajectory strafeLeft = driveTrain.trajectoryBuilder(forwardPath.end(),false)
-                .strafeLeft(55)
-                .build();
-        driveTrain.followTrajectory(strafeLeft);
 
+        driveTrain.turn(Math.toRadians(90));
+
+        Trajectory pathForward = driveTrain.trajectoryBuilder(new Pose2d(), false)
+                .forward(DRIVE_TO_WAREHOUSE_STEP2_FORWARD)
+                .build();
+
+        driveTrain.followTrajectory(pathForward);
 
     }
+
 }
