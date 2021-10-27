@@ -12,7 +12,7 @@ import org.firstinspires.ftc.teamcode.drive.Elevator;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.drive.TeamShippingElementDetector;
 
-@Autonomous(name = "Red Left")
+@Autonomous(name = "Red Right")
 @Config
 public class RedRight extends LinearOpMode {
 
