@@ -41,17 +41,19 @@ public class DuckDetector extends LinearOpMode {
 
         webcam.setMillisecondsPermissionTimeout(2500);
 
-        webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
-            @Override
-            public void onOpened() {
-                webcam.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
-            }
+        webcam.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
 
-            @Override
-            public void onError(int errorCode) {
-                telemetry.log().add("Not able to open Camera");
-            }
-        });
+//        webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
+//            @Override
+//            public void onOpened() {
+//                webcam.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
+//            }
+//
+//            @Override
+//            public void onError(int errorCode) {
+//                telemetry.log().add("Not able to open Camera");
+//            }
+//        });
 
         telemetry.addLine("Waiting for start");
         telemetry.update();
