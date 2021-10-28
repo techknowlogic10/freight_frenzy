@@ -18,8 +18,8 @@ public class RedRight extends LinearOpMode {
 
     public static Pose2d startingPosition = new Pose2d(-30, -63, Math.toRadians(270));
 
-    public static double DRIVE_TO_HUB_STEP1_STRAFE_RIGHT = 32;
-    public static double DRIVE_TO_HUB_STEP2_BACK = 32.5;
+    public static double DRIVE_TO_HUB_STEP1_STRAFE_RIGHT = 38;
+    public static double DRIVE_TO_HUB_STEP2_BACK = 34;
 
     public static double DRIVE_TO_WAREHOUSE_STEP1_FORWARD = 28;
     public static double DRIVE_TO_WAREHOUSE_STEP2_FORWARD = 84;
