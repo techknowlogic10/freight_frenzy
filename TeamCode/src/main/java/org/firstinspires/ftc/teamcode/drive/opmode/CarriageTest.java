@@ -21,7 +21,7 @@ public class CarriageTest extends LinearOpMode {
 
         waitForStart();
 
-        while(true) {
+        while(opModeIsActive()) {
             carriage.setPosition(POSITION);
         }
 

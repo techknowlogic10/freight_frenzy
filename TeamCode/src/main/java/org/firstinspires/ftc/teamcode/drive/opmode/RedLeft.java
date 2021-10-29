@@ -19,13 +19,13 @@ public class RedLeft extends LinearOpMode {
 
     public static Pose2d startingPosition = new Pose2d(-30, -63, Math.toRadians(270));
 
-    public static double DRIVE_TO_HUB_STEP1_STRAFE_LEFT = 32;
-    public static double DRIVE_TO_HUB_STEP2_BACK = 32.5;
+    public static double DRIVE_TO_HUB_STEP1_STRAFE_LEFT = 29;
+    public static double DRIVE_TO_HUB_STEP2_BACK = 25;
 
-    public static double DRIVE_TO_CAROUSAL_STEP1_FORWARD = 28;
-    public static double DRIVE_TO_CAROUSAL_STEP2_STRAFE_RIGHT = 84;
-    public static double DRIVE_TO_CAROUSAL_STEP3_FORWARD = 11;
-    public static double DRIVE_TO_STORAGE_UNIT_BACK = 27;
+    public static double DRIVE_TO_CAROUSAL_STEP1_FORWARD = 16;
+    public static double DRIVE_TO_CAROUSAL_STEP2_STRAFE_RIGHT = 82;
+    public static double DRIVE_TO_CAROUSAL_STEP3_FORWARD = 5;
+    public static double DRIVE_TO_STORAGE_UNIT_BACK = 21.5;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -55,6 +55,9 @@ public class RedLeft extends LinearOpMode {
         elevator.raiseToTheLevel(elevatorLevel);
         elevator.dropFreight();
 
+       // sleep(500);
+        //elevator.dropToZero();
+
         //Step-4 Drive to carousal and spin
         driveToCarousal(driveTrain);
         carousalSpinner.spin();
@@ -64,7 +67,7 @@ public class RedLeft extends LinearOpMode {
     }
 
     private void driveToStorageUnit(SampleMecanumDrive driveTrain) {
-        Trajectory reversePath = driveTrain.trajectoryBuilder(new Pose2d(), false)
+        Trajectory reversePath = driveTrain.trajectoryBuilder(driveTrain.getPoseEstimate(), false)
                 .back(DRIVE_TO_STORAGE_UNIT_BACK)
                 .build();
         driveTrain.followTrajectory(reversePath);
@@ -93,7 +96,7 @@ public class RedLeft extends LinearOpMode {
                 .build();
         driveTrain.followTrajectory(strafeLeft);
 
-        Trajectory pathToShippingHub = driveTrain.trajectoryBuilder(new Pose2d(), false)
+        Trajectory pathToShippingHub = driveTrain.trajectoryBuilder(driveTrain.getPoseEstimate(), false)
                 .back(DRIVE_TO_HUB_STEP2_BACK)
                 .build();
 
@@ -102,17 +105,17 @@ public class RedLeft extends LinearOpMode {
 
     private void driveToCarousal(SampleMecanumDrive driveTrain) {
 
-        Trajectory forwardPath = driveTrain.trajectoryBuilder(new Pose2d(), false)
+        Trajectory forwardPath = driveTrain.trajectoryBuilder(driveTrain.getPoseEstimate(), false)
                 .forward(DRIVE_TO_CAROUSAL_STEP1_FORWARD)
                 .build();
         driveTrain.followTrajectory(forwardPath);
 
-        Trajectory strafeRight = driveTrain.trajectoryBuilder(new Pose2d(), false)
+        Trajectory strafeRight = driveTrain.trajectoryBuilder(driveTrain.getPoseEstimate(), false)
                 .strafeRight(DRIVE_TO_CAROUSAL_STEP2_STRAFE_RIGHT)
                 .build();
 
         driveTrain.followTrajectory(strafeRight);
-        Trajectory straight = driveTrain.trajectoryBuilder(new Pose2d(), false)
+        Trajectory straight = driveTrain.trajectoryBuilder(driveTrain.getPoseEstimate(), false)
                 .forward(DRIVE_TO_CAROUSAL_STEP3_FORWARD)
                 .build();
 
