@@ -41,7 +41,7 @@ public class MecanumTeleOp extends OpMode {
         rightRear.setDirection(DcMotorEx.Direction.REVERSE);
         intake = hardwareMap.get(DcMotor.class, "intake");
         elevator = hardwareMap.get(DcMotor.class, "elevator");
-        carousell = hardwareMap.get(DcMotor.class, "carousell");
+        carousell = hardwareMap.get(DcMotor.class, "spinner");
 
         carriagearm = hardwareMap.servo.get("carriage");
         carriagearm.setPosition(ARM_HOME);
