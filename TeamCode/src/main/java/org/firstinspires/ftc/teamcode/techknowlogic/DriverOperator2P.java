@@ -92,11 +92,6 @@ public class DriverOperator2P extends OpMode {
         //CARGO PICKER settings
         //double cargoPickerPower = Range.clip(gamepad2.right_stick_y, -0.5, 0.5);
 
-       // telemetry.log().add("right_stick_y == " + gamepad2.right_stick_y);
-        //telemetry.log().add("clipped value == " + cargoPickerPower);
-
-        //cargoPicker.setPower(gamepad2.right_stick_y);
-/*
         if(gamepad2.dpad_left) {
             cargoPicker.setPower(0.8);
         } else if(gamepad2.dpad_down){
@@ -106,12 +101,7 @@ public class DriverOperator2P extends OpMode {
             gamepad2.dpad_right = false;
             cargoPicker.setPower(gamepad2.right_stick_y);
             telemetry.log().add("right_stick_y == " + gamepad2.right_stick_y);
-        }*/
-        //double right_stick_x = gamepad2.right_stick_x;
-        //double x1 = gamepad2.right_stick_x * 1.1; // Counteract imperfect strafing
-
-        //double denominator2 = Math.max(Math.abs(right_stick_x) + Math.abs(right_stick_y), 0.5);
-        //double cargoPickerPower = (right_stick_x + right_stick_y) / denominator2;
+        }
 
         //Carriage motions are done by Operator (gamepad2)
         if (gamepad2.a)
