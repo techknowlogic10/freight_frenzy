@@ -13,9 +13,10 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.Range;
 
+@TeleOp
 @Config
-@TeleOp(name = "Driver Operator")
-public class DriverOperator extends OpMode {
+
+public class MecanumTeleOp2P extends OpMode {
     DcMotor leftFront = null;
     DcMotor rightFront = null;
     DcMotor leftRear = null;
@@ -33,17 +34,14 @@ public class DriverOperator extends OpMode {
     public void init() {
 
         leftFront = hardwareMap.get(DcMotor.class, "leftFront");
-        leftRear = hardwareMap.get(DcMotor.class, "leftRear");
-
         rightFront = hardwareMap.get(DcMotor.class, "rightFront");
         rightFront.setDirection(DcMotorSimple.Direction.REVERSE);
-
+        leftRear = hardwareMap.get(DcMotor.class, "leftRear");
         rightRear = hardwareMap.get(DcMotor.class, "rightRear");
         rightRear.setDirection(DcMotorEx.Direction.REVERSE);
-
         intake = hardwareMap.get(DcMotor.class, "intake");
         elevator = hardwareMap.get(DcMotor.class, "elevator");
-        carousell = hardwareMap.get(DcMotor.class, "spinner");
+        carousell = hardwareMap.get(DcMotor.class, "carousell");
 
         carriagearm = hardwareMap.servo.get("carriage");
         carriagearm.setPosition(ARM_HOME);
@@ -70,12 +68,19 @@ public class DriverOperator extends OpMode {
         rightFront.setPower(frontRightPower);
         rightRear.setPower(backRightPower);
 
-        if (gamepad1.a)
+        /*if (gamepad2.a)
             arm_Pos += ARM_SPEED;
-        else if (gamepad1.b)
+        else if (gamepad2.b)
             arm_Pos -= ARM_SPEED;
         arm_Pos = Range.clip(arm_Pos, 0.0,0.5);
-        carriagearm.setPosition(arm_Pos);
+        carriagearm.setPosition(arm_Pos); */
+
+        if (gamepad2.a)
+            carriagearm.setPosition(0);
+        else if (gamepad2.b)
+            carriagearm.setPosition(0.3);
+        else if (gamepad2.x)
+            carriagearm.setPosition(0.6);
 
         if (gamepad1.dpad_right)
             intake.setPower(.5);
@@ -84,9 +89,9 @@ public class DriverOperator extends OpMode {
         else
             intake.setPower(0);
 
-        if (gamepad1.left_bumper)
+        if (gamepad2.left_bumper)
             elevator.setPower(1);
-        else if (gamepad1.right_bumper)
+        else if (gamepad2.right_bumper)
             elevator.setPower(-1);
         else
             elevator.setPower(0);
