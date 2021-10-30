@@ -2,28 +2,34 @@ package org.firstinspires.ftc.teamcode.techknowlogic;
 
 
 import com.acmerobotics.dashboard.config.Config;
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.Range;
 
+@TeleOp
 @Config
-@TeleOp(name = "Driver Operator")
 public class DriverOperator extends OpMode {
     DcMotor leftFront = null;
     DcMotor rightFront = null;
     DcMotor leftRear = null;
     DcMotor rightRear = null;
+
     DcMotor intake = null;
     DcMotor elevator = null;
-    DcMotor carousell = null;
-    Servo carriagearm = null;
+    DcMotor carousel = null;
+    Servo carriageArm = null;
+
+    //Expansion Hub -- port 3
+    //use low power
+    DcMotor cargoPicker = null;
+
+    //Cargo Arm Extender -- Expansion Hub -- port 5
+    Servo caExtender;
+
     double ARM_SPEED = 0.1;
     double arm_Pos = 0.0;
 
@@ -43,16 +49,29 @@ public class DriverOperator extends OpMode {
 
         intake = hardwareMap.get(DcMotor.class, "intake");
         elevator = hardwareMap.get(DcMotor.class, "elevator");
-        carousell = hardwareMap.get(DcMotor.class, "spinner");
+        carousel = hardwareMap.get(DcMotor.class, "spinner");
 
-        carriagearm = hardwareMap.servo.get("carriage");
-        carriagearm.setPosition(ARM_HOME);
+        cargoPicker = hardwareMap.get(DcMotor.class, "cargoPicker");
+        caExtender = hardwareMap.servo.get("caExtender");
+
+        carriageArm = hardwareMap.servo.get("carriage");
+        carriageArm.setPosition(ARM_HOME);
     }
 
     @Override
     public void loop() {
 
+        //Two people i.e Driver and Operator
+        //Driver drives the robot and handle intake
+        //Operator does elevator, drop, arm
+
+        //gamepad1 == Driver
+        //gamepad2 == Operator
+
+        //right_stick_y forward and backward
         double y = -gamepad1.right_stick_y; // Remember, this is reversed!
+
+        //right_stick_x left and right
         double x = gamepad1.right_stick_x * 1.1; // Counteract imperfect strafing
         double rx = gamepad1.left_stick_x;
 
@@ -70,37 +89,51 @@ public class DriverOperator extends OpMode {
         rightFront.setPower(frontRightPower);
         rightRear.setPower(backRightPower);
 
-        if (gamepad1.a)
-            arm_Pos += ARM_SPEED;
-        else if (gamepad1.b)
-            arm_Pos -= ARM_SPEED;
-        arm_Pos = Range.clip(arm_Pos, 0.0,0.5);
-        carriagearm.setPosition(arm_Pos);
+        //CARGO PICKER settings
+        //double cargoPickerPower = Range.clip(gamepad2.right_stick_y, -0.5, 0.5);
 
-        if (gamepad1.dpad_right)
-            intake.setPower(.5);
-        else if (gamepad1.dpad_left)
-            intake.setPower(-.5);
+        if(gamepad2.dpad_left) {
+            cargoPicker.setPower(0.8);
+        } else if(gamepad2.dpad_down){
+            cargoPicker.setPower(-0.7);
+        }else if(gamepad2.right_stick_y != 0.0){
+            gamepad2.dpad_left = false;
+            gamepad2.dpad_right = false;
+            cargoPicker.setPower(gamepad2.right_stick_y);
+            telemetry.log().add("right_stick_y == " + gamepad2.right_stick_y);
+        }
+
+        //Carriage motions are done by Operator (gamepad2)
+        if (gamepad2.a)
+            carriageArm.setPosition(0);
+        else if (gamepad2.b)
+            carriageArm.setPosition(0.3);
+        else if (gamepad2.x)
+            carriageArm.setPosition(0.6);
+
+        //Intake handled by Driver (gamepad1)
+        if (gamepad1.right_bumper)
+            intake.setPower(1.0);
+        else if (gamepad1.left_bumper)
+            intake.setPower(-1.0);
         else
             intake.setPower(0);
 
-        if (gamepad1.left_bumper)
+        //Elevator is handled by Operator (gamepad2)
+        if (gamepad2.left_bumper)
             elevator.setPower(1);
-        else if (gamepad1.right_bumper)
+        else if (gamepad2.right_bumper)
             elevator.setPower(-1);
         else
             elevator.setPower(0);
 
+        //Carousal is handled by Driver
         if (gamepad1.left_stick_button)
-            carousell.setPower(1);
+            carousel.setPower(1);
         else
-            carousell.setPower(0);
+            carousel.setPower(0);
 
         telemetry.addData("arm", "%.2f", arm_Pos);
         telemetry.update();
     }
-
 }
-//   for our alliance
-//never gonna give you up
-//never gonna let you down
