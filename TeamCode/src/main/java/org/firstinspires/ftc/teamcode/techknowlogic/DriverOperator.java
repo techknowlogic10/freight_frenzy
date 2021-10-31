@@ -27,11 +27,10 @@ public class DriverOperator extends OpMode {
     //Expansion Hub -- port 3
     //use low power
     DcMotor cargoPicker = null;
-CRServo caExtender = null;
+    CRServo caExtender = null;
     //Cargo Arm Extender -- Expansion Hub -- port 5
 
     int ARM_SPEED = 100;
-    int arm_Pos = 0;
 
     public final static double ARM_HOME = 0.0;
 
@@ -91,32 +90,33 @@ CRServo caExtender = null;
         rightRear.setPower(backRightPower);
 
         //CARGO PICKER settings
-        //double cargoPickerPower = Range.clip(gamepad2.right_stick_y, -0.5, 0.5);
-
-         /*if(gamepad2.dpad_left) {
+        double cargoPickerPower = Range.clip(gamepad2.right_stick_y, -0.5, 0.5);
+        cargoPicker.setPower(cargoPickerPower);
+        /* if(gamepad2.dpad_left) {
             cargoPicker.setPower(0.8);
         } else if(gamepad2.dpad_down){
             cargoPicker.setPower(-0.7);
-        }else if(gamepad2.right_stick_y != 0.0){
-            gamepad2.dpad_left = false;
-            gamepad2.dpad_right = false;*/
-        if (gamepad2.dpad_up)
-            cargoPicker.setPower(.5);
+        }else if(gamepad2.right_stick_y != 0.0) {
+             gamepad2.dpad_left = false;
+             gamepad2.dpad_right = false;
+         }
+*/
+
+        /*if (gamepad2.dpad_up)
+
+            cargoPicker.setPower(0.5);
         else if (gamepad2.dpad_down)
-            cargoPicker.setPower(-.5);
+            cargoPicker.setPower(-0.5);
         else
-            //cargoPicker.setPower(0);
-            cargoPicker.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            //cargoPicker.setPower(0.0);
+            cargoPicker.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);*/
 
         if (gamepad2.dpad_left)
-            caExtender.setPower(1);
+            caExtender.setPower(1.0);
         else if (gamepad2.dpad_right)
-            caExtender.setPower(-1);
+            caExtender.setPower(-1.0);
         else
-            caExtender.setPower(0);
-
-        telemetry.log().add("right_stick_y == " + gamepad2.right_stick_y);
-        telemetry.log().add("pos == " + cargoPicker.getCurrentPosition());
+            caExtender.setPower(0.0);
 
         //Carriage motions are done by Operator (gamepad2)
         if (gamepad2.a)
@@ -147,8 +147,5 @@ CRServo caExtender = null;
             carousel.setPower(1);
         else
             carousel.setPower(0);
-
-        telemetry.addData("arm", "%.2f", arm_Pos);
-        telemetry.update();
     }
 }
