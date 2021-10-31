@@ -12,7 +12,7 @@ public class Elevator {
     private DcMotorEx elevator = null;
     private Servo carriage = null;
 
-    public static int LEVEL1_TICKS = 505;
+    public static int LEVEL1_TICKS = 480;
     public static int LEVEL2_TICKS = 990;
     public static int LEVEL3_TICKS = 1800;
 
@@ -62,9 +62,9 @@ public class Elevator {
         long end = start + 1*1000;
 
         //Do not drop freight if elevator is busy
-        while(elevator.isBusy()) {
+        /*while(elevator.isBusy()) {
             sleep(50);
-        }
+        }*/
         while (System.currentTimeMillis() < end) {
             carriage.setPosition(0.5);
         }

@@ -23,7 +23,7 @@ public class RedRight extends LinearOpMode {
 
     public static double DRIVE_TO_WAREHOUSE_STEP1_FORWARD = 25;
     public static double DRIVE_TO_WAREHOUSE_STEP2_STRAFE = 10;
-    public static double DRIVE_TO_WAREHOUSE_STEP3_FORWARD = 80;
+    public static double DRIVE_TO_WAREHOUSE_STEP3_FORWARD = 75;
 
 
 

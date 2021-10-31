@@ -23,7 +23,7 @@ public class BlueRight extends LinearOpMode {
 
     public static double DRIVE_TO_WAREHOUSE_STEP1_FORWARD = 25;
     public static double DRIVE_TO_WAREHOUSE_STEP2_STRAFE = 10;
-    public static double DRIVE_TO_WAREHOUSE_STEP3_FORWARD = 80;
+    public static double DRIVE_TO_WAREHOUSE_STEP3_FORWARD = 75;
 
 
 
@@ -104,13 +104,13 @@ public class BlueRight extends LinearOpMode {
         driveTrain.turn(Math.toRadians(90));
 
         Trajectory pathStrafe = driveTrain.trajectoryBuilder(driveTrain.getPoseEstimate(), false)
-                .strafeLeft(DRIVE_TO_WAREHOUSE_STEP2_STRAFE)
+                .strafeRight(DRIVE_TO_WAREHOUSE_STEP2_STRAFE)
                 .build();
 
         driveTrain.followTrajectory(pathStrafe);
 
         Trajectory pathForward = driveTrain.trajectoryBuilder(driveTrain.getPoseEstimate(), false)
-                .forward(DRIVE_TO_WAREHOUSE_STEP3_FORWARD)
+                .back(DRIVE_TO_WAREHOUSE_STEP3_FORWARD)
                 .build();
 
         driveTrain.followTrajectory(pathForward);
