@@ -52,7 +52,7 @@ CRServo caExtender = null;
         carousel = hardwareMap.get(DcMotor.class, "spinner");
 
         cargoPicker = hardwareMap.get(DcMotor.class, "cargoPicker");
-        cargoPicker.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        //cargoPicker.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         caExtender = hardwareMap.get(CRServo.class, "caExtender");
 
         carriageArm = hardwareMap.servo.get("carriage");
@@ -105,7 +105,8 @@ CRServo caExtender = null;
         else if (gamepad2.dpad_down)
             cargoPicker.setPower(-.5);
         else
-            cargoPicker.setPower(0);
+            //cargoPicker.setPower(0);
+            cargoPicker.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         if (gamepad2.dpad_left)
             caExtender.setPower(1);
