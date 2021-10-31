@@ -3,17 +3,17 @@ package org.firstinspires.ftc.teamcode.techknowlogic;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.Range;
 
 @TeleOp
 @Config
-public class DriverOperator extends OpMode {
+public class DriverOperatorBlue extends OpMode {
     DcMotor leftFront = null;
     DcMotor rightFront = null;
     DcMotor leftRear = null;
@@ -49,6 +49,7 @@ public class DriverOperator extends OpMode {
         intake = hardwareMap.get(DcMotor.class, "intake");
         elevator = hardwareMap.get(DcMotor.class, "elevator");
         carousel = hardwareMap.get(DcMotor.class, "spinner");
+        carousel.setDirection(DcMotorSimple.Direction.REVERSE);
 
         cargoPicker = hardwareMap.get(DcMotor.class, "cargoPicker");
         //cargoPicker.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
