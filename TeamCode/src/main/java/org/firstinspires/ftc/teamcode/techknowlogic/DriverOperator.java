@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.techknowlogic;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -26,12 +27,11 @@ public class DriverOperator extends OpMode {
     //Expansion Hub -- port 3
     //use low power
     DcMotor cargoPicker = null;
-
+CRServo caExtender = null;
     //Cargo Arm Extender -- Expansion Hub -- port 5
-    Servo caExtender;
 
-    double ARM_SPEED = 0.1;
-    double arm_Pos = 0.0;
+    int ARM_SPEED = 100;
+    int arm_Pos = 0;
 
     public final static double ARM_HOME = 0.0;
 
@@ -52,7 +52,8 @@ public class DriverOperator extends OpMode {
         carousel = hardwareMap.get(DcMotor.class, "spinner");
 
         cargoPicker = hardwareMap.get(DcMotor.class, "cargoPicker");
-        caExtender = hardwareMap.servo.get("caExtender");
+        cargoPicker.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        caExtender = hardwareMap.get(CRServo.class, "caExtender");
 
         carriageArm = hardwareMap.servo.get("carriage");
         carriageArm.setPosition(ARM_HOME);
@@ -92,16 +93,29 @@ public class DriverOperator extends OpMode {
         //CARGO PICKER settings
         //double cargoPickerPower = Range.clip(gamepad2.right_stick_y, -0.5, 0.5);
 
-        if(gamepad2.dpad_left) {
+         /*if(gamepad2.dpad_left) {
             cargoPicker.setPower(0.8);
         } else if(gamepad2.dpad_down){
             cargoPicker.setPower(-0.7);
         }else if(gamepad2.right_stick_y != 0.0){
             gamepad2.dpad_left = false;
-            gamepad2.dpad_right = false;
-            cargoPicker.setPower(gamepad2.right_stick_y);
-            telemetry.log().add("right_stick_y == " + gamepad2.right_stick_y);
-        }
+            gamepad2.dpad_right = false;*/
+        if (gamepad2.dpad_up)
+            cargoPicker.setPower(.5);
+        else if (gamepad2.dpad_down)
+            cargoPicker.setPower(-.5);
+        else
+            cargoPicker.setPower(0);
+
+        if (gamepad2.dpad_left)
+            caExtender.setPower(1);
+        else if (gamepad2.dpad_right)
+            caExtender.setPower(-1);
+        else
+            caExtender.setPower(0);
+
+        telemetry.log().add("right_stick_y == " + gamepad2.right_stick_y);
+        telemetry.log().add("pos == " + cargoPicker.getCurrentPosition());
 
         //Carriage motions are done by Operator (gamepad2)
         if (gamepad2.a)
