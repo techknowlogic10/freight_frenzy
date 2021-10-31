@@ -136,12 +136,15 @@ public class DriverOperator extends OpMode {
             intake.setPower(0);
 
         //Elevator is handled by Operator (gamepad2)
-        if (gamepad2.left_bumper)
+        if (gamepad2.left_bumper) {
             elevator.setPower(1);
-        else if (gamepad2.right_bumper)
+        } else if (gamepad2.right_bumper) {
+            //while elevator coming down, we would like to bring the arm to initial (zero) position
+            carriageArm.setPosition(0);
             elevator.setPower(-1);
-        else
+        } else {
             elevator.setPower(0);
+        }
 
         //Carousal is handled by Driver
         if (gamepad1.left_stick_button)
