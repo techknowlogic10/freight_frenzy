@@ -59,7 +59,7 @@ public class BlueLeft extends LinearOpMode {
 
         //Step-4 Drive to carousal and spin
         driveToCarousal(driveTrain);
-        carousalSpinner.spin();
+        carousalSpinner.spin(true);
 
         //Step 6 : Drive to Storage Unit
         driveToStorageUnit(driveTrain);

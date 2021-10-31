@@ -92,6 +92,7 @@ public class DriverOperator extends OpMode {
         //CARGO PICKER settings
         double cargoPickerPower = Range.clip(gamepad2.right_stick_y, -0.3, 0.3);
         cargoPicker.setPower(cargoPickerPower);
+
         /* if(gamepad2.dpad_left) {
             cargoPicker.setPower(0.8);
         } else if(gamepad2.dpad_down){
