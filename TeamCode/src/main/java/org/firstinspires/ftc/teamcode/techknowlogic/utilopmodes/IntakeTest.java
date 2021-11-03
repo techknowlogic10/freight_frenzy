@@ -1,12 +1,14 @@
 package org.firstinspires.ftc.teamcode.techknowlogic.utilopmodes;
 
 import com.acmerobotics.dashboard.config.Config;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 @TeleOp
 @Config
+@Disabled
 public class IntakeTest extends LinearOpMode {
 
     public static int FLOOR_NUMBER = 1;

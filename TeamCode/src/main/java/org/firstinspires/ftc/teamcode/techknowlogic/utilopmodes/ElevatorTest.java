@@ -2,12 +2,14 @@ package org.firstinspires.ftc.teamcode.techknowlogic.utilopmodes;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.techknowlogic.util.Elevator;
 
 @Autonomous
 @Config
+@Disabled
 public class ElevatorTest extends LinearOpMode {
 
     public static int FLOOR_NUMBER = 1;
