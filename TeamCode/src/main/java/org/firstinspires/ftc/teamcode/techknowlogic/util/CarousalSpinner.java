@@ -41,7 +41,7 @@ public class CarousalSpinner {
         long end = start + 5 * 1000;
 
         while (System.currentTimeMillis() < end) {
-            spinner.setPower(0.4);
+            spinner.setPower(0.8);
         }
     }
 
