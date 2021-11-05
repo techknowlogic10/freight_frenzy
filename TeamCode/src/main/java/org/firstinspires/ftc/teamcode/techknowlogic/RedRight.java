@@ -67,11 +67,11 @@ public class RedRight extends LinearOpMode {
 
     private int getElevatorLevel(String shippingElementPosition) {
         if (shippingElementPosition.equals("LEFT")) {
-            return 3;
+            return 1;
         } else if (shippingElementPosition.equals("RIGHT")) {
             return 2;
         } else {
-            return 1;
+            return 3;
         }
     }
 

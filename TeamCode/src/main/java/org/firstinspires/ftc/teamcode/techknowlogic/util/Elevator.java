@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.techknowlogic.util;
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -12,15 +13,17 @@ public class Elevator {
     private DcMotorEx elevator = null;
     private Servo carriage = null;
 
-    public static int LEVEL1_TICKS = 480;
-    public static int LEVEL2_TICKS = 990;
-    public static int LEVEL3_TICKS = 1800;
+    public static int LEVEL1_TICKS = 400;
+    public static int LEVEL2_TICKS = 940;
+    public static int LEVEL3_TICKS = 1750;
 
     public boolean fullyRaised = false;
 
 
     public Elevator(HardwareMap hardwareMap) {
         this.elevator = hardwareMap.get(DcMotorEx.class, "elevator");
+        elevator.setDirection(DcMotorSimple.Direction.REVERSE);
+
         this.carriage = hardwareMap.get(Servo.class, "carriage");
     }
 

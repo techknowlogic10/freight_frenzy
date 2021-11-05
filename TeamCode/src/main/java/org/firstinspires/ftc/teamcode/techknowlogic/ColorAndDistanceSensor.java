@@ -38,6 +38,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
@@ -53,7 +54,7 @@ import java.util.Locale;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list.
  */
 @TeleOp(name = "Sensor: REVColorDistance", group = "Sensor")
-@Disabled
+//@Disabled
 public class ColorAndDistanceSensor extends LinearOpMode {
 
     /**
@@ -87,6 +88,7 @@ public class ColorAndDistanceSensor extends LinearOpMode {
      */
     ColorSensor sensorColor;
     DistanceSensor sensorDistance;
+    Servo carriageArm = null;
 
     @Override
     public void runOpMode() {
@@ -96,6 +98,9 @@ public class ColorAndDistanceSensor extends LinearOpMode {
 
         // get a reference to the distance sensor that shares the same name.
         sensorDistance = hardwareMap.get(DistanceSensor.class, "sensor_color_distance");
+
+        carriageArm = hardwareMap.servo.get("caextender");
+        carriageArm.setPosition(0.0);
 
         // hsvValues is an array that will hold the hue, saturation, and value information.
         float hsvValues[] = {0F, 0F, 0F};
@@ -143,6 +148,14 @@ public class ColorAndDistanceSensor extends LinearOpMode {
                     relativeLayout.setBackgroundColor(Color.HSVToColor(0xff, values));
                 }
             });
+
+
+            if (gamepad2.a)
+                carriageArm.setPosition(0);
+            else if (gamepad2.b)
+                carriageArm.setPosition(0.3);
+            else if (gamepad2.x)
+                carriageArm.setPosition(0.6);
 
             telemetry.update();
         }

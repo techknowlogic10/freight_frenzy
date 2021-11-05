@@ -4,7 +4,13 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.TouchSensor;
+import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.util.Range;
+
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 public class DriverOperator extends OpMode {
 
@@ -27,7 +33,22 @@ public class DriverOperator extends OpMode {
     DcMotor carousel = null;
     Servo carriageArm = null;
 
+    DistanceSensor distanceSensor;
+    TouchSensor     carriageLimit;
     public final static double ARM_HOME = 0.0;
+
+    private long freightInCarousalTime;
+    private boolean isEmptyElevator;
+
+    private ElapsedTime elapsedTime;
+
+    //For Team element capping mechanism
+    Servo caExtender = null;
+    double ca_armPosition = 0.6;  //initial position of the arm at startup
+    double CANE_MIN = 0.0;
+    double CANE_MAX = 1.0;
+    double CAARM_INCREMENT = 0.001;  //increment the position when the dpad is pressed
+
 
     @Override
     public void init() {
@@ -47,6 +68,20 @@ public class DriverOperator extends OpMode {
 
         carriageArm = hardwareMap.servo.get("carriage");
         carriageArm.setPosition(ARM_HOME);
+
+        distanceSensor = hardwareMap.get(DistanceSensor.class, "sensor_color_distance");
+        carriageLimit   = hardwareMap.get(TouchSensor.class, "magnetic");
+        caExtender  = hardwareMap.get(Servo.class, "caextender");
+        //INITIAL STATE MUST BE 0.6
+        caExtender.setPosition(0.6);
+    }
+
+    @Override
+    public void start() {
+        super.start();
+
+        elapsedTime = new ElapsedTime();
+
     }
 
     @Override
@@ -58,22 +93,30 @@ public class DriverOperator extends OpMode {
 
         //gamepad1 == Driver
         //gamepad2 == Operator
-
+        double elevatorpower = 1;
         //right_stick_y forward and backward
-        double y = -gamepad1.right_stick_y; // Remember, this is reversed!
+        double y = -gamepad1.left_stick_y; // Remember, this is reversed!
 
         //right_stick_x left and right
         double x = gamepad1.right_stick_x * 1.1; // Counteract imperfect strafing
         double rx = gamepad1.left_stick_x;
-
+        double denominator = 0;
         // Denominator is the largest motor power (absolute value) or 1
         // This ensures all the powers maintain the same ratio, but only when
         // at least one is out of the range [-1, 1]
-        double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
+
+        double drivepower = 1;
+        if ( gamepad1.a )
+            drivepower = 0.5;
+
+        denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), drivepower);
         double frontLeftPower = (y + x + rx) / denominator;
         double backLeftPower = (y - x + rx) / denominator;
         double frontRightPower = (y - x - rx) / denominator;
         double backRightPower = (y + x - rx) / denominator;
+
+        //telemetry.log().add( "drivepower " + frontLeftPower);
+        //telemetry.log().add("drivepower " + drivepower);
 
         leftFront.setPower(frontLeftPower);
         leftRear.setPower(backLeftPower);
@@ -96,13 +139,18 @@ public class DriverOperator extends OpMode {
         else
             intake.setPower(0);
 
-        //Elevator is handled by Operator (gamepad2)
+        if (gamepad2.y)
+            elevatorpower=0.5;
+        else
+            elevatorpower=1;
+            //Elevator is handled by Operator (gamepad2)
         if (gamepad2.left_bumper) {
-            elevator.setPower(1);
-        } else if (gamepad2.right_bumper) {
+
+            elevator.setPower(elevatorpower);
             //while elevator coming down, we would like to bring the arm to initial (zero) position
             carriageArm.setPosition(0);
-            elevator.setPower(-1);
+        } else if (gamepad2.right_bumper) {
+            elevator.setPower(-elevatorpower);
         } else {
             elevator.setPower(0);
         }
@@ -112,6 +160,71 @@ public class DriverOperator extends OpMode {
             carousel.setPower(1);
         else
             carousel.setPower(0);
+
+//        double distance = distanceSensor.getDistance(DistanceUnit.CM);
+//
+//        if(elapsedTime.time() < 90) {
+//            checkIfFreightIsInCarousal();
+//        }
+//
+//        //enable the team freight element arm action only after 80 sec. 10 sec before end game.
+//        //if(elapsedTime.time() > 80)
+//        {
+//            if(gamepad2.dpad_up) {
+//                //UP POSITION
+//                ca_armPosition += CAARM_INCREMENT;
+//            } else if(gamepad2.dpad_down) {
+//                //DOWN STATE
+//                ca_armPosition -= CAARM_INCREMENT;
+//            }
+//
+//            //telemetry.log().add("Position is " + caExtender.getPosition());
+//            //telemetry.log().add("ca_armPosition is " + ca_armPosition);
+//            ca_armPosition = Range.clip(ca_armPosition, CANE_MIN, CANE_MAX);
+//            caExtender.setPosition(ca_armPosition);
+//        }
     }
 
+    private void checkIfFreightIsInCarousal() {
+
+        double distance = distanceSensor.getDistance(DistanceUnit.CM);
+        if(carriageLimit.isPressed())
+        {
+            telemetry.log().add(" distance " + distance);
+            if (distance > 3  && distance < 8) {
+                freightInCarousalTime = System.currentTimeMillis();
+            }
+        }
+
+        long currentTime = System.currentTimeMillis();
+        long elapsedTime = currentTime - this.freightInCarousalTime;
+
+        if(elapsedTime < 1000) {
+            carousel.setPower(0.5);
+        }
+        //distance is more than 8.5, elevator is down and empty???????
+
+//        if(distance > 8.5) {
+//            telemetry.log().add("EMPTY ELEVATOR");
+//            isEmptyElevator = true;
+//        }
+//
+//        if(isEmptyElevator && (distance > 2 && distance < 8)) {
+//            isEmptyElevator = false;
+//            freightInCarousalTime = System.currentTimeMillis();
+//        }
+////
+    //    long currentTime = System.currentTimeMillis();
+      //  long elapsedTime = currentTime - this.freightInCarousalTime;
+/*
+        if(elapsedTime < 1000) {
+            //carousel.setPower(0.5);
+            elevator.setPower(1);
+            intake.setPower(-1.0);
+        }
+
+        else if(elapsedTime < 1250) {
+            carriageArm.setPosition(0.3);
+        }*/
+    }
 }

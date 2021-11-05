@@ -25,9 +25,6 @@ public class BlueRight extends LinearOpMode {
     public static double DRIVE_TO_WAREHOUSE_STEP2_STRAFE = 10;
     public static double DRIVE_TO_WAREHOUSE_STEP3_FORWARD = 68;
 
-
-
-
     @Override
     public void runOpMode() throws InterruptedException {
 
@@ -49,8 +46,6 @@ public class BlueRight extends LinearOpMode {
         int elevatorLevel = getElevatorLevel(shippingElementPosition);
         telemetry.log().add("elevator level " + elevatorLevel);
 
-
-
         //Step-2 : Drive to Team Shipping Hub
         driveToShippingHub(driveTrain);
 
@@ -60,10 +55,7 @@ public class BlueRight extends LinearOpMode {
 
         //Step-4 Drive to warehouse
         driveToWarehouse(driveTrain);
-
     }
-
-
 
     private int getElevatorLevel(String shippingElementPosition) {
         if (shippingElementPosition.equals("LEFT")) {
@@ -76,12 +68,6 @@ public class BlueRight extends LinearOpMode {
     }
 
     private void driveToShippingHub(SampleMecanumDrive driveTrain) {
-
-//        Trajectory trajectoryToShippingHub = driveTrain.trajectoryBuilder(startingPosition, true)
-//                .splineTo(shippingHubVector, Math.toRadians(225))
-//                .build();
-//        driveTrain.followTrajectory(trajectoryToShippingHub);
-
         Trajectory strafeLeft = driveTrain.trajectoryBuilder(driveTrain.getPoseEstimate(), false)
                 .strafeLeft(DRIVE_TO_HUB_STEP1_STRAFE_RIGHT)
                 .build();
@@ -114,7 +100,5 @@ public class BlueRight extends LinearOpMode {
                 .build();
 
         driveTrain.followTrajectory(pathForward);
-
     }
-
 }
