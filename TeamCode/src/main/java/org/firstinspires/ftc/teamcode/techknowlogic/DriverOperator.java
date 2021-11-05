@@ -143,9 +143,9 @@ public class DriverOperator extends OpMode {
             elevatorpower=0.5;
         else
             elevatorpower=1;
-            //Elevator is handled by Operator (gamepad2)
-        if (gamepad2.left_bumper) {
 
+        //Elevator is handled by Operator (gamepad2)
+        if (gamepad2.left_bumper) {
             elevator.setPower(elevatorpower);
             //while elevator coming down, we would like to bring the arm to initial (zero) position
             carriageArm.setPosition(0);
@@ -160,29 +160,6 @@ public class DriverOperator extends OpMode {
             carousel.setPower(1);
         else
             carousel.setPower(0);
-
-//        double distance = distanceSensor.getDistance(DistanceUnit.CM);
-//
-//        if(elapsedTime.time() < 90) {
-//            checkIfFreightIsInCarousal();
-//        }
-//
-//        //enable the team freight element arm action only after 80 sec. 10 sec before end game.
-//        //if(elapsedTime.time() > 80)
-//        {
-//            if(gamepad2.dpad_up) {
-//                //UP POSITION
-//                ca_armPosition += CAARM_INCREMENT;
-//            } else if(gamepad2.dpad_down) {
-//                //DOWN STATE
-//                ca_armPosition -= CAARM_INCREMENT;
-//            }
-//
-//            //telemetry.log().add("Position is " + caExtender.getPosition());
-//            //telemetry.log().add("ca_armPosition is " + ca_armPosition);
-//            ca_armPosition = Range.clip(ca_armPosition, CANE_MIN, CANE_MAX);
-//            caExtender.setPosition(ca_armPosition);
-//        }
     }
 
     private void checkIfFreightIsInCarousal() {
@@ -202,29 +179,5 @@ public class DriverOperator extends OpMode {
         if(elapsedTime < 1000) {
             carousel.setPower(0.5);
         }
-        //distance is more than 8.5, elevator is down and empty???????
-
-//        if(distance > 8.5) {
-//            telemetry.log().add("EMPTY ELEVATOR");
-//            isEmptyElevator = true;
-//        }
-//
-//        if(isEmptyElevator && (distance > 2 && distance < 8)) {
-//            isEmptyElevator = false;
-//            freightInCarousalTime = System.currentTimeMillis();
-//        }
-////
-    //    long currentTime = System.currentTimeMillis();
-      //  long elapsedTime = currentTime - this.freightInCarousalTime;
-/*
-        if(elapsedTime < 1000) {
-            //carousel.setPower(0.5);
-            elevator.setPower(1);
-            intake.setPower(-1.0);
-        }
-
-        else if(elapsedTime < 1250) {
-            carriageArm.setPosition(0.3);
-        }*/
     }
 }
