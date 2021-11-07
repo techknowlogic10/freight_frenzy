@@ -48,6 +48,7 @@ public class BlueLeft extends LinearOpMode {
         telemetry.log().add("elevator level " + elevatorLevel);
 
         //Step-2 : Drive to Team Shipping Hub
+        sleep(8500);
         driveToShippingHub(driveTrain);
 
         //Step-3 : Drop the pre-loaded box in the appropriate level

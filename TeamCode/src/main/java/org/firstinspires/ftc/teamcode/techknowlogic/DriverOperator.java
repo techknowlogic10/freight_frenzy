@@ -35,7 +35,7 @@ public class DriverOperator extends OpMode {
 
     DistanceSensor distanceSensor;
     TouchSensor     carriageLimit;
-    public final static double ARM_HOME = 0.0;
+    public final static double ARM_HOME = 0.03;
 
     private long freightInCarousalTime;
     private boolean isEmptyElevator;
@@ -107,7 +107,10 @@ public class DriverOperator extends OpMode {
 
         double drivepower = 1;
         if ( gamepad1.a )
-            drivepower = 0.5;
+            drivepower = 1.8;
+        if (gamepad1.b)
+            drivepower = 2.2;
+
 
         denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), drivepower);
         double frontLeftPower = (y + x + rx) / denominator;
@@ -125,7 +128,7 @@ public class DriverOperator extends OpMode {
 
         //Carriage motions are handled by Operator (gamepad2)
         if (gamepad2.a)
-            carriageArm.setPosition(0);
+            carriageArm.setPosition(ARM_HOME);
         else if (gamepad2.b)
             carriageArm.setPosition(0.3);
         else if (gamepad2.x)
@@ -148,7 +151,7 @@ public class DriverOperator extends OpMode {
         if (gamepad2.left_bumper) {
             elevator.setPower(elevatorpower);
             //while elevator coming down, we would like to bring the arm to initial (zero) position
-            carriageArm.setPosition(0);
+            carriageArm.setPosition(ARM_HOME);
         } else if (gamepad2.right_bumper) {
             elevator.setPower(-elevatorpower);
         } else {

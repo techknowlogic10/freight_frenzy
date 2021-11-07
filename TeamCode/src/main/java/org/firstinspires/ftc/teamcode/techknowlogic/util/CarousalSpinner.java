@@ -38,10 +38,10 @@ public class CarousalSpinner {
         long start = System.currentTimeMillis();
 
         //Spin for 5 seconds
-        long end = start + 5 * 1000;
+        long end = start + 3 * 1000;
 
         while (System.currentTimeMillis() < end) {
-            spinner.setPower(0.8);
+            spinner.setPower(1);
         }
     }
 

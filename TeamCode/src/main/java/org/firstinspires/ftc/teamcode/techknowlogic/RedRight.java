@@ -25,9 +25,6 @@ public class RedRight extends LinearOpMode {
     public static double DRIVE_TO_WAREHOUSE_STEP2_STRAFE = 10;
     public static double DRIVE_TO_WAREHOUSE_STEP3_FORWARD = 75;
 
-
-
-
     @Override
     public void runOpMode() throws InterruptedException {
 
@@ -49,9 +46,8 @@ public class RedRight extends LinearOpMode {
         int elevatorLevel = getElevatorLevel(shippingElementPosition);
         telemetry.log().add("elevator level " + elevatorLevel);
 
-
-
         //Step-2 : Drive to Team Shipping Hub
+        sleep(8500);
         driveToShippingHub(driveTrain);
 
         //Step-3 : Drop the pre-loaded box in the appropriate level

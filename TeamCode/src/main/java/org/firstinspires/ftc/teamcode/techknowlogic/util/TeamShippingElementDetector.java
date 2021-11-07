@@ -31,6 +31,9 @@ public class TeamShippingElementDetector {
     private HardwareMap hardwareMap = null;
     private Telemetry telemetry = null;
 
+    Mat inputInYCRCB = new Mat();
+    Mat inputInCB = new Mat();
+
     public TeamShippingElementDetector(HardwareMap hardwareMap, Telemetry telemetry) {
         this.hardwareMap = hardwareMap;
         this.telemetry = telemetry;
@@ -74,10 +77,8 @@ public class TeamShippingElementDetector {
             Imgproc.rectangle(frame, leftRectanglePoint1, leftRectanglePoint2, new Scalar(0, 0, 255), 2);
             Imgproc.rectangle(frame, rightRectanglePoint1, rightRectanglePoint2, new Scalar(0, 255, 0), 2);
 
-            Mat inputInYCRCB = new Mat();
             Imgproc.cvtColor(frame, inputInYCRCB, Imgproc.COLOR_RGB2YCrCb);
 
-            Mat inputInCB = new Mat();
             Core.extractChannel(inputInYCRCB, inputInCB, 1);
 
             Mat leftRectangleFrame = frame.submat(new Rect(leftRectanglePoint1, leftRectanglePoint2));

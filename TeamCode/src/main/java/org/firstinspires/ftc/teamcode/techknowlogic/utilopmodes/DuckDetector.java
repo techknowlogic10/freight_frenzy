@@ -18,7 +18,7 @@ import org.openftc.easyopencv.OpenCvPipeline;
 import org.openftc.easyopencv.OpenCvWebcam;
 
 @Autonomous(name = "Duck Detector")
-@Disabled
+//@Disabled
 public class DuckDetector extends LinearOpMode {
 
     OpenCvWebcam webcam;
@@ -29,6 +29,8 @@ public class DuckDetector extends LinearOpMode {
     Point rightRectanglePoint1 = new Point(190, 80);
     Point rightRectanglePoint2 = new Point(270, 160);
 
+    Mat inputInYCRCB = new Mat();
+    Mat inputInCB = new Mat();
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -75,10 +77,8 @@ public class DuckDetector extends LinearOpMode {
             Imgproc.rectangle(frame, leftRectanglePoint1, leftRectanglePoint2, new Scalar(0, 0, 255), 2);
             Imgproc.rectangle(frame, rightRectanglePoint1, rightRectanglePoint2, new Scalar(0, 255, 0), 2);
 
-            Mat inputInYCRCB = new Mat();
             Imgproc.cvtColor(frame, inputInYCRCB, Imgproc.COLOR_RGB2YCrCb);
 
-            Mat inputInCB = new Mat();
             Core.extractChannel(inputInYCRCB, inputInCB, 1);
 
             Mat leftRectangleFrame = frame.submat(new Rect(leftRectanglePoint1, leftRectanglePoint2));

@@ -47,6 +47,8 @@ public class RedLeft extends LinearOpMode {
         int elevatorLevel = getElevatorLevel(shippingElementPosition);
         telemetry.log().add("elevator level " + elevatorLevel);
 
+        sleep(8500);
+
         //Step-2 : Drive to Team Shipping Hub
         driveToShippingHub(driveTrain);
 
