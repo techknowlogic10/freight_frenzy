@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.techknowlogic.utilopmodes;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -37,11 +36,9 @@ public class DuckDetector extends LinearOpMode {
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
 
-        telemetry.log().add("cameraMonitorViewId is " + cameraMonitorViewId);
-
         webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam1"), cameraMonitorViewId);
 
-        webcam.setPipeline(new SamplePipeline());
+        webcam.setPipeline(new DuckDetectionPipeline());
 
         webcam.setMillisecondsPermissionTimeout(2500);
 
@@ -69,7 +66,7 @@ public class DuckDetector extends LinearOpMode {
         webcam.stopStreaming();
     }
 
-    class SamplePipeline extends OpenCvPipeline {
+    class DuckDetectionPipeline extends OpenCvPipeline {
         boolean viewportPaused;
 
         @Override
