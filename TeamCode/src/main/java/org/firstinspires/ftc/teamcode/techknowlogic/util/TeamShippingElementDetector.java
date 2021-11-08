@@ -44,6 +44,7 @@ public class TeamShippingElementDetector {
     }
 
     public void startDetection() {
+
         webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
             public void onOpened() {

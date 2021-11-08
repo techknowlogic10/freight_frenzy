@@ -14,7 +14,7 @@ import org.firstinspires.ftc.teamcode.techknowlogic.util.TeamShippingElementDete
 
 @Autonomous(name = "Blue Carousal")
 @Config
-public class BlueCarousal extends LinearOpMode {
+public class BlueCarousal extends BaseAutonomous {
 
     //public static Pose2d startingPosition = new Pose2d(-30, -63, Math.toRadians(270));
 
@@ -27,60 +27,7 @@ public class BlueCarousal extends LinearOpMode {
     public static double DRIVE_TO_STORAGE_UNIT_BACK = 27;
 
     @Override
-    public void runOpMode() throws InterruptedException {
-
-        //Step-0 : Set the robot to starting position
-
-        SampleMecanumDrive driveTrain = new SampleMecanumDrive(hardwareMap);
-        //driveTrain.setPoseEstimate(startingPosition);
-
-        TeamShippingElementDetector detector = new TeamShippingElementDetector(hardwareMap, telemetry);
-        CarousalSpinner carousalSpinner = new CarousalSpinner(hardwareMap);
-        Elevator elevator = new Elevator(hardwareMap);
-
-        //Detection continue to happen throughout init
-        detector.startDetection();
-
-        waitForStart();
-
-        //As detection continue to happen since init, we can stop detection (stop streaming)
-        detector.stopDetection();
-
-        //Step-1 : Scan for duck or Team Shipping Element
-        String shippingElementPosition = detector.getElementPosition();
-        telemetry.log().add("team shipping element position " + shippingElementPosition);
-
-        int elevatorLevel = getElevatorLevel(shippingElementPosition);
-        telemetry.log().add("elevator level " + elevatorLevel);
-
-        //Step-2 : Drive to Team Shipping Hub
-        sleep(8500);
-        driveToShippingHub(driveTrain);
-
-        //Step-3 : Drop the pre-loaded box in the appropriate level
-        elevator.raiseToTheLevel(elevatorLevel);
-        elevator.dropFreight();
-
-        //sleep(500);
-        //elevator.dropToZero();
-
-        //Step-4 Drive to carousal and spin
-        driveToCarousal(driveTrain);
-        carousalSpinner.spin(true);
-
-        //Step 6 : Drive to Storage Unit
-        driveToStorageUnit(driveTrain);
-    }
-
-    private void driveToStorageUnit(SampleMecanumDrive driveTrain) {
-        Trajectory reversePath = driveTrain.trajectoryBuilder(driveTrain.getPoseEstimate(), false)
-                .back(DRIVE_TO_STORAGE_UNIT_BACK)
-                .build();
-        driveTrain.followTrajectory(reversePath);
-    }
-
-
-    private int getElevatorLevel(String shippingElementPosition) {
+    protected int getElevatorLevel(String shippingElementPosition) {
         if (shippingElementPosition.equals("LEFT")) {
             return 1;
         } else if (shippingElementPosition.equals("RIGHT")) {
@@ -90,7 +37,8 @@ public class BlueCarousal extends LinearOpMode {
         }
     }
 
-    private void driveToShippingHub(SampleMecanumDrive driveTrain) {
+    @Override
+    protected void driveToShippingHub(SampleMecanumDrive driveTrain) {
         Trajectory strafeRight = driveTrain.trajectoryBuilder(new Pose2d(), false)
                 .strafeRight(DRIVE_TO_HUB_STEP1_STRAFE_LEFT)
                 .build();
@@ -103,7 +51,8 @@ public class BlueCarousal extends LinearOpMode {
         driveTrain.followTrajectory(pathToShippingHub);
     }
 
-    private void driveToCarousal(SampleMecanumDrive driveTrain) {
+    @Override
+    protected void driveToCarousal(SampleMecanumDrive driveTrain) {
 
         Trajectory forwardPath = driveTrain.trajectoryBuilder(driveTrain.getPoseEstimate(), false)
                 .forward(DRIVE_TO_CAROUSAL_STEP1_FORWARD)
@@ -122,4 +71,11 @@ public class BlueCarousal extends LinearOpMode {
         driveTrain.followTrajectory(straight);
     }
 
+    @Override
+    protected void parkRobot(SampleMecanumDrive driveTrain) {
+        Trajectory reversePath = driveTrain.trajectoryBuilder(driveTrain.getPoseEstimate(), false)
+                .back(DRIVE_TO_STORAGE_UNIT_BACK)
+                .build();
+        driveTrain.followTrajectory(reversePath);
+    }
 }

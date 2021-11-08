@@ -14,7 +14,7 @@ import org.firstinspires.ftc.teamcode.techknowlogic.util.TeamShippingElementDete
 
 @Autonomous(name = "Blue Warehouse")
 @Config
-public class BlueWarehouse extends LinearOpMode {
+public class BlueWarehouse extends BaseAutonomous {
 
     //public static Pose2d startingPosition = new Pose2d(-30, -63, Math.toRadians(270));
 
@@ -26,45 +26,12 @@ public class BlueWarehouse extends LinearOpMode {
     public static double DRIVE_TO_WAREHOUSE_STEP3_FORWARD = 68;
 
     @Override
-    public void runOpMode() throws InterruptedException {
-
-        //Step-0 : Set the robot to starting position
-
-        SampleMecanumDrive driveTrain = new SampleMecanumDrive(hardwareMap);
-        //driveTrain.setPoseEstimate(startingPosition);
-
-        TeamShippingElementDetector detector = new TeamShippingElementDetector(hardwareMap, telemetry);
-        CarousalSpinner carousalSpinner = new CarousalSpinner(hardwareMap);
-        Elevator elevator = new Elevator(hardwareMap);
-
-        //Detection continue to happen throughout init
-        detector.startDetection();
-
-        waitForStart();
-
-        //As detection continue to happen since init, we can stop detection (stop streaming)
-        detector.stopDetection();
-
-        //Step-1 : Scan for duck or Team Shipping Element
-        String shippingElementPosition = detector.getElementPosition();
-        telemetry.log().add("team shipping element position " + shippingElementPosition);
-
-        int elevatorLevel = getElevatorLevel(shippingElementPosition);
-        telemetry.log().add("elevator level " + elevatorLevel);
-
-        //Step-2 : Drive to Team Shipping Hub
-        sleep(8500);
-        driveToShippingHub(driveTrain);
-
-        //Step-3 : Drop the pre-loaded box in the appropriate level
-        elevator.raiseToTheLevel(elevatorLevel);
-        elevator.dropFreight();
-
-        //Step-4 Drive to warehouse
-        driveToWarehouse(driveTrain);
+    protected void driveToCarousal(SampleMecanumDrive driveTrain) {
+        throw new UnsupportedOperationException("Carousal is not in the picture for warehouse side");
     }
 
-    private int getElevatorLevel(String shippingElementPosition) {
+    @Override
+    protected int getElevatorLevel(String shippingElementPosition) {
         if (shippingElementPosition.equals("LEFT")) {
             return 2;
         } else if (shippingElementPosition.equals("RIGHT")) {
@@ -74,7 +41,8 @@ public class BlueWarehouse extends LinearOpMode {
         }
     }
 
-    private void driveToShippingHub(SampleMecanumDrive driveTrain) {
+    @Override
+    protected void driveToShippingHub(SampleMecanumDrive driveTrain) {
         Trajectory strafeLeft = driveTrain.trajectoryBuilder(driveTrain.getPoseEstimate(), false)
                 .strafeLeft(DRIVE_TO_HUB_STEP1_STRAFE_RIGHT)
                 .build();
@@ -87,7 +55,8 @@ public class BlueWarehouse extends LinearOpMode {
         driveTrain.followTrajectory(pathToShippingHub);
     }
 
-    private void driveToWarehouse(SampleMecanumDrive driveTrain) {
+    @Override
+    protected void parkRobot(SampleMecanumDrive driveTrain) {
 
         Trajectory forwardPath = driveTrain.trajectoryBuilder(driveTrain.getPoseEstimate(), false)
                 .forward(DRIVE_TO_WAREHOUSE_STEP1_FORWARD)
