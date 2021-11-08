@@ -26,21 +26,24 @@ public class TeamShippingElementDetector {
     Point rightRectanglePoint1 = new Point(190, 80);
     Point rightRectanglePoint2 = new Point(270, 160);
 
-    private String ELEMENT_POSITION = null;
+    private String elementPosition = null;
 
     private HardwareMap hardwareMap = null;
     private Telemetry telemetry = null;
+
+    Mat inputInYCRCB = new Mat();
+    Mat inputInCB = new Mat();
 
     public TeamShippingElementDetector(HardwareMap hardwareMap, Telemetry telemetry) {
         this.hardwareMap = hardwareMap;
         this.telemetry = telemetry;
 
         this.webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam1"));
-        webcam.setPipeline(new SamplePipeline());
+        webcam.setPipeline(new TeamShippingElementDetectorPipeline());
         webcam.setMillisecondsPermissionTimeout(2500);
     }
 
-    public String detectShippingElement() {
+    public void startDetection() {
         webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
             public void onOpened() {
@@ -52,20 +55,17 @@ public class TeamShippingElementDetector {
                 telemetry.log().add("Not able to open Camera");
             }
         });
-
-        while (true) {
-            if (ELEMENT_POSITION == null) {
-                sleep(100);
-            } else {
-                webcam.stopStreaming();
-                break;
-            }
-        }
-
-        return ELEMENT_POSITION;
     }
 
-    class SamplePipeline extends OpenCvPipeline {
+    public void stopDetection() {
+        webcam.stopStreaming();
+    }
+
+    public String getElementPosition() {
+        return elementPosition;
+    }
+
+    class TeamShippingElementDetectorPipeline extends OpenCvPipeline {
 
         @Override
         public Mat processFrame(Mat frame) {
@@ -73,10 +73,7 @@ public class TeamShippingElementDetector {
             Imgproc.rectangle(frame, leftRectanglePoint1, leftRectanglePoint2, new Scalar(0, 0, 255), 2);
             Imgproc.rectangle(frame, rightRectanglePoint1, rightRectanglePoint2, new Scalar(0, 255, 0), 2);
 
-            Mat inputInYCRCB = new Mat();
             Imgproc.cvtColor(frame, inputInYCRCB, Imgproc.COLOR_RGB2YCrCb);
-
-            Mat inputInCB = new Mat();
             Core.extractChannel(inputInYCRCB, inputInCB, 1);
 
             Mat leftRectangleFrame = frame.submat(new Rect(leftRectanglePoint1, leftRectanglePoint2));
@@ -89,14 +86,14 @@ public class TeamShippingElementDetector {
             telemetry.log().add("rightRectangleMean is " + rightRectangleMean);
 
             if (leftRectangleMean < 90) {
-                ELEMENT_POSITION = "LEFT";
+                elementPosition = "LEFT";
             } else if (rightRectangleMean < 90) {
-                ELEMENT_POSITION = "RIGHT";
+                elementPosition = "RIGHT";
             } else {
-                ELEMENT_POSITION = "NEITHER";
+                elementPosition = "NEITHER";
             }
 
-            telemetry.log().add("Element position " + ELEMENT_POSITION);
+            telemetry.log().add("Element position " + elementPosition);
 
             return frame;
         }

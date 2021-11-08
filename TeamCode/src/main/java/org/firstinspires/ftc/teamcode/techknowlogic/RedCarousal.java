@@ -38,10 +38,16 @@ public class RedCarousal extends LinearOpMode {
         CarousalSpinner carousalSpinner = new CarousalSpinner(hardwareMap);
         Elevator elevator = new Elevator(hardwareMap);
 
+        //Detection continue to happen throughout init
+        detector.startDetection();
+
         waitForStart();
 
+        //As detection continue to happen since init, we can stop detection (stop streaming)
+        detector.stopDetection();
+
         //Step-1 : Scan for duck or Team Shipping Element
-        String shippingElementPosition = detector.detectShippingElement();
+        String shippingElementPosition = detector.getElementPosition();
         telemetry.log().add("team shipping element position " + shippingElementPosition);
 
         int elevatorLevel = getElevatorLevel(shippingElementPosition);

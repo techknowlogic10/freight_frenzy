@@ -16,21 +16,30 @@ public class TeamShippingElementDetectorTest extends LinearOpMode {
 
         TeamShippingElementDetector detector = new TeamShippingElementDetector(hardwareMap, telemetry);
 
+        //Detection continue to happen throughout init
+        detector.startDetection();
+
         waitForStart();
 
         long start = System.currentTimeMillis();
-        String position = detector.detectShippingElement();
+
+        //As detection continue to happen since init, we can stop detection (stop streaming)
+        detector.stopDetection();
+
+        //Step-1 : Scan for duck or Team Shipping Element
+        String shippingElementPosition = detector.getElementPosition();
+        telemetry.log().add("team shipping element position " + shippingElementPosition);
+
         long end = System.currentTimeMillis();
 
         long elapsed = end-start;
 
         telemetry.log().add("Time took to scan " + elapsed);
 
-        telemetry.log().add("Duck is in " + position);
+        telemetry.log().add("Duck is in " + shippingElementPosition);
 
         while(opModeIsActive()) {
             sleep(100);
         }
-
     }
 }
