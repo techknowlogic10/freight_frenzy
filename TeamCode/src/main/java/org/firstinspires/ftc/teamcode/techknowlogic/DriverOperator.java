@@ -33,12 +33,15 @@ public class DriverOperator extends OpMode {
     DcMotor carousel = null;
     Servo carriageArm = null;
 
+    //Servo cargoloaded flag indicator
+    Servo cargoLoadedflagArm = null;
+
     DistanceSensor distanceSensor;
     TouchSensor     carriageLimit;
     public final static double ARM_HOME = 0.03;
 
     private long freightInCarousalTime;
-    private boolean isEmptyElevator;
+    private boolean isCargoinCarriage = false;
 
     private ElapsedTime elapsedTime;
 
@@ -69,9 +72,13 @@ public class DriverOperator extends OpMode {
         carriageArm = hardwareMap.servo.get("carriage");
         carriageArm.setPosition(ARM_HOME);
 
+        cargoLoadedflagArm = hardwareMap.servo.get("cargoLoadedflagarm");
+        cargoLoadedflagArm.setPosition(0.0);
+
         distanceSensor = hardwareMap.get(DistanceSensor.class, "sensor_color_distance");
         carriageLimit   = hardwareMap.get(TouchSensor.class, "magnetic");
         caExtender  = hardwareMap.get(Servo.class, "caextender");
+
         //INITIAL STATE MUST BE 0.6
         caExtender.setPosition(0.6);
     }
@@ -130,11 +137,12 @@ public class DriverOperator extends OpMode {
         if (gamepad2.a)
             carriageArm.setPosition(ARM_HOME);
         else if (gamepad2.b)
-            carriageArm.setPosition(0.3);
-        else if (gamepad2.x)
+            carriageArm.setPosition(0.3);   //hold the carriage to avoid dropping the cargo
+        else if (gamepad2.x) {
             carriageArm.setPosition(0.6);
-
-        //Intake is handled by Driver (gamepad1)
+            //isCargoinCarriage = false; // dropped the carriage
+        }
+        //In take is handled by Driver (gamepad1)
         if (gamepad1.right_bumper)
             intake.setPower(1.0);
         else if (gamepad1.left_bumper)
@@ -163,24 +171,58 @@ public class DriverOperator extends OpMode {
             carousel.setPower(1);
         else
             carousel.setPower(0);
+
+        //carriage arm movement for freight element pickup
+
+        if(gamepad2.dpad_down) {
+            ca_armPosition = ca_armPosition - CAARM_INCREMENT;
+        } else if(gamepad2.dpad_up) {
+            ca_armPosition = ca_armPosition + CAARM_INCREMENT;
+        }
+        ca_armPosition = Range.clip(ca_armPosition, 0.2, 0.6);
+        caExtender.setPosition(ca_armPosition);
+
+        checkIfFreightIsInCarousal();
     }
 
     private void checkIfFreightIsInCarousal() {
 
         double distance = distanceSensor.getDistance(DistanceUnit.CM);
+
         if(carriageLimit.isPressed())
         {
-            telemetry.log().add(" distance " + distance);
-            if (distance > 3  && distance < 8) {
+            telemetry.log().add("carriage is down");
+        }else
+        {
+            telemetry.log().add("carriage is up");
+        }
+
+        telemetry.log().add(" distance " + distance);
+
+        if (distance < 5 )
+        {
+            if (isCargoinCarriage == false) {
                 freightInCarousalTime = System.currentTimeMillis();
+                isCargoinCarriage = true;
             }
+            cargoLoadedflagArm.setPosition(0.5);
+            //isCargoinCarrige is set to false when the carriage is flipped back.
+            //Exception when the cargo jumps out of the carriage. flip back to reset.
+        }
+        else {
+            isCargoinCarriage = false;
+            cargoLoadedflagArm.setPosition(0.1);
         }
 
         long currentTime = System.currentTimeMillis();
         long elapsedTime = currentTime - this.freightInCarousalTime;
-
-        if(elapsedTime < 1000) {
-            carousel.setPower(0.5);
+//
+        if(elapsedTime < 4000) {
+////            //carousel.setPower(0.5);
+////            elevator.setPower(0.5);
+//            //reverse the intake to avoid additional cargo getting inside the robot.
+            intake.setPower(1.0);
+////            //raise the elevator
         }
     }
 }

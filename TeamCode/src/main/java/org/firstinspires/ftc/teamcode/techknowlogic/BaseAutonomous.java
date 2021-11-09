@@ -43,13 +43,15 @@ public abstract class BaseAutonomous extends LinearOpMode {
         elevator.raiseToTheLevel(elevatorLevel);
         elevator.dropFreight();
 
+
         //while driving to carousal, bring the elevator down to zero in the background (in a separate thread)
-        new Runnable() {
-            @Override
-            public void run() {
-                elevator.dropToZero();
-            }
-        };
+//        Runnable elevatorDropThread = new Runnable() {
+//            @Override
+//            public void run() {
+//                elevator.dropToZero();
+//            }
+//        };
+//        new Thread(elevatorDropThread).start();
 
         //OPTIONAL -- Step-4 Drive to carousal and spin
         try {

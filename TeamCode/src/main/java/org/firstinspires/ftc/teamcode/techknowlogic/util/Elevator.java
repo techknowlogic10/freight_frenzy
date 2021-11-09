@@ -7,11 +7,14 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.teamcode.techknowlogic.DriverOperator;
+
 @Config
 public class Elevator {
 
     private DcMotorEx elevator = null;
     private Servo carriage = null;
+    private Servo caExtender = null;
 
     public static int LEVEL1_TICKS = 400;
     public static int LEVEL2_TICKS = 940;
@@ -25,6 +28,11 @@ public class Elevator {
         elevator.setDirection(DcMotorSimple.Direction.REVERSE);
 
         this.carriage = hardwareMap.get(Servo.class, "carriage");
+        carriage.setPosition(DriverOperator.ARM_HOME);
+
+        caExtender  = hardwareMap.get(Servo.class, "caextender");
+        //INITIAL STATE MUST BE 0.6
+        caExtender.setPosition(0.6);
     }
 
     public void raiseToTheLevel(int level) {
@@ -75,13 +83,15 @@ public class Elevator {
 
     public void dropToZero() {
 
-        long start = System.currentTimeMillis();
+//        long start = System.currentTimeMillis();
+//
+//        long end = start + 1*1000;
+//
+//        while (System.currentTimeMillis() < end) {
+//            carriage.setPosition(DriverOperator.ARM_HOME);
+//        }
 
-        long end = start + 1*1000;
-
-        while (System.currentTimeMillis() < end) {
-            carriage.setPosition(0.0);
-        }
+        carriage.setPosition(DriverOperator.ARM_HOME);
 
         elevator.setTargetPosition(0);
         elevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);

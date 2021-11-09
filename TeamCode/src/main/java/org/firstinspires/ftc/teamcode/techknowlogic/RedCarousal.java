@@ -19,12 +19,12 @@ public class RedCarousal extends BaseAutonomous {
     public static Pose2d startingPosition = new Pose2d(-30, -63, Math.toRadians(270));
 
     public static double DRIVE_TO_HUB_STEP1_STRAFE_LEFT = 29;
-    public static double DRIVE_TO_HUB_STEP2_BACK = 25;
+    public static double DRIVE_TO_HUB_STEP2_BACK = 23;
 
     public static double DRIVE_TO_CAROUSAL_STEP1_FORWARD = 16;
     public static double DRIVE_TO_CAROUSAL_STEP2_STRAFE_RIGHT = 82;
     public static double DRIVE_TO_CAROUSAL_STEP3_FORWARD = 5;
-    public static double DRIVE_TO_STORAGE_UNIT_BACK = 24.5;
+    public static double DRIVE_TO_STORAGE_UNIT_BACK = 27;
 
     @Override
     protected int getElevatorLevel(String shippingElementPosition) {
