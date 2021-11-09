@@ -15,7 +15,7 @@ import org.firstinspires.ftc.teamcode.techknowlogic.util.TeamShippingElementDete
 @Autonomous
 @Config
 
-public class RedCarousalParkingAtShippingHub extends LinearOpMode {
+public class RedCarousalParkingAtStorageUnit extends LinearOpMode {
 
     public static double STEP1 = 2;
     public static double STRAFE_RIGHT = 54;
