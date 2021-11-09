@@ -13,20 +13,6 @@ public class CarousalSpinner {
         this.spinner = hardwareMap.get(DcMotor.class, "spinner");
     }
 
-    public void spin() {
-
-        //Spinner REV Ultra Planitary is on control hub -- port 3
-
-        long start = System.currentTimeMillis();
-
-        //Spin for 5 seconds
-        long end = start + 5 * 1000;
-
-        while (System.currentTimeMillis() < end) {
-            spinner.setPower(0.4);
-        }
-    }
-
     public void spin(boolean reversed) {
 
         //Spinner REV Ultra Planitary is on control hub -- port 3
@@ -35,14 +21,16 @@ public class CarousalSpinner {
             spinner.setDirection(DcMotorSimple.Direction.REVERSE);
         }
 
-        long start = System.currentTimeMillis();
-
-        //Spin for 5 seconds
-        long end = start + 3 * 1000;
-
-        while (System.currentTimeMillis() < end) {
-            spinner.setPower(1);
-        }
+        //spin for 3 seconds at full speed
+        spinner.setPower(1.0);
+        sleep(3000);
     }
 
+    private final void sleep(long milliseconds) {
+        try {
+            Thread.sleep(milliseconds);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+    }
 }

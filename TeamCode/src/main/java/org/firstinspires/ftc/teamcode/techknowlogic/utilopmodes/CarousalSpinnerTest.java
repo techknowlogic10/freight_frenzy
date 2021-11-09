@@ -17,7 +17,7 @@ public class CarousalSpinnerTest extends LinearOpMode {
 
         waitForStart();
 
-        spinner.spin();
+        spinner.spin(true);
 
     }
 }

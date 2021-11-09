@@ -15,17 +15,16 @@ import org.firstinspires.ftc.teamcode.techknowlogic.util.TeamShippingElementDete
 @Autonomous
 @Config
 
-public class Red_Carousal_Alternative extends LinearOpMode {
+public class RedCarousalParkingAtShippingHub extends LinearOpMode {
 
     public static double STEP1 = 2;
-    public static double STRAFE_RIGHT = 50;
+    public static double STRAFE_RIGHT = 54;
 
-    public static double STEP2 = 58;
+    public static double STEP2 = 59;
     public static double STEP3 = 33;
 
-    public static double STEP4 = 25;
-    public static double STEP5 = 28;
-    public static double STEP6 = 28;
+    public static double STEP4 = 35;
+    public static double STEP5 = 5;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -59,16 +58,22 @@ public class Red_Carousal_Alternative extends LinearOpMode {
 
         //Step-3 : Drop the pre-loaded box in the appropriate level
         elevator.raiseToTheLevel(elevatorLevel);
+        sleep(1000);
         elevator.dropFreight();
 
-        //sleep(500);
-        //elevator.dropToZero();
+        Runnable elevatorDownThread = new Runnable() {
+            @Override
+            public void run() {
+                elevator.dropToZero();
+            }
+        };
+        new Thread(elevatorDownThread).start();
 
         //Step-4 Drive to carousal and spin
         driveToCarousal(driveTrain);
-        carousalSpinner.spin();
+        carousalSpinner.spin(false);
 
-        driveToWarehouse(driveTrain);
+        driveToStorageUnit(driveTrain);
 
         //driveToShippingHub(driveTrain);
 
@@ -79,36 +84,16 @@ public class Red_Carousal_Alternative extends LinearOpMode {
         //driveToStorageUnit(driveTrain);
     }
 
-    private void driveToWarehouse(SampleMecanumDrive driveTrain) {
-
-        Trajectory path1 = driveTrain.trajectoryBuilder(driveTrain.getPoseEstimate(), false)
-                .back(STEP4)
-                .build();
-        driveTrain.followTrajectory(path1);
-
-        Trajectory path2 = driveTrain.trajectoryBuilder(driveTrain.getPoseEstimate(), false)
-                .strafeLeft(STEP5)
-                .build();
-        driveTrain.followTrajectory(path2);
-
-        Trajectory path3 = driveTrain.trajectoryBuilder(driveTrain.getPoseEstimate(), false)
-                .back(STEP6)
-                .build();
-        driveTrain.followTrajectory(path3);
-    }
-
     private void driveToStorageUnit(SampleMecanumDrive driveTrain) {
         Trajectory path1 = driveTrain.trajectoryBuilder(driveTrain.getPoseEstimate(), false)
-                .forward(STEP4)
+                .strafeRight(STEP4)
                 .build();
         driveTrain.followTrajectory(path1);
 
-        driveTrain.turn(-90);
-
-        Trajectory path2 = driveTrain.trajectoryBuilder(driveTrain.getPoseEstimate(), false)
-                .forward(STEP5)
-                .build();
-        driveTrain.followTrajectory(path2);
+//        Trajectory path2 = driveTrain.trajectoryBuilder(driveTrain.getPoseEstimate(), false)
+//                .forward(STEP5)
+//                .build();
+//        driveTrain.followTrajectory(path2);
     }
 
     private int getElevatorLevel(String shippingElementPosition) {

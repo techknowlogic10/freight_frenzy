@@ -26,6 +26,11 @@ public class RedWarehouse extends BaseAutonomous {
     public static double DRIVE_TO_WAREHOUSE_STEP3_FORWARD = 75;
 
     @Override
+    protected boolean isCarousalSpinReversed() {
+        return false;
+    }
+
+    @Override
     protected void driveToCarousal(SampleMecanumDrive driveTrain) {
         throw new UnsupportedOperationException("Carousal is not in the picture for warehouse");
     }

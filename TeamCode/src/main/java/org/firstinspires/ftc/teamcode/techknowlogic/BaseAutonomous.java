@@ -56,7 +56,8 @@ public abstract class BaseAutonomous extends LinearOpMode {
         //OPTIONAL -- Step-4 Drive to carousal and spin
         try {
             driveToCarousal(driveTrain);
-            carousalSpinner.spin();
+            carousalSpinner.spin(isCarousalSpinReversed());
+
         } catch (UnsupportedOperationException ex) {
             //Ignore since the carousal spinning is not supported for that
         }
@@ -64,6 +65,8 @@ public abstract class BaseAutonomous extends LinearOpMode {
         //Step-4 Park the robot in storage unit or warehouse
         parkRobot(driveTrain);
     }
+
+    protected abstract boolean isCarousalSpinReversed();
 
     protected abstract void driveToCarousal(SampleMecanumDrive driveTrain);
 

@@ -52,6 +52,11 @@ public class RedCarousal extends BaseAutonomous {
     }
 
     @Override
+    protected boolean isCarousalSpinReversed() {
+        return false;
+    }
+
+    @Override
     protected void driveToCarousal(SampleMecanumDrive driveTrain) {
 
         Trajectory forwardPath = driveTrain.trajectoryBuilder(driveTrain.getPoseEstimate(), false)

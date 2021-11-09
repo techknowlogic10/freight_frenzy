@@ -20,9 +20,6 @@ public class Elevator {
     public static int LEVEL2_TICKS = 940;
     public static int LEVEL3_TICKS = 1750;
 
-    public boolean fullyRaised = false;
-
-
     public Elevator(HardwareMap hardwareMap) {
         this.elevator = hardwareMap.get(DcMotorEx.class, "elevator");
         elevator.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -56,46 +53,25 @@ public class Elevator {
 
         elevator.setTargetPosition(desiredPosition);
         elevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        elevator.setPower(0.3);
+        elevator.setPower(1.0);
 
         while (elevator.isBusy()) {
             sleep(50);
         }
-
-        fullyRaised = true;
     }
 
     public void dropFreight(){
+        carriage.setPosition(0.5);
 
-        long start = System.currentTimeMillis();
-
-        //It takes about 1 second to drop the freight
-        long end = start + 1*1000;
-
-        //Do not drop freight if elevator is busy
-        /*while(elevator.isBusy()) {
-            sleep(50);
-        }*/
-        while (System.currentTimeMillis() < end) {
-            carriage.setPosition(0.5);
-        }
+        sleep(1000);
     }
 
     public void dropToZero() {
-
-//        long start = System.currentTimeMillis();
-//
-//        long end = start + 1*1000;
-//
-//        while (System.currentTimeMillis() < end) {
-//            carriage.setPosition(DriverOperator.ARM_HOME);
-//        }
-
         carriage.setPosition(DriverOperator.ARM_HOME);
 
         elevator.setTargetPosition(0);
         elevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        elevator.setPower(0.5);
+        elevator.setPower(1.0);
 
         while (elevator.isBusy()) {
             sleep(50);
