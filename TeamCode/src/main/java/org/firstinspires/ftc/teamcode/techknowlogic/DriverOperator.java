@@ -1,6 +1,11 @@
 package org.firstinspires.ftc.teamcode.techknowlogic;
 
+import android.app.Activity;
+import android.graphics.Color;
+import android.view.View;
+
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -11,6 +16,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+
+import java.util.Locale;
 
 public class DriverOperator extends OpMode {
 
@@ -30,28 +37,42 @@ public class DriverOperator extends OpMode {
 
     DcMotor intake = null;
     DcMotor elevator = null;
+
+    //For Carousel Spinner
     DcMotor carousel = null;
+
+
     Servo carriageArm = null;
+    public final static double CARRIAGE_HOME = 0.03;
+    public final static double CARRIAGE_HOLD_POS = 0.3;
+    public final static double CARRIAGE_DROP_POS = 0.6;
 
     //Servo cargoloaded flag indicator
     Servo cargoLoadedflagArm = null;
+    public final static double FLAG_RAISE_POSITION = 0.5;
+    public final static double FLAG_DOWN_POSITION = 0.1;
 
-    DistanceSensor distanceSensor;
-    TouchSensor     carriageLimit;
-    public final static double ARM_HOME = 0.03;
+    DistanceSensor cargoInBayDS; // tocheck whether cargo is in the carriage
+    public final static double MIN_CARGO_DISTANCE = 5;
 
-    private long freightInCarousalTime;
+    TouchSensor     carriageLimit; //tocheck whether carriage is down for cargo intake
     private boolean isCargoinCarriage = false;
-
+    private long freightInCarousalTime;
     private ElapsedTime elapsedTime;
 
-    //For Team element capping mechanism
-    Servo caExtender = null;
-    double ca_armPosition = 0.6;  //initial position of the arm at startup
-    double CANE_MIN = 0.0;
-    double CANE_MAX = 1.0;
-    double CAARM_INCREMENT = 0.001;  //increment the position when the dpad is pressed
+    // Check where the robot crossed into warehouse by checking the white color
+    ColorSensor borderCrossingCheckCS;
 
+    // Reduce drive speed when closer to shipping hub or another robot.
+    DistanceSensor collisionDetectorDS;
+
+    //For Team element capping mechanism
+    Servo teamElementpickuparm = null;
+    public final static double TEAM_ELEMENT_HOME_POS = 0.6;  //initial position of the arm at startup
+    double PICKUP_ARM_MIN = 0.2;
+    double PICKUP_ARM_MAX = 0.6;
+    double CAARM_INCREMENT = 0.005;  //increment the position when the dpad is pressed
+    double tep_armposition = TEAM_ELEMENT_HOME_POS;
 
     @Override
     public void init() {
@@ -70,17 +91,19 @@ public class DriverOperator extends OpMode {
         carousel = hardwareMap.get(DcMotor.class, "spinner");
 
         carriageArm = hardwareMap.servo.get("carriage");
-        carriageArm.setPosition(ARM_HOME);
+        carriageArm.setPosition(CARRIAGE_HOME);
 
         cargoLoadedflagArm = hardwareMap.servo.get("cargoLoadedflagarm");
         cargoLoadedflagArm.setPosition(0.0);
 
-        distanceSensor = hardwareMap.get(DistanceSensor.class, "sensor_color_distance");
+        cargoInBayDS = hardwareMap.get(DistanceSensor.class, "sensor_color_distance");
         carriageLimit   = hardwareMap.get(TouchSensor.class, "magnetic");
-        caExtender  = hardwareMap.get(Servo.class, "caextender");
+        teamElementpickuparm  = hardwareMap.get(Servo.class, "caextender");
 
+        borderCrossingCheckCS = hardwareMap.get(ColorSensor.class, "bordercheck");
+        collisionDetectorDS = hardwareMap.get(DistanceSensor.class, "collisiondetector");
         //INITIAL STATE MUST BE 0.6
-        caExtender.setPosition(0.6);
+        teamElementpickuparm.setPosition(TEAM_ELEMENT_HOME_POS);
     }
 
     @Override
@@ -113,6 +136,9 @@ public class DriverOperator extends OpMode {
         // at least one is out of the range [-1, 1]
 
         double drivepower = 1;
+
+        telemetry.log().add("Collision Distance " + collisionDetectorDS.getDistance(DistanceUnit.CM));
+
         if ( gamepad1.a )
             drivepower = 1.8;
         if (gamepad1.b)
@@ -135,11 +161,11 @@ public class DriverOperator extends OpMode {
 
         //Carriage motions are handled by Operator (gamepad2)
         if (gamepad2.a)
-            carriageArm.setPosition(ARM_HOME);
+            carriageArm.setPosition(CARRIAGE_HOME);
         else if (gamepad2.b)
-            carriageArm.setPosition(0.3);   //hold the carriage to avoid dropping the cargo
+            carriageArm.setPosition(CARRIAGE_HOLD_POS);   //hold the carriage to avoid dropping the cargo
         else if (gamepad2.x) {
-            carriageArm.setPosition(0.6);
+            carriageArm.setPosition(CARRIAGE_DROP_POS);
             //isCargoinCarriage = false; // dropped the carriage
         }
         //In take is handled by Driver (gamepad1)
@@ -159,7 +185,7 @@ public class DriverOperator extends OpMode {
         if (gamepad2.left_bumper) {
             elevator.setPower(elevatorpower);
             //while elevator coming down, we would like to bring the arm to initial (zero) position
-            carriageArm.setPosition(ARM_HOME);
+            carriageArm.setPosition(CARRIAGE_HOME);
         } else if (gamepad2.right_bumper) {
             elevator.setPower(-elevatorpower);
         } else {
@@ -172,23 +198,19 @@ public class DriverOperator extends OpMode {
         else
             carousel.setPower(0);
 
-        //carriage arm movement for freight element pickup
-
+        //Element pickup  arm movement for freight element pickup
         if(gamepad2.dpad_down) {
-            ca_armPosition = ca_armPosition - CAARM_INCREMENT;
+            tep_armposition = tep_armposition - CAARM_INCREMENT;
         } else if(gamepad2.dpad_up) {
-            ca_armPosition = ca_armPosition + CAARM_INCREMENT;
+            tep_armposition = tep_armposition + CAARM_INCREMENT;
         }
-        ca_armPosition = Range.clip(ca_armPosition, 0.2, 0.6);
-        caExtender.setPosition(ca_armPosition);
+        tep_armposition = Range.clip(tep_armposition, PICKUP_ARM_MIN, PICKUP_ARM_MAX);
+        teamElementpickuparm.setPosition(tep_armposition);
 
         checkIfFreightIsInCarousal();
+        checkBorderCrossing();
     }
-
-    private void checkIfFreightIsInCarousal() {
-
-        double distance = distanceSensor.getDistance(DistanceUnit.CM);
-
+    private void checkBorderCrossing(){
         if(carriageLimit.isPressed())
         {
             telemetry.log().add("carriage is down");
@@ -196,22 +218,44 @@ public class DriverOperator extends OpMode {
         {
             telemetry.log().add("carriage is up");
         }
+        // convert the RGB values to HSV values.
+        // multiply by the SCALE_FACTOR.
+        // then cast it back to int (SCALE_FACTOR is a double)
+        //Color.RGBToHSV((int) (borderCrossingCheckCS.red() * SCALE_FACTOR),
+        //        (int) (borderCrossingCheckCS.green() * SCALE_FACTOR),
+        //        (int) (borderCrossingCheckCS.blue() * SCALE_FACTOR),
+        //        hsvValues);
 
-        telemetry.log().add(" distance " + distance);
+        // send the info back to driver station using telemetry function.
+        //telemetry.addData("Alpha", borderCrossingCheckCS.alpha());
+        //telemetry.addData("Red  ", borderCrossingCheckCS.red());
+        //telemetry.addData("Green", borderCrossingCheckCS.green());
+        //telemetry.addData("Blue ", borderCrossingCheckCS.blue());
+        if( borderCrossingCheckCS.red() > 100 &&
+              borderCrossingCheckCS.blue() > 100 &&
+                borderCrossingCheckCS.green() > 100)
+        {
+            telemetry.log().add("Border White line Crossed");
+        }
+    }
+    private void checkIfFreightIsInCarousal() {
 
-        if (distance < 5 )
+        double distance = cargoInBayDS.getDistance(DistanceUnit.CM);
+
+        //telemetry.log().add(" distance " + distance);
+
+        if (distance < MIN_CARGO_DISTANCE )
         {
             if (isCargoinCarriage == false) {
                 freightInCarousalTime = System.currentTimeMillis();
                 isCargoinCarriage = true;
             }
-            cargoLoadedflagArm.setPosition(0.5);
-            //isCargoinCarrige is set to false when the carriage is flipped back.
-            //Exception when the cargo jumps out of the carriage. flip back to reset.
+            cargoLoadedflagArm.setPosition(FLAG_RAISE_POSITION);
+            //isCargoinCarrige is set to false when the carriage is delivered or lost during transit
         }
         else {
             isCargoinCarriage = false;
-            cargoLoadedflagArm.setPosition(0.1);
+            cargoLoadedflagArm.setPosition(FLAG_DOWN_POSITION);
         }
 
         long currentTime = System.currentTimeMillis();

@@ -25,7 +25,7 @@ public class Elevator {
         elevator.setDirection(DcMotorSimple.Direction.REVERSE);
 
         this.carriage = hardwareMap.get(Servo.class, "carriage");
-        carriage.setPosition(DriverOperator.ARM_HOME);
+        carriage.setPosition(DriverOperator.CARRIAGE_HOME);
 
         caExtender  = hardwareMap.get(Servo.class, "caextender");
         //INITIAL STATE MUST BE 0.6
@@ -67,7 +67,7 @@ public class Elevator {
     }
 
     public void dropToZero() {
-        carriage.setPosition(DriverOperator.ARM_HOME);
+        carriage.setPosition(DriverOperator.CARRIAGE_HOME);
 
         elevator.setTargetPosition(0);
         elevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
