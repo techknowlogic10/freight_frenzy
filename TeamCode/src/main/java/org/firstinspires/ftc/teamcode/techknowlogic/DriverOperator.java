@@ -1,9 +1,5 @@
 package org.firstinspires.ftc.teamcode.techknowlogic;
 
-import android.app.Activity;
-import android.graphics.Color;
-import android.view.View;
-
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -16,8 +12,6 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-
-import java.util.Locale;
 
 public class DriverOperator extends OpMode {
 
@@ -63,9 +57,6 @@ public class DriverOperator extends OpMode {
     // Check where the robot crossed into warehouse by checking the white color
     ColorSensor borderCrossingCheckCS;
 
-    // Reduce drive speed when closer to shipping hub or another robot.
-    DistanceSensor collisionDetectorDS;
-
     //For Team element capping mechanism
     Servo teamElementpickuparm = null;
     public final static double TEAM_ELEMENT_HOME_POS = 0.6;  //initial position of the arm at startup
@@ -101,7 +92,7 @@ public class DriverOperator extends OpMode {
         teamElementpickuparm  = hardwareMap.get(Servo.class, "caextender");
 
         borderCrossingCheckCS = hardwareMap.get(ColorSensor.class, "bordercheck");
-        collisionDetectorDS = hardwareMap.get(DistanceSensor.class, "collisiondetector");
+
         //INITIAL STATE MUST BE 0.6
         teamElementpickuparm.setPosition(TEAM_ELEMENT_HOME_POS);
     }
@@ -136,8 +127,6 @@ public class DriverOperator extends OpMode {
         // at least one is out of the range [-1, 1]
 
         double drivepower = 1;
-
-        telemetry.log().add("Collision Distance " + collisionDetectorDS.getDistance(DistanceUnit.CM));
 
         if ( gamepad1.a )
             drivepower = 1.8;

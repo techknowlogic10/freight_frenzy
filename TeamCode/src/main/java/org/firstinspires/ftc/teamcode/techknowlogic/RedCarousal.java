@@ -5,15 +5,14 @@ import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
-import org.firstinspires.ftc.teamcode.techknowlogic.util.CarousalSpinner;
-import org.firstinspires.ftc.teamcode.techknowlogic.util.Elevator;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
-import org.firstinspires.ftc.teamcode.techknowlogic.util.TeamShippingElementDetector;
 
 @Autonomous(name = "Red Carousal")
 @Config
+@Disabled
+@Deprecated
 public class RedCarousal extends BaseAutonomous {
 
     public static Pose2d startingPosition = new Pose2d(-30, -63, Math.toRadians(270));

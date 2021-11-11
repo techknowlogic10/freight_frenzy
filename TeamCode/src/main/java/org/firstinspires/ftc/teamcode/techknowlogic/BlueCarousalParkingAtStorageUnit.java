@@ -3,84 +3,31 @@ package org.firstinspires.ftc.teamcode.techknowlogic;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
-import org.firstinspires.ftc.teamcode.techknowlogic.util.CarousalSpinner;
-import org.firstinspires.ftc.teamcode.techknowlogic.util.Elevator;
-import org.firstinspires.ftc.teamcode.techknowlogic.util.TeamShippingElementDetector;
 
 @Autonomous
 @Config
+public class BlueCarousalParkingAtStorageUnit extends BaseAutonomous {
 
-public class BlueCarousalParkingAtStorageUnit extends LinearOpMode {
+    public static double DRIVE_TO_HUB_STEP1_STRAFE_LEFT = 54;
+    public static double DRIVE_TO_HUB_STEP2_BACK = 2;
 
-    public static double STEP1 = 2;
-    public static double STRAFE_LEFT = 54;
+    public static double DRIVE_TO_CAROUSAL_STEP1_STRAFE_RIGHT = 59;
+    public static double DRIVE_TO_CAROUSAL_STEP2_FORWARD = 33;
 
-    public static double STEP2 = 59;
-    public static double STEP3 = 33;
-
-    public static double STEP4 = 35;
-    public static double STEP5 = 5;
+    public static double PARK_ROBOT_STEP1_STRAFE_LEFT = 35;
 
     @Override
-    public void runOpMode() throws InterruptedException {
-
-        //Step-0 : Set the robot to starting position
-
-        SampleMecanumDrive driveTrain = new SampleMecanumDrive(hardwareMap);
-
-        TeamShippingElementDetector detector = new TeamShippingElementDetector(hardwareMap, telemetry);
-        CarousalSpinner carousalSpinner = new CarousalSpinner(hardwareMap);
-        Elevator elevator = new Elevator(hardwareMap);
-
-        //Detection continue to happen throughout init
-        detector.startDetection();
-
-        waitForStart();
-
-        //As detection continue to happen since init, we can stop detection (stop streaming)
-        detector.stopDetection();
-
-        //Step-1 : Scan for duck or Team Shipping Element
-        String shippingElementPosition = detector.getElementPosition();
-        telemetry.log().add("team shipping element position " + shippingElementPosition);
-
-        int elevatorLevel = getElevatorLevel(shippingElementPosition);
-        telemetry.log().add("elevator level " + elevatorLevel);
-
-        //Step-2 : Drive to Team Shipping Hub
-        driveToShippingHub(driveTrain);
-
-        //Step-3 : Drop the pre-loaded box in the appropriate level
-        elevator.raiseToTheLevel(elevatorLevel);
-        sleep(1000);
-        elevator.dropFreight();
-
-        Runnable elevatorDownThread = new Runnable() {
-            @Override
-            public void run() {
-                elevator.dropELevatorToZero();
-            }
-        };
-        new Thread(elevatorDownThread).start();
-
-        //Step-4 Drive to carousal and spin
-        driveToCarousal(driveTrain);
-        carousalSpinner.spin(true);
-
-        driveToStorageUnit(driveTrain);
-    }
-
-    private void driveToStorageUnit(SampleMecanumDrive driveTrain) {
-        Trajectory path1 = driveTrain.trajectoryBuilder(driveTrain.getPoseEstimate(), false)
-                .strafeLeft(STEP4)
+    protected void parkRobot(SampleMecanumDrive driveTrain) {
+        Trajectory strafeLeft = driveTrain.trajectoryBuilder(driveTrain.getPoseEstimate(), false)
+                .strafeLeft(PARK_ROBOT_STEP1_STRAFE_LEFT)
                 .build();
-        driveTrain.followTrajectory(path1);
+        driveTrain.followTrajectory(strafeLeft);
     }
 
-    private int getElevatorLevel(String shippingElementPosition) {
+    @Override
+    protected int getElevatorLevel(String shippingElementPosition) {
         if (shippingElementPosition.equals("LEFT")) {
             return 1;
         } else if (shippingElementPosition.equals("RIGHT")) {
@@ -90,35 +37,38 @@ public class BlueCarousalParkingAtStorageUnit extends LinearOpMode {
         }
     }
 
-    private void driveToShippingHub(SampleMecanumDrive driveTrain) {
+    @Override
+    protected void driveToShippingHub(SampleMecanumDrive driveTrain) {
 
         driveTrain.turn(Math.toRadians(90));
 
         Trajectory strafeLeft = driveTrain.trajectoryBuilder(driveTrain.getPoseEstimate(), false)
-                .strafeLeft(STRAFE_LEFT)
+                .strafeLeft(DRIVE_TO_HUB_STEP1_STRAFE_LEFT)
                 .build();
-
         driveTrain.followTrajectory(strafeLeft);
 
-        Trajectory step1 = driveTrain.trajectoryBuilder(driveTrain.getPoseEstimate(), false)
-                .back(STEP1)
+        Trajectory back = driveTrain.trajectoryBuilder(driveTrain.getPoseEstimate(), false)
+                .back(DRIVE_TO_HUB_STEP2_BACK)
                 .build();
-
-        driveTrain.followTrajectory(step1);
+        driveTrain.followTrajectory(back);
     }
 
-    private void driveToCarousal(SampleMecanumDrive driveTrain) {
+    @Override
+    protected boolean isCarousalSpinReversed() {
+        return true;
+    }
+
+    @Override
+    protected void driveToCarousal(SampleMecanumDrive driveTrain) {
 
         Trajectory strafeRight = driveTrain.trajectoryBuilder(driveTrain.getPoseEstimate(), false)
-                .strafeRight(STEP2)
+                .strafeRight(DRIVE_TO_CAROUSAL_STEP1_STRAFE_RIGHT)
                 .build();
-
         driveTrain.followTrajectory(strafeRight);
 
         Trajectory forward = driveTrain.trajectoryBuilder(driveTrain.getPoseEstimate(), false)
-                .forward(STEP3)
+                .forward(DRIVE_TO_CAROUSAL_STEP2_FORWARD)
                 .build();
-
         driveTrain.followTrajectory(forward);
     }
 }
