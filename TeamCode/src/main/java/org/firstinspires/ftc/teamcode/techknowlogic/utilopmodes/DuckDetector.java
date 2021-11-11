@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.techknowlogic.utilopmodes;
 
+import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
@@ -18,15 +19,19 @@ import org.openftc.easyopencv.OpenCvWebcam;
 
 @Autonomous(name = "Duck Detector")
 //@Disabled
+@Config
 public class DuckDetector extends LinearOpMode {
 
     OpenCvWebcam webcam;
 
-    Point leftRectanglePoint1 = new Point(20, 80);
-    Point leftRectanglePoint2 = new Point(107, 160);
+    public static Point leftRectanglePoint1 = new Point(5, 65);
+    public static Point leftRectanglePoint2 = new Point(80, 150);
 
-    Point rightRectanglePoint1 = new Point(190, 80);
-    Point rightRectanglePoint2 = new Point(270, 160);
+    public static Point rightRectanglePoint1 = new Point(200, 65);
+    public static Point rightRectanglePoint2 = new Point(275, 150);
+
+    private Mat inputInYCRCB = new Mat();
+    private Mat inputInCB = new Mat();
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -71,10 +76,7 @@ public class DuckDetector extends LinearOpMode {
             Imgproc.rectangle(frame, leftRectanglePoint1, leftRectanglePoint2, new Scalar(0, 0, 255), 2);
             Imgproc.rectangle(frame, rightRectanglePoint1, rightRectanglePoint2, new Scalar(0, 255, 0), 2);
 
-            Mat inputInYCRCB = new Mat();
             Imgproc.cvtColor(frame, inputInYCRCB, Imgproc.COLOR_RGB2YCrCb);
-
-            Mat inputInCB = new Mat();
             Core.extractChannel(inputInYCRCB, inputInCB, 1);
 
             Mat leftRectangleFrame = frame.submat(new Rect(leftRectanglePoint1, leftRectanglePoint2));

@@ -66,8 +66,13 @@ public class Elevator {
         sleep(1000);
     }
 
-    public void dropToZero() {
+    public void dropCarriageArmToHome() {
         carriage.setPosition(DriverOperator.CARRIAGE_HOME);
+
+        sleep(1000);
+    }
+
+    public void dropELevatorToZero() {
 
         elevator.setTargetPosition(0);
         elevator.setMode(DcMotor.RunMode.RUN_TO_POSITION);

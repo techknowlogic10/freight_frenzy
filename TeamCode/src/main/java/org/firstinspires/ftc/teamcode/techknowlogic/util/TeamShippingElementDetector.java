@@ -20,11 +20,11 @@ public class TeamShippingElementDetector {
 
     OpenCvWebcam webcam;
 
-    Point leftRectanglePoint1 = new Point(20, 80);
-    Point leftRectanglePoint2 = new Point(107, 160);
+    public static Point leftRectanglePoint1 = new Point(5, 65);
+    public static Point leftRectanglePoint2 = new Point(80, 150);
 
-    Point rightRectanglePoint1 = new Point(190, 80);
-    Point rightRectanglePoint2 = new Point(270, 160);
+    public static Point rightRectanglePoint1 = new Point(200, 65);
+    public static Point rightRectanglePoint2 = new Point(275, 150);
 
     private String elementPosition = null;
 
@@ -86,9 +86,9 @@ public class TeamShippingElementDetector {
             telemetry.log().add("leftRectangleMean is " + leftRectangleMean);
             telemetry.log().add("rightRectangleMean is " + rightRectangleMean);
 
-            if (leftRectangleMean < 90) {
+            if (leftRectangleMean < 80) {
                 elementPosition = "LEFT";
-            } else if (rightRectangleMean < 90) {
+            } else if (rightRectangleMean < 80) {
                 elementPosition = "RIGHT";
             } else {
                 elementPosition = "NEITHER";
