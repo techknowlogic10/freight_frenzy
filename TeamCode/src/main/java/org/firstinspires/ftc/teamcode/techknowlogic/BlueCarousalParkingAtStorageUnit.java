@@ -11,7 +11,7 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 public class BlueCarousalParkingAtStorageUnit extends BaseAutonomous {
 
     public static double DRIVE_TO_HUB_STEP1_STRAFE_LEFT = 54;
-    public static double DRIVE_TO_HUB_STEP2_BACK = 2;
+    public static double DRIVE_TO_HUB_STEP2_BACK = 5;
 
     public static double DRIVE_TO_CAROUSAL_STEP1_STRAFE_RIGHT = 59;
     public static double DRIVE_TO_CAROUSAL_STEP2_FORWARD = 33;
