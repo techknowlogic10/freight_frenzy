@@ -11,10 +11,11 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 public class BlueCarousalParkingAtStorageUnit extends BaseAutonomous {
 
     public static double DRIVE_TO_HUB_STEP1_STRAFE_LEFT = 54;
-    public static double DRIVE_TO_HUB_STEP2_BACK = 5;
+    public static double DRIVE_TO_HUB_STEP2_BACK = 3;
 
-    public static double DRIVE_TO_CAROUSAL_STEP1_STRAFE_RIGHT = 59;
-    public static double DRIVE_TO_CAROUSAL_STEP2_FORWARD = 33;
+    public static double DRIVE_TO_CAROUSAL_STEP1_STRAFE_RIGHT = 50;
+    public static double DRIVE_TO_CAROUSAL_STEP2_FORWARD = 40;
+    public static double DRIVE_TO_CAROUSAL_STEP3_STRAFE_RIGHT = 10;
 
     public static double PARK_ROBOT_STEP1_STRAFE_LEFT = 35;
 
@@ -70,5 +71,10 @@ public class BlueCarousalParkingAtStorageUnit extends BaseAutonomous {
                 .forward(DRIVE_TO_CAROUSAL_STEP2_FORWARD)
                 .build();
         driveTrain.followTrajectory(forward);
+
+        Trajectory step3StrafeRight = driveTrain.trajectoryBuilder(driveTrain.getPoseEstimate(), false)
+                .strafeRight(DRIVE_TO_CAROUSAL_STEP3_STRAFE_RIGHT)
+                .build();
+        driveTrain.followTrajectory(step3StrafeRight);
     }
 }
