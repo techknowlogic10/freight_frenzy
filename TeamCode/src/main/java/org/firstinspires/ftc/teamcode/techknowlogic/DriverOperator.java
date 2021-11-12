@@ -49,6 +49,8 @@ public class DriverOperator extends OpMode {
     DistanceSensor cargoInBayDS; // tocheck whether cargo is in the carriage
     public final static double MIN_CARGO_DISTANCE = 5;
 
+    DistanceSensor rearCollisionDS;
+
     TouchSensor     carriageLimit; //tocheck whether carriage is down for cargo intake
     private boolean isCargoinCarriage = false;
     private long freightInCarousalTime;
@@ -93,6 +95,7 @@ public class DriverOperator extends OpMode {
 
         borderCrossingCheckCS = hardwareMap.get(ColorSensor.class, "bordercheck");
 
+        rearCollisionDS = hardwareMap.get(DistanceSensor.class,"rearcollision");
         //INITIAL STATE MUST BE 0.6
         teamElementpickuparm.setPosition(TEAM_ELEMENT_HOME_POS);
     }
@@ -128,6 +131,7 @@ public class DriverOperator extends OpMode {
 
         double drivepower = 1;
 
+        telemetry.log().add("rearDistance " + rearCollisionDS.getDistance(DistanceUnit.CM));
         if ( gamepad1.a )
             drivepower = 1.8;
         if (gamepad1.b)

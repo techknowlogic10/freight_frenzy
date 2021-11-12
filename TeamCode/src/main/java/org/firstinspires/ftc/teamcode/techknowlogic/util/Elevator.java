@@ -16,9 +16,9 @@ public class Elevator {
     private Servo carriage = null;
     private Servo caExtender = null;
 
-    public static int LEVEL1_TICKS = 400;
-    public static int LEVEL2_TICKS = 940;
-    public static int LEVEL3_TICKS = 1750;
+    public static int LEVEL1_TICKS = 310;
+    public static int LEVEL2_TICKS = 800;
+    public static int LEVEL3_TICKS = 1600;
 
     public Elevator(HardwareMap hardwareMap) {
         this.elevator = hardwareMap.get(DcMotorEx.class, "elevator");
@@ -28,8 +28,9 @@ public class Elevator {
         carriage.setPosition(DriverOperator.CARRIAGE_HOME);
 
         caExtender  = hardwareMap.get(Servo.class, "caextender");
-        //INITIAL STATE MUST BE 0.6
-        caExtender.setPosition(0.6);
+
+        //INITIAL STATE MUST BE 0.7
+        caExtender.setPosition(0.7);
     }
 
     public void raiseToTheLevel(int level) {

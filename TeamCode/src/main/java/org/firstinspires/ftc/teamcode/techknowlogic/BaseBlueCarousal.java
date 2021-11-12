@@ -9,9 +9,9 @@ public abstract class BaseBlueCarousal extends BaseAutonomous {
     public static double DRIVE_TO_HUB_STEP1_STRAFE_LEFT = 54;
     public static double DRIVE_TO_HUB_STEP2_BACK = 3;
 
-    public static double DRIVE_TO_CAROUSAL_STEP1_STRAFE_RIGHT = 50;
-    public static double DRIVE_TO_CAROUSAL_STEP2_FORWARD = 40;
-    public static double DRIVE_TO_CAROUSAL_STEP3_STRAFE_RIGHT = 10;
+    public static double DRIVE_TO_CAROUSAL_STEP1_FORWARD = 40;
+    public static double DRIVE_TO_CAROUSAL_STEP2_STRAFE_LEFT = 10;
+    public static double DRIVE_TO_CAROUSAL_STEP3_FORWARD = 40;
 
     @Override
     protected int getElevatorLevel(String shippingElementPosition) {
@@ -48,19 +48,21 @@ public abstract class BaseBlueCarousal extends BaseAutonomous {
     @Override
     protected void driveToCarousal(SampleMecanumDrive driveTrain) {
 
-        Trajectory strafeRight = driveTrain.trajectoryBuilder(driveTrain.getPoseEstimate(), false)
-                .strafeRight(DRIVE_TO_CAROUSAL_STEP1_STRAFE_RIGHT)
+        Trajectory step1Forward = driveTrain.trajectoryBuilder(driveTrain.getPoseEstimate(), false)
+                .forward(DRIVE_TO_CAROUSAL_STEP1_FORWARD)
                 .build();
-        driveTrain.followTrajectory(strafeRight);
+        driveTrain.followTrajectory(step1Forward);
 
-        Trajectory forward = driveTrain.trajectoryBuilder(driveTrain.getPoseEstimate(), false)
-                .forward(DRIVE_TO_CAROUSAL_STEP2_FORWARD)
-                .build();
-        driveTrain.followTrajectory(forward);
+        driveTrain.turn(Math.toRadians(-90));
 
-        Trajectory step3StrafeRight = driveTrain.trajectoryBuilder(driveTrain.getPoseEstimate(), false)
-                .strafeRight(DRIVE_TO_CAROUSAL_STEP3_STRAFE_RIGHT)
+        Trajectory step2StrafeLeft = driveTrain.trajectoryBuilder(driveTrain.getPoseEstimate(), false)
+                .strafeLeft(DRIVE_TO_CAROUSAL_STEP2_STRAFE_LEFT)
                 .build();
-        driveTrain.followTrajectory(step3StrafeRight);
+        driveTrain.followTrajectory(step2StrafeLeft);
+
+        Trajectory step3Forward = driveTrain.trajectoryBuilder(driveTrain.getPoseEstimate(), false)
+                .forward(DRIVE_TO_CAROUSAL_STEP3_FORWARD)
+                .build();
+        driveTrain.followTrajectory(step3Forward);
     }
 }

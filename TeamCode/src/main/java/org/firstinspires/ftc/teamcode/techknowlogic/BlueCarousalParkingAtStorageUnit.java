@@ -10,12 +10,12 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 @Config
 public class BlueCarousalParkingAtStorageUnit extends BaseBlueCarousal {
 
-    public static double PARK_ROBOT_STEP1_STRAFE_LEFT = 35;
+    public static double PARK_ROBOT_STEP1_BACK = 25;
 
     @Override
     protected void parkRobot(SampleMecanumDrive driveTrain) {
         Trajectory strafeLeft = driveTrain.trajectoryBuilder(driveTrain.getPoseEstimate(), false)
-                .strafeLeft(PARK_ROBOT_STEP1_STRAFE_LEFT)
+                .back(PARK_ROBOT_STEP1_BACK)
                 .build();
         driveTrain.followTrajectory(strafeLeft);
     }
