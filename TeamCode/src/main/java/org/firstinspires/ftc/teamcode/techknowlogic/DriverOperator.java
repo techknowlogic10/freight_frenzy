@@ -62,8 +62,10 @@ public class DriverOperator extends OpMode {
     //For Team element capping mechanism
     Servo teamElementpickuparm = null;
     public final static double TEAM_ELEMENT_HOME_POS = 0.6;  //initial position of the arm at startup
+
     double PICKUP_ARM_MIN = 0.2;
     double PICKUP_ARM_MAX = 0.6;
+
     double CAARM_INCREMENT = 0.005;  //increment the position when the dpad is pressed
     double tep_armposition = TEAM_ELEMENT_HOME_POS;
 
