@@ -23,12 +23,25 @@ import org.openftc.easyopencv.OpenCvWebcam;
 public class DuckDetector extends LinearOpMode {
 
     OpenCvWebcam webcam;
-
+/*
     public static Point leftRectanglePoint1 = new Point(5, 65);
     public static Point leftRectanglePoint2 = new Point(80, 150);
 
     public static Point rightRectanglePoint1 = new Point(200, 65);
     public static Point rightRectanglePoint2 = new Point(275, 150);
+*/
+    public static double leftX = 15;
+    public static double leftY = 15;
+    public static double rightX = 155;
+    public static double rightY = 15;
+    public static double boxHeight=85;
+    public static double boxWidth=85;
+
+    public static Point leftRectanglePoint1 = new Point(leftX, leftY);
+    public static Point leftRectanglePoint2 = new Point(leftX + boxWidth, leftY+boxHeight);
+
+    public static Point rightRectanglePoint1 = new Point(rightX, rightY);
+    public static Point rightRectanglePoint2 = new Point(rightX+boxWidth, rightY+boxHeight);
 
     private Mat inputInYCRCB = new Mat();
     private Mat inputInCB = new Mat();
@@ -38,7 +51,8 @@ public class DuckDetector extends LinearOpMode {
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
 
-        webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam1"), cameraMonitorViewId);
+        //webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam1"), cameraMonitorViewId);
+        webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "WebcamR"), cameraMonitorViewId);
 
         webcam.setPipeline(new DuckDetectionPipeline());
 

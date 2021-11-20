@@ -35,6 +35,9 @@ public class DriverOperator extends OpMode {
     //For Carousel Spinner
     DcMotor carousel = null;
 
+    Servo servoIntakeArm = null;
+    double INTAKE_ARM_HOME = 1.0;
+    double INTAKE_ARM_DOWN = 0.0;
 
     Servo carriageArm = null;
     public final static double CARRIAGE_HOME = 0.03;
@@ -61,10 +64,10 @@ public class DriverOperator extends OpMode {
 
     //For Team element capping mechanism
     Servo teamElementpickuparm = null;
-    public final static double TEAM_ELEMENT_HOME_POS = 0.6;  //initial position of the arm at startup
+    public final static double TEAM_ELEMENT_HOME_POS = 0.7;  //initial position of the arm at startup
 
     double PICKUP_ARM_MIN = 0.2;
-    double PICKUP_ARM_MAX = 0.6;
+    double PICKUP_ARM_MAX = 0.706;
 
     double CAARM_INCREMENT = 0.005;  //increment the position when the dpad is pressed
     double tep_armposition = TEAM_ELEMENT_HOME_POS;
@@ -82,8 +85,13 @@ public class DriverOperator extends OpMode {
         rightRear.setDirection(DcMotorEx.Direction.REVERSE);
 
         intake = hardwareMap.get(DcMotor.class, "intake");
+
         elevator = hardwareMap.get(DcMotor.class, "elevator");
+
         carousel = hardwareMap.get(DcMotor.class, "spinner");
+
+        servoIntakeArm = hardwareMap.servo.get("IntakeServo");
+        servoIntakeArm.setPosition(INTAKE_ARM_HOME);
 
         carriageArm = hardwareMap.servo.get("carriage");
         carriageArm.setPosition(CARRIAGE_HOME);
@@ -91,13 +99,14 @@ public class DriverOperator extends OpMode {
         cargoLoadedflagArm = hardwareMap.servo.get("cargoLoadedflagarm");
         cargoLoadedflagArm.setPosition(0.0);
 
+
         cargoInBayDS = hardwareMap.get(DistanceSensor.class, "sensor_color_distance");
         carriageLimit   = hardwareMap.get(TouchSensor.class, "magnetic");
         teamElementpickuparm  = hardwareMap.get(Servo.class, "caextender");
 
         borderCrossingCheckCS = hardwareMap.get(ColorSensor.class, "bordercheck");
 
-        rearCollisionDS = hardwareMap.get(DistanceSensor.class,"rearcollision");
+        //rearCollisionDS = hardwareMap.get(DistanceSensor.class,"rearcollision");
         //INITIAL STATE MUST BE 0.6
         teamElementpickuparm.setPosition(TEAM_ELEMENT_HOME_POS);
     }
@@ -105,7 +114,7 @@ public class DriverOperator extends OpMode {
     @Override
     public void start() {
         super.start();
-
+        servoIntakeArm.setPosition(INTAKE_ARM_DOWN);
         elapsedTime = new ElapsedTime();
 
     }
@@ -124,8 +133,8 @@ public class DriverOperator extends OpMode {
         double y = -gamepad1.left_stick_y; // Remember, this is reversed!
 
         //right_stick_x left and right
-        double x = gamepad1.right_stick_x * 1.1; // Counteract imperfect strafing
-        double rx = gamepad1.left_stick_x;
+        double x = gamepad1.right_stick_x; // Counteract imperfect strafing
+        double rx = gamepad1.left_stick_x * 1.1;
         double denominator = 0;
         // Denominator is the largest motor power (absolute value) or 1
         // This ensures all the powers maintain the same ratio, but only when
@@ -133,7 +142,7 @@ public class DriverOperator extends OpMode {
 
         double drivepower = 1;
 
-        telemetry.log().add("rearDistance " + rearCollisionDS.getDistance(DistanceUnit.CM));
+//        telemetry.log().add("rearDistance " + rearCollisionDS.getDistance(DistanceUnit.CM));
         if ( gamepad1.a )
             drivepower = 1.8;
         if (gamepad1.b)
@@ -154,10 +163,17 @@ public class DriverOperator extends OpMode {
         rightFront.setPower(frontRightPower);
         rightRear.setPower(backRightPower);
 
+
+        if (gamepad1.x) {
+            servoIntakeArm.setPosition(INTAKE_ARM_DOWN);
+        } else if (gamepad1.y) {
+              servoIntakeArm.setPosition(INTAKE_ARM_HOME);
+        }
+
         //Carriage motions are handled by Operator (gamepad2)
         if (gamepad2.a)
             carriageArm.setPosition(CARRIAGE_HOME);
-        else if (gamepad2.b)
+        else if (gamepad2.b && !carriageLimit.isPressed())
             carriageArm.setPosition(CARRIAGE_HOLD_POS);   //hold the carriage to avoid dropping the cargo
         else if (gamepad2.x) {
             carriageArm.setPosition(CARRIAGE_DROP_POS);

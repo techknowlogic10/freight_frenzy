@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.techknowlogic;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.techknowlogic.util.CarousalSpinner;
@@ -12,8 +13,11 @@ public abstract class BaseAutonomous extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
 
-        //Step-0 : Set the robot to starting position
+        double INTAKE_ARM_HOME = 1.0;
+        Servo servoIntakeArm = hardwareMap.servo.get("IntakeServo");
+        servoIntakeArm.setPosition(INTAKE_ARM_HOME);
 
+        //Step-0 : Set the robot to starting position
         SampleMecanumDrive driveTrain = new SampleMecanumDrive(hardwareMap);
         //driveTrain.setPoseEstimate(startingPosition);
 

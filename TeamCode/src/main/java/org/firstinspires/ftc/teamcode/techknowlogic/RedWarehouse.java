@@ -41,6 +41,7 @@ public class RedWarehouse extends BaseAutonomous {
 
     @Override
     protected void driveToShippingHub(SampleMecanumDrive driveTrain) {
+        //sleep(10000);
         Trajectory strafeRight = driveTrain.trajectoryBuilder(driveTrain.getPoseEstimate(), false)
                 .strafeRight(DRIVE_TO_HUB_STEP1_STRAFE_RIGHT)
                 .build();

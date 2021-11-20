@@ -11,6 +11,11 @@ public class DriverOperatorPrep extends OpMode {
     Servo teamElementpickuparm = null;
     double PICKUP_ARM_REST_POSITION = 1.0;
 
+    Servo servoIntakeArm = null;
+    double INTAKE_ARM_HOME = 0.0;
+    double INTAKE_ARM_DOWN = 1.0;
+    double intakeArmPosition = INTAKE_ARM_HOME;
+
     Servo carriageArm = null;
     public final static double CARRIAGE_HOME = 0.03;
 
@@ -23,6 +28,9 @@ public class DriverOperatorPrep extends OpMode {
 
         carriageArm = hardwareMap.servo.get("carriage");
         carriageArm.setPosition(CARRIAGE_HOME);
+
+        servoIntakeArm = hardwareMap.servo.get("IntakeServo");
+        servoIntakeArm.setPosition(INTAKE_ARM_HOME);
 
         elevator = hardwareMap.get(DcMotor.class, "elevator");
     }
@@ -42,5 +50,13 @@ public class DriverOperatorPrep extends OpMode {
         } else {
             elevator.setPower(0);
         }
+        if (gamepad2.a) {
+            intakeArmPosition = INTAKE_ARM_DOWN;
+            servoIntakeArm.setPosition(intakeArmPosition);
+        } else if (gamepad2.b) {
+            intakeArmPosition = INTAKE_ARM_HOME;
+            servoIntakeArm.setPosition(intakeArmPosition);
+        }
+        telemetry.log().add("intakePos" + intakeArmPosition);
     }
 }
