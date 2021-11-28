@@ -97,7 +97,7 @@ public class DriverOperator extends OpMode {
         carriageArm.setPosition(CARRIAGE_HOME);
 
         cargoLoadedflagArm = hardwareMap.servo.get("cargoLoadedflagarm");
-        cargoLoadedflagArm.setPosition(0.0);
+        cargoLoadedflagArm.setPosition(FLAG_DOWN_POSITION);
 
 
         cargoInBayDS = hardwareMap.get(DistanceSensor.class, "sensor_color_distance");
@@ -131,6 +131,14 @@ public class DriverOperator extends OpMode {
         double elevatorpower = 1;
         //right_stick_y forward and backward
         double y = -gamepad1.left_stick_y; // Remember, this is reversed!
+        if (gamepad1.dpad_up == true){
+            double dpad = -1;
+            y = dpad;
+        }
+        if (gamepad1.dpad_down == true){
+            double dpadd = 1;
+            y = dpadd;
+        }
 
         //right_stick_x left and right
         double x = gamepad1.right_stick_x; // Counteract imperfect strafing
@@ -204,10 +212,36 @@ public class DriverOperator extends OpMode {
         }
 
         //Carousal is handled by Driver
-        if (gamepad1.left_stick_button)
-            carousel.setPower(1);
+/*
+
+        if (gamepad1.left_trigger > 0.1)
+            carousel.setPower(.7);
         else
             carousel.setPower(0);
+
+
+*/
+        int n;
+        double caroselspeed = 0;
+        caroselspeed = 0.05;
+        telemetry.addData("carosel", caroselspeed);
+        while (gamepad1.left_trigger > 0.1){
+           caroselspeed = caroselspeed * 1.3;
+           caroselspeed = Range.clip(caroselspeed, 0,0.8);
+            carousel.setPower(caroselspeed);
+            try {
+                Thread.sleep(50);
+            } catch (Exception e){}
+
+            telemetry.update();
+
+        }
+        if (gamepad1.left_trigger <= 0.1){
+            caroselspeed = 0;
+            carousel.setPower(caroselspeed);
+        }
+
+
 
         //Element pickup  arm movement for freight element pickup
         if(gamepad2.dpad_down) {
@@ -262,11 +296,13 @@ public class DriverOperator extends OpMode {
                 isCargoinCarriage = true;
             }
             cargoLoadedflagArm.setPosition(FLAG_RAISE_POSITION);
+            servoIntakeArm.setPosition(INTAKE_ARM_HOME);
             //isCargoinCarrige is set to false when the carriage is delivered or lost during transit
         }
         else {
             isCargoinCarriage = false;
             cargoLoadedflagArm.setPosition(FLAG_DOWN_POSITION);
+            servoIntakeArm.setPosition(INTAKE_ARM_DOWN);
         }
 
         long currentTime = System.currentTimeMillis();
