@@ -17,18 +17,18 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvPipeline;
 import org.openftc.easyopencv.OpenCvWebcam;
 
-@Autonomous(name = "Duck Detector")
+@Autonomous(name = "Duck Detector Left")
 //@Disabled
 @Config
-public class DuckDetector extends LinearOpMode {
+public class DuckDetectorLeft extends LinearOpMode {
 
     OpenCvWebcam webcam;
 
-    public static double leftX = 15;
-    public static double leftY = 25;
+    public static double leftX = 50;
+    public static double leftY = 0;
 
-    public static double rightX = 165;
-    public static double rightY = 25;
+    public static double rightX = 225;
+    public static double rightY = 0;
 
     public static double boxHeight=75;
     public static double boxWidth=75;
