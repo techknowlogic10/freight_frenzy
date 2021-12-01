@@ -7,8 +7,6 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.techknowlogic.util.RobotPosition;
-import org.firstinspires.ftc.teamcode.techknowlogic.util.scanner.ScannerCoordinates;
-import static org.firstinspires.ftc.teamcode.techknowlogic.utilopmodes.DuckDetectorRedWarehouse.*;
 
 @Autonomous(name = "Red Warehouse")
 @Config
