@@ -41,11 +41,6 @@ public class RedWarehouse extends BaseAutonomous {
     }
 
     @Override
-    protected RobotPosition getRobotPosition() {
-        return RobotPosition.RED_WAREHOUSE;
-    }
-
-    @Override
     protected void driveToShippingHub(SampleMecanumDrive driveTrain) {
         //sleep(10000);
         Trajectory strafeRight = driveTrain.trajectoryBuilder(driveTrain.getPoseEstimate(), false)
@@ -80,4 +75,10 @@ public class RedWarehouse extends BaseAutonomous {
                 .build();
         driveTrain.followTrajectory(step3Forward);
     }
+
+    @Override
+    protected RobotPosition getRobotPosition() {
+        return RobotPosition.RED_WAREHOUSE;
+    }
+
 }

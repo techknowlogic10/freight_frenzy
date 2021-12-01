@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.techknowlogic;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.techknowlogic.util.RobotPosition;
 
 public abstract class BaseRedCarousal extends BaseAutonomous {
 
@@ -64,5 +65,10 @@ public abstract class BaseRedCarousal extends BaseAutonomous {
                 .strafeLeft(DRIVE_TO_CAROUSAL_STEP3_STRAFE_LEFT)
                 .build();
         driveTrain.followTrajectory(step3StrafeLeft);
+    }
+
+    @Override
+    protected RobotPosition getRobotPosition() {
+        return RobotPosition.RED_CAROUSAL;
     }
 }

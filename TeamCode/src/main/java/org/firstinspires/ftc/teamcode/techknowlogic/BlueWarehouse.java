@@ -41,11 +41,6 @@ public class BlueWarehouse extends BaseAutonomous {
     }
 
     @Override
-    protected RobotPosition getRobotPosition() {
-        return RobotPosition.BLUE_WAREHOUSE;
-    }
-
-    @Override
     protected void driveToShippingHub(SampleMecanumDrive driveTrain) {
         Trajectory strafeLeft = driveTrain.trajectoryBuilder(driveTrain.getPoseEstimate(), false)
                 .strafeLeft(DRIVE_TO_HUB_STEP1_STRAFE_RIGHT)
@@ -78,5 +73,10 @@ public class BlueWarehouse extends BaseAutonomous {
                 .back(DRIVE_TO_WAREHOUSE_STEP3_FORWARD)
                 .build();
         driveTrain.followTrajectory(step3Forward);
+    }
+
+    @Override
+    protected RobotPosition getRobotPosition() {
+        return RobotPosition.BLUE_WAREHOUSE;
     }
 }
