@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.techknowlogic.util.scanner;
+package org.firstinspires.ftc.teamcode.techknowlogic.util;
 
 import com.acmerobotics.dashboard.config.Config;
 

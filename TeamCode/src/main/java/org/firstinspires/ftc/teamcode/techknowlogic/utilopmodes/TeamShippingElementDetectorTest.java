@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.techknowlogic.util.RobotPosition;
-import org.firstinspires.ftc.teamcode.techknowlogic.util.scanner.TeamShippingElementDetector;
+import org.firstinspires.ftc.teamcode.techknowlogic.util.TeamShippingElementDetector;
 
 @Autonomous
 @Disabled

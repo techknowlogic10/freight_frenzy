@@ -7,8 +7,7 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.techknowlogic.util.CarousalSpinner;
 import org.firstinspires.ftc.teamcode.techknowlogic.util.Elevator;
 import org.firstinspires.ftc.teamcode.techknowlogic.util.RobotPosition;
-import org.firstinspires.ftc.teamcode.techknowlogic.util.scanner.ScannerCoordinates;
-import org.firstinspires.ftc.teamcode.techknowlogic.util.scanner.TeamShippingElementDetector;
+import org.firstinspires.ftc.teamcode.techknowlogic.util.TeamShippingElementDetector;
 
 public abstract class BaseAutonomous extends LinearOpMode {
 
