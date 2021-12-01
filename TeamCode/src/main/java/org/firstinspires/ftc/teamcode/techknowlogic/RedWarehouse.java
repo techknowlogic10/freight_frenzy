@@ -6,6 +6,9 @@ import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.techknowlogic.util.RobotPosition;
+import org.firstinspires.ftc.teamcode.techknowlogic.util.scanner.ScannerCoordinates;
+import static org.firstinspires.ftc.teamcode.techknowlogic.utilopmodes.DuckDetectorRedWarehouse.*;
 
 @Autonomous(name = "Red Warehouse")
 @Config
@@ -37,6 +40,11 @@ public class RedWarehouse extends BaseAutonomous {
         } else {
             return 3;
         }
+    }
+
+    @Override
+    protected RobotPosition getRobotPosition() {
+        return RobotPosition.RED_WAREHOUSE;
     }
 
     @Override

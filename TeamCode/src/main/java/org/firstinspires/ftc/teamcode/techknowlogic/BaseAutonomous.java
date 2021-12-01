@@ -6,7 +6,9 @@ import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.techknowlogic.util.CarousalSpinner;
 import org.firstinspires.ftc.teamcode.techknowlogic.util.Elevator;
-import org.firstinspires.ftc.teamcode.techknowlogic.util.TeamShippingElementDetector;
+import org.firstinspires.ftc.teamcode.techknowlogic.util.RobotPosition;
+import org.firstinspires.ftc.teamcode.techknowlogic.util.scanner.ScannerCoordinates;
+import org.firstinspires.ftc.teamcode.techknowlogic.util.scanner.TeamShippingElementDetector;
 
 public abstract class BaseAutonomous extends LinearOpMode {
 
@@ -21,7 +23,7 @@ public abstract class BaseAutonomous extends LinearOpMode {
         SampleMecanumDrive driveTrain = new SampleMecanumDrive(hardwareMap);
         //driveTrain.setPoseEstimate(startingPosition);
 
-        TeamShippingElementDetector detector = new TeamShippingElementDetector(hardwareMap, telemetry);
+        TeamShippingElementDetector detector = new TeamShippingElementDetector(hardwareMap, telemetry, getRobotPosition(), false);
         CarousalSpinner carousalSpinner = new CarousalSpinner(hardwareMap);
         Elevator elevator = new Elevator(hardwareMap);
 
@@ -80,4 +82,7 @@ public abstract class BaseAutonomous extends LinearOpMode {
     protected abstract void driveToShippingHub(SampleMecanumDrive driveTrain);
 
     protected abstract int getElevatorLevel(String shippingElementPosition);
+
+    protected abstract RobotPosition getRobotPosition();
+
 }

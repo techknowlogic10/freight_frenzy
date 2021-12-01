@@ -6,12 +6,9 @@ import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
-import org.firstinspires.ftc.teamcode.techknowlogic.util.CarousalSpinner;
-import org.firstinspires.ftc.teamcode.techknowlogic.util.Elevator;
-import org.firstinspires.ftc.teamcode.techknowlogic.util.TeamShippingElementDetector;
+import org.firstinspires.ftc.teamcode.techknowlogic.util.RobotPosition;
 
 @Autonomous(name = "Blue Carousal")
 @Config
@@ -38,6 +35,11 @@ public class BlueCarousal extends BaseAutonomous {
         } else {
             return 3;
         }
+    }
+
+    @Override
+    protected RobotPosition getRobotPosition() {
+        return RobotPosition.BLUE_CAROUSAL;
     }
 
     @Override

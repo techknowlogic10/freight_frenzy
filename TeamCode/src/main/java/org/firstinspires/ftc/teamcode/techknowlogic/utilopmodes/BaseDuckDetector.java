@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode.techknowlogic.utilopmodes;
 
-import com.acmerobotics.dashboard.config.Config;
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -17,28 +15,33 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvPipeline;
 import org.openftc.easyopencv.OpenCvWebcam;
 
-@Autonomous(name = "Duck Detector")
-//@Disabled
-@Config
-public class DuckDetector extends LinearOpMode {
+public class BaseDuckDetector extends LinearOpMode {
 
-    OpenCvWebcam webcam;
-
-    public static double leftX = 15;
-    public static double leftY = 25;
-
-    public static double rightX = 165;
-    public static double rightY = 25;
-
-    public static double boxHeight=75;
-    public static double boxWidth=75;
-
-    public static String webcamName = "WebcamL";
+    private OpenCvWebcam webcam;
 
     private Mat inputInYCRCB = new Mat();
     private Mat inputInCB = new Mat();
 
+    private double boxHeight = 75;
+    private double boxWidth = 75;
 
+    private String webcamName;
+
+    private Point leftRectanglePoint1;
+    private Point rightRectanglePoint1;
+
+    private Point leftRectanglePoint2;
+    private Point rightRectanglePoint2;
+
+    public BaseDuckDetector(String webcamName, double leftX, double leftY, double rightX, double rightY) {
+        this.webcamName = webcamName;
+
+        leftRectanglePoint1 = new Point(leftX, leftY);
+        rightRectanglePoint1 = new Point(rightX, rightY);
+
+        leftRectanglePoint2 = new Point(leftX + boxWidth, leftY + boxHeight);
+        rightRectanglePoint2 = new Point(rightX + boxWidth, rightY + boxHeight);
+    }
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -79,14 +82,14 @@ public class DuckDetector extends LinearOpMode {
 
         @Override
         public Mat processFrame(Mat frame) {
-            Imgproc.rectangle(frame, getLeftRectanglePoint1(), getLeftRectanglePoint2(), new Scalar(0, 0, 255), 2);
-            Imgproc.rectangle(frame, getRightRectanglePoint1(), getRightRectanglePoint2(), new Scalar(0, 255, 0), 2);
+            Imgproc.rectangle(frame, leftRectanglePoint1, leftRectanglePoint2, new Scalar(0, 0, 255), 2);
+            Imgproc.rectangle(frame, rightRectanglePoint1, rightRectanglePoint2, new Scalar(0, 255, 0), 2);
 
             Imgproc.cvtColor(frame, inputInYCRCB, Imgproc.COLOR_RGB2YCrCb);
             Core.extractChannel(inputInYCRCB, inputInCB, 1);
 
-            Mat leftRectangleFrame = frame.submat(new Rect(getLeftRectanglePoint1(), getLeftRectanglePoint2()));
-            Mat rightRectangleFrame = frame.submat(new Rect(getRightRectanglePoint1(), getRightRectanglePoint2()));
+            Mat leftRectangleFrame = frame.submat(new Rect(leftRectanglePoint1, leftRectanglePoint2));
+            Mat rightRectangleFrame = frame.submat(new Rect(rightRectanglePoint1, rightRectanglePoint2));
 
             int leftRectangleMean = (int) Core.mean(leftRectangleFrame).val[0];
             int rightRectangleMean = (int) Core.mean(rightRectangleFrame).val[0];
@@ -101,24 +104,4 @@ public class DuckDetector extends LinearOpMode {
         public void onViewportTapped() {
         }
     }
-
-    public Point getLeftRectanglePoint1() {
-        return new Point(leftX, leftY);
-    }
-
-    public Point getLeftRectanglePoint2() {
-        return new Point(leftX + boxWidth, leftY+boxHeight);
-    }
-
-    public Point getRightRectanglePoint1() {
-        return new Point(rightX, rightY);
-    }
-
-    public Point getRightRectanglePoint2() {
-        return new Point(rightX+boxWidth, rightY+boxHeight);
-    }
 }
-
-
-
-

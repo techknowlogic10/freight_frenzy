@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.techknowlogic.util.RobotPosition;
 
 @Autonomous(name = "Red Carousal")
 @Config
@@ -34,6 +35,11 @@ public class RedCarousal extends BaseAutonomous {
         } else {
             return 1;
         }
+    }
+
+    @Override
+    protected RobotPosition getRobotPosition() {
+        return RobotPosition.RED_CAROUSAL;
     }
 
     @Override
