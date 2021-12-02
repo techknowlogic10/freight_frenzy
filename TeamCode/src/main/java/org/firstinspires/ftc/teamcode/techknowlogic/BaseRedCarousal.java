@@ -33,19 +33,17 @@ public abstract class BaseRedCarousal extends BaseAutonomous {
     @Override
     protected void driveToShippingHub(SampleMecanumDrive driveTrain) {
 
-        driveTrain.turn(Math.toRadians(-90));
-
         Trajectory strafeRight = driveTrain.trajectoryBuilder(driveTrain.getPoseEstimate(), false)
                 .strafeRight(DRIVE_TO_HUB_STEP1_STRAFE_RIGHT)
                 .build();
 
         driveTrain.followTrajectory(strafeRight);
 
-        Trajectory step1 = driveTrain.trajectoryBuilder(driveTrain.getPoseEstimate(), false)
+        Trajectory back = driveTrain.trajectoryBuilder(driveTrain.getPoseEstimate(), false)
                 .back(DRIVE_TO_HUB_STEP2_BACK)
                 .build();
 
-        driveTrain.followTrajectory(step1);
+        driveTrain.followTrajectory(back);
     }
 
     @Override

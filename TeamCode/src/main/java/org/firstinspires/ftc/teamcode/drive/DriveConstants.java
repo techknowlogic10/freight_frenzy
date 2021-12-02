@@ -20,8 +20,8 @@ public class DriveConstants {
     /*
      * These are motor constants that should be listed online for your motors.
      */
-    public static final double TICKS_PER_REV = 1440;
-    public static final double MAX_RPM = 100;
+    public static final double TICKS_PER_REV = 960;
+    public static final double MAX_RPM = 150;
 
     /*
      * Set RUN_USING_ENCODER to true to enable built-in hub velocity control using drive encoders.
@@ -36,7 +36,7 @@ public class DriveConstants {
     public static double p = 10;
     public static double i = 0;
     public static double d = 2;
-    public static double f = 14.5;
+    public static double f = 15;
     public static PIDFCoefficients MOTOR_VELO_PID = new PIDFCoefficients(p,i,d,f);
 
     /*
@@ -49,7 +49,7 @@ public class DriveConstants {
      */
     public static double WHEEL_RADIUS = 2; // in
     //Todo we have to figure
-    public static double GEAR_RATIO = 1.56; // output (wheel) speed / input (motor) speed
+    public static double GEAR_RATIO = 1.53; // output (wheel) speed / input (motor) speed
     public static double TRACK_WIDTH = 9; // in
 
     /*
@@ -69,7 +69,7 @@ public class DriveConstants {
      * small and gradually increase them later after everything is working. All distance units are
      * inches.
      */
-    public static double MAX_VEL = 38; //42;
+    public static double MAX_VEL = 52; //42;
     public static double MAX_ACCEL = 30;
     public static double MAX_ANG_VEL = Math.toRadians(60);
     public static double MAX_ANG_ACCEL = Math.toRadians(60);

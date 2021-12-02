@@ -9,11 +9,11 @@ import org.firstinspires.ftc.teamcode.techknowlogic.util.RobotPosition;
 import org.firstinspires.ftc.teamcode.techknowlogic.util.TeamShippingElementDetector;
 
 @Autonomous
-@Disabled
+//@Disabled
 @Config
 public class TeamShippingElementDetectorTest extends LinearOpMode {
 
-    public static RobotPosition ROBOT_POSITION = RobotPosition.RED_WAREHOUSE;
+    public static RobotPosition ROBOT_POSITION = RobotPosition.BLUE_WAREHOUSE;
 
     @Override
     public void runOpMode() throws InterruptedException {

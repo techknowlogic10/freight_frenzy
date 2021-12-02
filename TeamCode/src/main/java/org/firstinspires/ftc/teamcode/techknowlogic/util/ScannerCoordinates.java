@@ -11,20 +11,20 @@ import org.openftc.easyopencv.OpenCvWebcam;
 public class ScannerCoordinates {
 
     //WebcamR
-    public static Point RED_CAROUSAL_LEFT_RECTANGLE_POINT1 = new Point(15, 25);
-    public static Point RED_CAROUSAL_RIGHT_RECTANGLE_POINT1 = new Point(165, 25);
+    public static Point RED_CAROUSAL_LEFT_RECTANGLE_POINT1 = new Point(15, 60);
+    public static Point RED_CAROUSAL_RIGHT_RECTANGLE_POINT1 = new Point(165, 60);
 
     //WebcamL
-    public static Point RED_WAREHOUSE_LEFT_RECTANGLE_POINT1 = new Point(50, 0);
+    public static Point RED_WAREHOUSE_LEFT_RECTANGLE_POINT1 = new Point(70, 0);
     public static Point RED_WAREHOUSE_RIGHT_RECTANGLE_POINT1 = new Point(225, 0);
 
     //WebcamL
-    public static Point BLUE_CAROUSAL_LEFT_RECTANGLE_POINT1 = new Point(100, 0);
+    public static Point BLUE_CAROUSAL_LEFT_RECTANGLE_POINT1 = new Point(65, 0);
     public static Point BLUE_CAROUSAL_RIGHT_RECTANGLE_POINT1 = new Point(225, 0);
 
     //WebcamR
-    public static Point BLUE_WAREHOUSE_LEFT_RECTANGLE_POINT1 = new Point(100, 0);
-    public static Point BLUE_WAREHOUSE_RIGHT_RECTANGLE_POINT1 = new Point(225, 0);
+    public static Point BLUE_WAREHOUSE_LEFT_RECTANGLE_POINT1 = new Point(0, 60);
+    public static Point BLUE_WAREHOUSE_RIGHT_RECTANGLE_POINT1 = new Point(160, 60);
 
     public static String LEFT_CAMERA_NAME = "WebcamL";
     public static String RIGHT_CAMERA_NAME = "WebcamR";
