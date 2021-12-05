@@ -22,8 +22,8 @@ public class CarousalSpinner {
         }
 
         //spin for 3 seconds at full speed
-        spinner.setPower(1.0);
-        sleep(3000);
+        spinner.setPower(0.6);
+        sleep(2000);
     }
 
     private final void sleep(long milliseconds) {

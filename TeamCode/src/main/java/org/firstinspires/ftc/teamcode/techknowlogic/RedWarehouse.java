@@ -6,6 +6,7 @@ import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.techknowlogic.util.RobotPosition;
 
 @Autonomous(name = "Red Warehouse")
 @Config
@@ -41,6 +42,7 @@ public class RedWarehouse extends BaseAutonomous {
 
     @Override
     protected void driveToShippingHub(SampleMecanumDrive driveTrain) {
+        //sleep(10000);
         Trajectory strafeRight = driveTrain.trajectoryBuilder(driveTrain.getPoseEstimate(), false)
                 .strafeRight(DRIVE_TO_HUB_STEP1_STRAFE_RIGHT)
                 .build();
@@ -73,4 +75,10 @@ public class RedWarehouse extends BaseAutonomous {
                 .build();
         driveTrain.followTrajectory(step3Forward);
     }
+
+    @Override
+    protected RobotPosition getRobotPosition() {
+        return RobotPosition.RED_WAREHOUSE;
+    }
+
 }

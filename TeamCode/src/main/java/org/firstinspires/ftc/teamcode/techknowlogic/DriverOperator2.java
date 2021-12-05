@@ -13,7 +13,7 @@ import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
-public class DriverOperator extends OpMode {
+public class DriverOperator2 extends OpMode {
 
     DcMotor leftFront = null;
     DcMotor rightFront = null;
@@ -84,20 +84,18 @@ public class DriverOperator extends OpMode {
         rightRear = hardwareMap.get(DcMotor.class, "rightRear");
         rightRear.setDirection(DcMotorEx.Direction.REVERSE);
 
+        servoIntakeArm = hardwareMap.servo.get("IntakeServo");
         intake = hardwareMap.get(DcMotor.class, "intake");
 
         elevator = hardwareMap.get(DcMotor.class, "elevator");
 
         carousel = hardwareMap.get(DcMotor.class, "spinner");
 
-        servoIntakeArm = hardwareMap.servo.get("IntakeServo");
-        servoIntakeArm.setPosition(INTAKE_ARM_HOME);
-
         carriageArm = hardwareMap.servo.get("carriage");
         carriageArm.setPosition(CARRIAGE_HOME);
 
         cargoLoadedflagArm = hardwareMap.servo.get("cargoLoadedflagarm");
-        cargoLoadedflagArm.setPosition(FLAG_DOWN_POSITION);
+        cargoLoadedflagArm.setPosition(0.0);
 
 
         cargoInBayDS = hardwareMap.get(DistanceSensor.class, "sensor_color_distance");
@@ -131,18 +129,10 @@ public class DriverOperator extends OpMode {
         double elevatorpower = 1;
         //right_stick_y forward and backward
         double y = -gamepad1.left_stick_y; // Remember, this is reversed!
-        if (gamepad1.dpad_up == true){
-            double dpad = -1;
-            y = dpad;
-        }
-        if (gamepad1.dpad_down == true){
-            double dpadd = 1;
-            y = dpadd;
-        }
 
         //right_stick_x left and right
-        double x = gamepad1.right_stick_x; // Counteract imperfect strafing
-        double rx = gamepad1.left_stick_x * 1.1;
+        double x = gamepad1.left_stick_x; // Counteract imperfect strafing
+        double rx = gamepad1.right_stick_x * 1.1;
         double denominator = 0;
         // Denominator is the largest motor power (absolute value) or 1
         // This ensures all the powers maintain the same ratio, but only when
@@ -171,17 +161,10 @@ public class DriverOperator extends OpMode {
         rightFront.setPower(frontRightPower);
         rightRear.setPower(backRightPower);
 
-
-        if (gamepad1.x) {
-            servoIntakeArm.setPosition(INTAKE_ARM_DOWN);
-        } else if (gamepad1.y) {
-              servoIntakeArm.setPosition(INTAKE_ARM_HOME);
-        }
-
         //Carriage motions are handled by Operator (gamepad2)
         if (gamepad2.a)
             carriageArm.setPosition(CARRIAGE_HOME);
-        else if (gamepad2.b && !carriageLimit.isPressed())
+        else if (gamepad2.b)
             carriageArm.setPosition(CARRIAGE_HOLD_POS);   //hold the carriage to avoid dropping the cargo
         else if (gamepad2.x) {
             carriageArm.setPosition(CARRIAGE_DROP_POS);
@@ -212,36 +195,10 @@ public class DriverOperator extends OpMode {
         }
 
         //Carousal is handled by Driver
-/*
-
-        if (gamepad1.left_trigger > 0.1)
-            carousel.setPower(.7);
+        if (gamepad1.left_stick_button)
+            carousel.setPower(1);
         else
             carousel.setPower(0);
-
-
-*/
-        int n;
-        double caroselspeed = 0;
-        caroselspeed = 0.05;
-        telemetry.addData("carosel", caroselspeed);
-        while (gamepad1.left_trigger > 0.1){
-           caroselspeed = caroselspeed * 1.3;
-           caroselspeed = Range.clip(caroselspeed, 0,0.8);
-            carousel.setPower(caroselspeed);
-            try {
-                Thread.sleep(50);
-            } catch (Exception e){}
-
-            telemetry.update();
-
-        }
-        if (gamepad1.left_trigger <= 0.1){
-            caroselspeed = 0;
-            carousel.setPower(caroselspeed);
-        }
-
-
 
         //Element pickup  arm movement for freight element pickup
         if(gamepad2.dpad_down) {
@@ -296,13 +253,11 @@ public class DriverOperator extends OpMode {
                 isCargoinCarriage = true;
             }
             cargoLoadedflagArm.setPosition(FLAG_RAISE_POSITION);
-            servoIntakeArm.setPosition(INTAKE_ARM_HOME);
             //isCargoinCarrige is set to false when the carriage is delivered or lost during transit
         }
         else {
             isCargoinCarriage = false;
             cargoLoadedflagArm.setPosition(FLAG_DOWN_POSITION);
-            servoIntakeArm.setPosition(INTAKE_ARM_DOWN);
         }
 
         long currentTime = System.currentTimeMillis();

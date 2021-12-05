@@ -1,20 +1,24 @@
 package org.firstinspires.ftc.teamcode.techknowlogic.utilopmodes;
 
+import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
+import org.firstinspires.ftc.teamcode.techknowlogic.util.RobotPosition;
 import org.firstinspires.ftc.teamcode.techknowlogic.util.TeamShippingElementDetector;
 
 @Autonomous
-@Disabled
+//@Disabled
+@Config
 public class TeamShippingElementDetectorTest extends LinearOpMode {
 
+    public static RobotPosition ROBOT_POSITION = RobotPosition.RED_CAROUSAL;
 
     @Override
     public void runOpMode() throws InterruptedException {
 
-        TeamShippingElementDetector detector = new TeamShippingElementDetector(hardwareMap, telemetry);
+        TeamShippingElementDetector detector = new TeamShippingElementDetector(hardwareMap, telemetry, ROBOT_POSITION, true);
 
         //Detection continue to happen throughout init
         detector.startDetection();

@@ -6,6 +6,7 @@ import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.techknowlogic.util.RobotPosition;
 
 @Autonomous(name = "Blue Warehouse")
 @Config
@@ -72,5 +73,10 @@ public class BlueWarehouse extends BaseAutonomous {
                 .back(DRIVE_TO_WAREHOUSE_STEP3_FORWARD)
                 .build();
         driveTrain.followTrajectory(step3Forward);
+    }
+
+    @Override
+    protected RobotPosition getRobotPosition() {
+        return RobotPosition.BLUE_WAREHOUSE;
     }
 }

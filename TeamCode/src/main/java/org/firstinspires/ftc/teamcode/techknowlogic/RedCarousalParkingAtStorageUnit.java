@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 @Config
 public class RedCarousalParkingAtStorageUnit extends BaseRedCarousal {
 
-    public static double PARK_ROBOT_STEP1_STRAFE_RIGHT = 35;
+    public static double PARK_ROBOT_STEP1_STRAFE_RIGHT = 25;
 
     @Override
     protected void parkRobot(SampleMecanumDrive driveTrain) {

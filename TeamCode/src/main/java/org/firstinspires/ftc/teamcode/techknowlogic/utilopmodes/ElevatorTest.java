@@ -9,7 +9,6 @@ import org.firstinspires.ftc.teamcode.techknowlogic.util.Elevator;
 
 @Autonomous
 @Config
-@Disabled
 public class ElevatorTest extends LinearOpMode {
 
     public static int FLOOR_NUMBER =1;

@@ -4,6 +4,8 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.teamcode.techknowlogic.util.RobotPosition;
+import org.firstinspires.ftc.teamcode.techknowlogic.util.ScannerCoordinates;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
@@ -20,11 +22,11 @@ public class TeamShippingElementDetector {
 
     OpenCvWebcam webcam;
 
-    public static Point leftRectanglePoint1 = new Point(5, 65);
-    public static Point leftRectanglePoint2 = new Point(80, 150);
+    private Point leftRectanglePoint1;
+    private Point leftRectanglePoint2;
 
-    public static Point rightRectanglePoint1 = new Point(200, 65);
-    public static Point rightRectanglePoint2 = new Point(275, 150);
+    private Point rightRectanglePoint1;
+    private Point rightRectanglePoint2;
 
     private String elementPosition = null;
 
@@ -34,11 +36,24 @@ public class TeamShippingElementDetector {
     Mat inputInYCRCB = new Mat();
     Mat inputInCB = new Mat();
 
-    public TeamShippingElementDetector(HardwareMap hardwareMap, Telemetry telemetry) {
+    public TeamShippingElementDetector(HardwareMap hardwareMap, Telemetry telemetry, RobotPosition robotPosition, boolean monitorViewNeeded) {
         this.hardwareMap = hardwareMap;
         this.telemetry = telemetry;
 
-        this.webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam1"));
+        ScannerCoordinates coordinates = new ScannerCoordinates(robotPosition);
+
+        this.leftRectanglePoint1 = coordinates.getLeftRectanglePoint1();
+        this.leftRectanglePoint2 = coordinates.getLeftRectanglePoint2();
+        this.rightRectanglePoint1 = coordinates.getRightRectanglePoint1();
+        this.rightRectanglePoint2 = coordinates.getRightRectanglePoint2();
+
+        if(monitorViewNeeded) {
+            int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+            this.webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, coordinates.getWebcamName()), cameraMonitorViewId);
+        } else {
+            this.webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, coordinates.getWebcamName()));
+        }
+
         webcam.setPipeline(new TeamShippingElementDetectorPipeline());
         webcam.setMillisecondsPermissionTimeout(2500);
     }
