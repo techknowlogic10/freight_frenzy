@@ -11,8 +11,8 @@ import org.openftc.easyopencv.OpenCvWebcam;
 public class ScannerCoordinates {
 
     //WebcamR
-    public static Point RED_CAROUSAL_LEFT_RECTANGLE_POINT1 = new Point(15, 60);
-    public static Point RED_CAROUSAL_RIGHT_RECTANGLE_POINT1 = new Point(165, 60);
+    public static Point RED_CAROUSAL_LEFT_RECTANGLE_POINT1 = new Point(15, 0);
+    public static Point RED_CAROUSAL_RIGHT_RECTANGLE_POINT1 = new Point(165, 0);
 
     //WebcamL
     public static Point RED_WAREHOUSE_LEFT_RECTANGLE_POINT1 = new Point(70, 0);

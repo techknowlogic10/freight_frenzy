@@ -7,12 +7,11 @@ import org.firstinspires.ftc.teamcode.techknowlogic.util.RobotPosition;
 
 public abstract class BaseRedCarousal extends BaseAutonomous {
 
-    public static double DRIVE_TO_HUB_STEP1_STRAFE_RIGHT = 54;
+    public static double DRIVE_TO_HUB_STEP1_STRAFE_RIGHT = 38;
     public static double DRIVE_TO_HUB_STEP2_BACK = 3;
 
-    public static double DRIVE_TO_CAROUSAL_STEP1_STRAFE_LEFT = 50;
-    public static double DRIVE_TO_CAROUSAL_STEP2_FORWARD = 40;
-    public static double DRIVE_TO_CAROUSAL_STEP3_STRAFE_LEFT = 10;
+    public static double DRIVE_TO_CAROUSAL_STEP1_FORWARD = 25;
+    public static double DRIVE_TO_CAROUSAL_STEP2_STRAFE_LEFT = 42;
 
     @Override
     protected boolean isCarousalSpinReversed() {
@@ -49,20 +48,15 @@ public abstract class BaseRedCarousal extends BaseAutonomous {
     @Override
     protected void driveToCarousal(SampleMecanumDrive driveTrain) {
 
-        Trajectory strafeLeft = driveTrain.trajectoryBuilder(driveTrain.getPoseEstimate(), false)
-                .strafeLeft(DRIVE_TO_CAROUSAL_STEP1_STRAFE_LEFT)
-                .build();
-        driveTrain.followTrajectory(strafeLeft);
-
         Trajectory forward = driveTrain.trajectoryBuilder(driveTrain.getPoseEstimate(), false)
-                .forward(DRIVE_TO_CAROUSAL_STEP2_FORWARD)
+                .forward(DRIVE_TO_CAROUSAL_STEP1_FORWARD)
                 .build();
         driveTrain.followTrajectory(forward);
 
-        Trajectory step3StrafeLeft = driveTrain.trajectoryBuilder(driveTrain.getPoseEstimate(), false)
-                .strafeLeft(DRIVE_TO_CAROUSAL_STEP3_STRAFE_LEFT)
+        Trajectory step2StrafeLeft = driveTrain.trajectoryBuilder(driveTrain.getPoseEstimate(), false)
+                .strafeLeft(DRIVE_TO_CAROUSAL_STEP2_STRAFE_LEFT)
                 .build();
-        driveTrain.followTrajectory(step3StrafeLeft);
+        driveTrain.followTrajectory(step2StrafeLeft);
     }
 
     @Override
