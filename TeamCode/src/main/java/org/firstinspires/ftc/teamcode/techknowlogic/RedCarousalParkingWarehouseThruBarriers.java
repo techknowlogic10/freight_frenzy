@@ -14,6 +14,8 @@ public class RedCarousalParkingWarehouseThruBarriers extends BaseRedCarousal {
     public static double PARK_ROBOT_STEP2_STRAFE_RIGHT = 22;
     public static double PARK_ROBOT_STEP3_BACK = 50;
 
+    public static double TURN_ANGLE = 180;
+
     @Override
     protected void parkRobot(SampleMecanumDrive driveTrain) {
 
@@ -31,5 +33,7 @@ public class RedCarousalParkingWarehouseThruBarriers extends BaseRedCarousal {
                 .back(PARK_ROBOT_STEP3_BACK)
                 .build();
         driveTrain.followTrajectory(step3Back);
+
+        driveTrain.turn(Math.toRadians(TURN_ANGLE));
     }
 }
