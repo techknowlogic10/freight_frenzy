@@ -10,8 +10,11 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 @Config
 public class BlueCarousalParkingWarehouseThruBarriers extends BaseBlueCarousal {
 
-    public static double PARK_ROBOT_STEP1_STRAFE_LEFT = 35;
-    public static double PARK_ROBOT_STEP2_BACK = 140;
+    public static double PARK_ROBOT_STEP1_BACK = 50;
+    public static double PARK_ROBOT_STEP2_STRAFE_LEFT = 22;
+    public static double PARK_ROBOT_STEP3_BACK = 50;
+
+    public static double TURN_ANGLE = 180;
 
     @Override
     protected void dropAdditionalFreight() {
@@ -20,14 +23,22 @@ public class BlueCarousalParkingWarehouseThruBarriers extends BaseBlueCarousal {
 
     @Override
     protected void parkRobot(SampleMecanumDrive driveTrain) {
+
+        Trajectory step1Back = driveTrain.trajectoryBuilder(driveTrain.getPoseEstimate(), false)
+                .back(PARK_ROBOT_STEP1_BACK)
+                .build();
+        driveTrain.followTrajectory(step1Back);
+
         Trajectory strafeLeft = driveTrain.trajectoryBuilder(driveTrain.getPoseEstimate(), false)
-                .strafeLeft(PARK_ROBOT_STEP1_STRAFE_LEFT)
+                .strafeRight(PARK_ROBOT_STEP2_STRAFE_LEFT)
                 .build();
         driveTrain.followTrajectory(strafeLeft);
 
-        Trajectory back = driveTrain.trajectoryBuilder(driveTrain.getPoseEstimate(), false)
-                .back(PARK_ROBOT_STEP2_BACK)
+        Trajectory step3Back = driveTrain.trajectoryBuilder(driveTrain.getPoseEstimate(), false)
+                .back(PARK_ROBOT_STEP3_BACK)
                 .build();
-        driveTrain.followTrajectory(back);
+        driveTrain.followTrajectory(step3Back);
+
+        driveTrain.turn(Math.toRadians(TURN_ANGLE));
     }
 }

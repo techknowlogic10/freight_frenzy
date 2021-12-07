@@ -11,8 +11,8 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 public class BlueCarousalParkingAtWarehouse extends BaseBlueCarousal {
 
     public static double PARK_ROBOT_STEP1_BACK = 35;
-    public static double PARK_ROBOT_STEP2_STRAFE_RIGHT = 20;
-    public static double PARK_ROBOT_STEP3_BACK = 95;
+    public static double PARK_ROBOT_STEP2_STRAFE_RIGHT = 10;
+    public static double PARK_ROBOT_STEP3_BACK = 65;
 
     @Override
     protected void dropAdditionalFreight() {
