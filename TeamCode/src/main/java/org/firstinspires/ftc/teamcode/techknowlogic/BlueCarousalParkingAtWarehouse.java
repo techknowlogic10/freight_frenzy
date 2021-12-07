@@ -15,6 +15,11 @@ public class BlueCarousalParkingAtWarehouse extends BaseBlueCarousal {
     public static double PARK_ROBOT_STEP3_BACK = 95;
 
     @Override
+    protected void dropAdditionalFreight() {
+
+    }
+
+    @Override
     protected void parkRobot(SampleMecanumDrive driveTrain) {
         Trajectory step1Back = driveTrain.trajectoryBuilder(driveTrain.getPoseEstimate(), false)
                 .back(PARK_ROBOT_STEP1_BACK)

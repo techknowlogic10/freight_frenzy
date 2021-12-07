@@ -24,7 +24,7 @@ public class SplineTest extends LinearOpMode {
 
         if (isStopRequested()) return;
 
-        Trajectory traj = drive.trajectoryBuilder(new Pose2d(-30, -63, Math.toRadians(270)), true)
+        Trajectory traj = drive.trajectoryBuilder(new Pose2d(-30, -63, Math.toRadians(270)), false)
                 .splineTo(new Vector2d(-15, -40), Math.toRadians(270))
                 .build();
 

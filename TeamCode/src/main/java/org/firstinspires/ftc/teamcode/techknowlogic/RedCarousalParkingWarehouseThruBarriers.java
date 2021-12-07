@@ -17,6 +17,11 @@ public class RedCarousalParkingWarehouseThruBarriers extends BaseRedCarousal {
     public static double TURN_ANGLE = 180;
 
     @Override
+    protected void dropAdditionalFreight() {
+
+    }
+
+    @Override
     protected void parkRobot(SampleMecanumDrive driveTrain) {
 
         Trajectory step1Back = driveTrain.trajectoryBuilder(driveTrain.getPoseEstimate(), false)

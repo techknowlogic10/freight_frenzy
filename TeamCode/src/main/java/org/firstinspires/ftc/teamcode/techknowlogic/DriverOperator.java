@@ -175,7 +175,7 @@ public class DriverOperator extends OpMode {
         if (gamepad1.x) {
             servoIntakeArm.setPosition(INTAKE_ARM_DOWN);
         } else if (gamepad1.y) {
-              servoIntakeArm.setPosition(INTAKE_ARM_HOME);
+            servoIntakeArm.setPosition(INTAKE_ARM_HOME);
         }
 
         //Carriage motions are handled by Operator (gamepad2)
@@ -224,10 +224,12 @@ public class DriverOperator extends OpMode {
         int n;
         double caroselspeed = 0;
         caroselspeed = 0.05;
+
+   /*
         telemetry.addData("carosel", caroselspeed);
         while (gamepad1.left_trigger > 0.1){
-           caroselspeed = caroselspeed * 1.3;
-           caroselspeed = Range.clip(caroselspeed, 0,0.8);
+            caroselspeed = caroselspeed * 1.3;
+            caroselspeed = Range.clip(caroselspeed, 0,0.8);
             carousel.setPower(caroselspeed);
             try {
                 Thread.sleep(50);
@@ -240,6 +242,8 @@ public class DriverOperator extends OpMode {
             caroselspeed = 0;
             carousel.setPower(caroselspeed);
         }
+        /*
+    */
 
 
 
@@ -277,7 +281,7 @@ public class DriverOperator extends OpMode {
         //telemetry.addData("Green", borderCrossingCheckCS.green());
         //telemetry.addData("Blue ", borderCrossingCheckCS.blue());
         if( borderCrossingCheckCS.red() > 100 &&
-              borderCrossingCheckCS.blue() > 100 &&
+                borderCrossingCheckCS.blue() > 100 &&
                 borderCrossingCheckCS.green() > 100)
         {
             telemetry.log().add("Border White line Crossed");

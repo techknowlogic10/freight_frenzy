@@ -20,6 +20,11 @@ public class BlueWarehouse extends BaseAutonomous {
     public static double DRIVE_TO_WAREHOUSE_STEP3_FORWARD = 68;
 
     @Override
+    protected void dropAdditionalFreight() {
+
+    }
+
+    @Override
     protected boolean isCarousalSpinReversed() {
         return true;
     }

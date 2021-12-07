@@ -13,6 +13,11 @@ public class BlueCarousalParkingAtStorageUnit extends BaseBlueCarousal {
     public static double PARK_ROBOT_STEP1_STRAFE_LEFT = 35;
 
     @Override
+    protected void dropAdditionalFreight() {
+
+    }
+
+    @Override
     protected void parkRobot(SampleMecanumDrive driveTrain) {
         Trajectory strafeLeft = driveTrain.trajectoryBuilder(driveTrain.getPoseEstimate(), false)
                 .strafeLeft(PARK_ROBOT_STEP1_STRAFE_LEFT)
