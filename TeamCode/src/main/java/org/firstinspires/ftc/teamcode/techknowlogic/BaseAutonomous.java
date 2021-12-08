@@ -20,10 +20,13 @@ public abstract class BaseAutonomous extends LinearOpMode {
     protected SampleMecanumDrive driveTrain;
     protected Runnable raiseToLevel;
 
+    private double INTAKE_ARM_HOME = 1.0;
+
     protected Runnable elevatorDropThread = new Runnable() {
         @Override
         public void run() {
             elevator.dropCarriageArmToHome();
+            sleep(1000);
             elevator.dropELevatorToZero();
         }
     };
@@ -35,8 +38,6 @@ public abstract class BaseAutonomous extends LinearOpMode {
             elevator.raiseToTheLevel(3);
         }
     };
-
-    protected double INTAKE_ARM_HOME = 1.0;
 
     @Override
     public void runOpMode() throws InterruptedException {

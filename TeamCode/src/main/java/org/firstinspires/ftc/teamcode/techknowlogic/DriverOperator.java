@@ -40,7 +40,7 @@ public class DriverOperator extends OpMode {
     double INTAKE_ARM_DOWN = 0.0;
 
     Servo carriageArm = null;
-    public final static double CARRIAGE_HOME = 0.03;
+    public final static double CARRIAGE_HOME = 0.04;
     public final static double CARRIAGE_HOLD_POS = 0.3;
     public final static double CARRIAGE_DROP_POS = 0.6;
 

@@ -69,8 +69,6 @@ public class Elevator {
 
     public void dropCarriageArmToHome() {
         carriage.setPosition(DriverOperator.CARRIAGE_HOME);
-
-        sleep(1000);
     }
 
     public void dropELevatorToZero() {
