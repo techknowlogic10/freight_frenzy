@@ -35,8 +35,8 @@ public class DriveConstants {
     //public static PIDFCoefficients MOTOR_VELO_PID = new PIDFCoefficients(1.0, 0, 1.0, 14.7);
     public static double p = 10;
     public static double i = 0;
-    public static double d = 2;
-    public static double f = 15;
+    public static double d = 4;
+    public static double f = 25;
     public static PIDFCoefficients MOTOR_VELO_PID = new PIDFCoefficients(p,i,d,f);
 
     /*

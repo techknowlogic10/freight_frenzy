@@ -189,9 +189,9 @@ public class DriverOperator extends OpMode {
         }
         //In take is handled by Driver (gamepad1)
         if (gamepad1.right_bumper)
-            intake.setPower(1.0);
+            intake.setPower(0.8);
         else if (gamepad1.left_bumper)
-            intake.setPower(-1.0);
+            intake.setPower(-0.8);
         else
             intake.setPower(0);
 
@@ -199,7 +199,11 @@ public class DriverOperator extends OpMode {
             elevatorpower=0.5;
         else
             elevatorpower=1;
-
+        if (gamepad1.left_trigger > 0.01){
+            carousel.setPower(0.6);
+        } else{
+            carousel.setPower(0);
+        }
         //Elevator is handled by Operator (gamepad2)
         if (gamepad2.left_bumper) {
             elevator.setPower(elevatorpower);
@@ -224,6 +228,10 @@ public class DriverOperator extends OpMode {
         int n;
         double caroselspeed = 0;
         caroselspeed = 0.05;
+
+
+
+    //    carousel.setPower(0);
 
    /*
         telemetry.addData("carosel", caroselspeed);
@@ -262,10 +270,10 @@ public class DriverOperator extends OpMode {
     private void checkBorderCrossing(){
         if(carriageLimit.isPressed())
         {
-            telemetry.log().add("carriage is down");
+           // telemetry.log().add("carriage is down");
         }else
         {
-            telemetry.log().add("carriage is up");
+            //telemetry.log().add("carriage is up");
         }
         // convert the RGB values to HSV values.
         // multiply by the SCALE_FACTOR.
@@ -300,7 +308,7 @@ public class DriverOperator extends OpMode {
                 isCargoinCarriage = true;
             }
             cargoLoadedflagArm.setPosition(FLAG_RAISE_POSITION);
-            servoIntakeArm.setPosition(INTAKE_ARM_HOME);
+            //servoIntakeArm.setPosition(INTAKE_ARM_HOME);
             //isCargoinCarrige is set to false when the carriage is delivered or lost during transit
         }
         else {
@@ -312,7 +320,7 @@ public class DriverOperator extends OpMode {
         long currentTime = System.currentTimeMillis();
         long elapsedTime = currentTime - this.freightInCarousalTime;
 //
-        if(elapsedTime < 4000) {
+        if(elapsedTime < 2000) {
 ////            //carousel.setPower(0.5);
 ////            elevator.setPower(0.5);
 //            //reverse the intake to avoid additional cargo getting inside the robot.

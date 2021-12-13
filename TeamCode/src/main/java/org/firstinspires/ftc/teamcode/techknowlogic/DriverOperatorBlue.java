@@ -13,6 +13,7 @@ public class DriverOperatorBlue extends DriverOperator {
     public void init() {
         super.init();
 
+
         carousel.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 }

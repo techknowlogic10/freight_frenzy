@@ -34,7 +34,7 @@ public abstract class BaseAutonomous extends LinearOpMode {
     protected Runnable raiseTo3rdLevelThread = new Runnable() {
         @Override
         public void run() {
-            sleep(1000);
+            sleep(500);
             elevator.raiseToTheLevel(3);
         }
     };
@@ -52,7 +52,7 @@ public abstract class BaseAutonomous extends LinearOpMode {
         this.driveTrain = new SampleMecanumDrive(hardwareMap);
         //driveTrain.setPoseEstimate(startingPosition);
 
-        TeamShippingElementDetector detector = new TeamShippingElementDetector(hardwareMap, telemetry, getRobotPosition(), false);
+        TeamShippingElementDetector detector = new TeamShippingElementDetector(hardwareMap, telemetry, getRobotPosition(), true);
         CarousalSpinner carousalSpinner = new CarousalSpinner(hardwareMap);
         this.elevator = new Elevator(hardwareMap);
 

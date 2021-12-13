@@ -18,7 +18,7 @@ public class Elevator {
 
     public static int LEVEL1_TICKS = 310;
     public static int LEVEL2_TICKS = 800;
-    public static int LEVEL3_TICKS = 1600;
+    public static int LEVEL3_TICKS = 1550;
 
     public Elevator(HardwareMap hardwareMap) {
         this.elevator = hardwareMap.get(DcMotorEx.class, "elevator");

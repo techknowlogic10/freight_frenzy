@@ -23,8 +23,8 @@ public class ScannerCoordinates {
     public static Point BLUE_CAROUSAL_RIGHT_RECTANGLE_POINT1 = new Point(225, 0);
 
     //WebcamR
-    public static Point BLUE_WAREHOUSE_LEFT_RECTANGLE_POINT1 = new Point(0, 60);
-    public static Point BLUE_WAREHOUSE_RIGHT_RECTANGLE_POINT1 = new Point(160, 60);
+    public static Point BLUE_WAREHOUSE_LEFT_RECTANGLE_POINT1 = new Point(0, 30);
+    public static Point BLUE_WAREHOUSE_RIGHT_RECTANGLE_POINT1 = new Point(170, 30);
 
     public static String LEFT_CAMERA_NAME = "WebcamL";
     public static String RIGHT_CAMERA_NAME = "WebcamR";

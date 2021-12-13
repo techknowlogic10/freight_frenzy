@@ -10,8 +10,8 @@ public abstract class BaseRedCarousal extends BaseAutonomous {
     public static double DRIVE_TO_HUB_STEP1_STRAFE_RIGHT = 38;
     public static double DRIVE_TO_HUB_STEP2_BACK = 3;
 
-    public static double DRIVE_TO_CAROUSAL_STEP1_FORWARD = 25;
-    public static double DRIVE_TO_CAROUSAL_STEP2_STRAFE_LEFT = 41;
+    public static double DRIVE_TO_CAROUSAL_STEP1_FORWARD = 27;
+    public static double DRIVE_TO_CAROUSAL_STEP2_STRAFE_LEFT = 38;
 
     @Override
     protected boolean isCarousalSpinReversed() {

@@ -60,26 +60,27 @@ public class BlueWarehouse extends BaseAutonomous {
     protected int getElevatorLevel(String shippingElementPosition) {
 
         if (shippingElementPosition.equals("LEFT")) {
-            return 1;
-        } else if (shippingElementPosition.equals("RIGHT")) {
             return 2;
-        } else {
+        } else if (shippingElementPosition.equals("RIGHT")) {
             return 3;
+        } else {
+            return 1;
         }
     }
 
     @Override
     protected RobotPosition getRobotPosition() {
-        return RobotPosition.RED_WAREHOUSE;
+        return RobotPosition.BLUE_WAREHOUSE;
     }
 
     @Override
     protected void driveToShippingHub(SampleMecanumDrive driveTrain) {
         driveTrain.setPoseEstimate(new Pose2d(12, 64, Math.toRadians(0)));
         TrajectorySequence pathToShippingHub = driveTrain.trajectorySequenceBuilder(new Pose2d(12, 64, Math.toRadians(0)))
-                .strafeRight(42
+                .back(3)
+                .strafeRight(40
                 )
-                .back(1.5)
+                .back(3)
                 .build();
 
         endRobotPosition = pathToShippingHub.end();
@@ -94,8 +95,8 @@ public class BlueWarehouse extends BaseAutonomous {
         intake.setPower(-1);
         TrajectorySequence warehouse = driveTrain.trajectorySequenceBuilder(endRobotPosition)
                 .strafeLeft(44)
-                .turn(Math.toRadians(3))
-                .forward(37)
+                .turn(Math.toRadians(6))
+                .forward(39)
                 .build();
 
         driveTrain.followTrajectorySequence(warehouse);
@@ -116,13 +117,13 @@ public class BlueWarehouse extends BaseAutonomous {
             endRobotPosition = inchforward.end();
 
             //run primary intake
-            intake.setPower(-1);
+            intake.setPower(-0.7);
 
             distance = cargoInBayDS.getDistance(DistanceUnit.CM);
         }
 
         if (distance < 4) {
-            intake.setPower(1);
+            intake.setPower(0.7);
         }
     }
 
@@ -130,7 +131,7 @@ public class BlueWarehouse extends BaseAutonomous {
         TrajectorySequence backformore = driveTrain.trajectorySequenceBuilder(endRobotPosition)
                 .turn(Math.toRadians(-12))
                 .back(40)
-                .splineToSplineHeading(new Pose2d(-5, 47, Math.toRadians(60)), Math.toRadians(-90))
+                .splineToSplineHeading(new Pose2d(-3, 50, Math.toRadians(60)), Math.toRadians(-90))
                 .build();
 
         servoIntakeArm.setPosition(0.8);
@@ -147,8 +148,10 @@ public class BlueWarehouse extends BaseAutonomous {
                 // .lineToSplineHeading(new Pose2d(3,-72, Math.toRadians(0)))
                 //.turn(Math.toRadians(60))
                 //.strafeTo(new Vector2d(6, -75))
-                .splineToLinearHeading(new Pose2d(12,72, Math.toRadians(6)), Math.toRadians(180))
-                .forward(40)
+                .splineToLinearHeading(new Pose2d(6,74, Math.toRadians(0)), Math.toRadians(180))
+                .strafeLeft(2)
+                .turn(Math.toRadians(12))
+                .forward(37)
                 .build();
         driveTrain.followTrajectorySequence(warehouse);
 
@@ -177,7 +180,7 @@ public class BlueWarehouse extends BaseAutonomous {
 
         TrajectorySequence backforpark = driveTrain.trajectorySequenceBuilder(driveTrain.getPoseEstimate())
                 //    .lineToLinearHeading(new Pose2d(40, -50, Math.toRadians(0)))
-                .turn(Math.toRadians(-50))
+                .turn(Math.toRadians(-40))
                 .forward(60)
                 .build();
         driveTrain.followTrajectorySequence(backforpark);
@@ -185,9 +188,10 @@ public class BlueWarehouse extends BaseAutonomous {
 
     protected void driveToShippingHubToDrop2ndAdditional(SampleMecanumDrive driveTrain) {
         TrajectorySequence backforpark = driveTrain.trajectorySequenceBuilder(driveTrain.getPoseEstimate())
-                .turn(Math.toRadians(-10))
+               // .strafeLeft(4)
+                .turn(Math.toRadians(-20))
                 .back(34)
-                .splineToSplineHeading(new Pose2d(-5, 50, Math.toRadians(60)), Math.toRadians(-90))
+                .splineToSplineHeading(new Pose2d(-9, 60, Math.toRadians(60)), Math.toRadians(-90))
                 .build();
         servoIntakeArm.setPosition(0.8);
         driveTrain.followTrajectorySequence(backforpark);
