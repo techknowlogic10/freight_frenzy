@@ -6,15 +6,16 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 
-@Autonomous
+@Autonomous(preselectTeleOp = "DriverOperatorBlue")
 @Config
 public class BlueCarousalParkingWarehouseThruBarriers extends BaseBlueCarousal {
 
     public static double PARK_ROBOT_STEP1_BACK = 50;
-    public static double PARK_ROBOT_STEP2_STRAFE_LEFT = 21;
+    public static double PARK_ROBOT_STEP2_STRAFE_LEFT = 20;
     public static double PARK_ROBOT_STEP3_BACK = 65;
 
     public static double TURN_ANGLE = 160;
+
 
     @Override
     protected void dropAdditionalFreight() {
@@ -30,7 +31,7 @@ public class BlueCarousalParkingWarehouseThruBarriers extends BaseBlueCarousal {
         driveTrain.followTrajectory(step1Back);
 
         Trajectory strafeLeft = driveTrain.trajectoryBuilder(driveTrain.getPoseEstimate(), false)
-                .strafeRight(PARK_ROBOT_STEP2_STRAFE_LEFT)
+                .strafeLeft(PARK_ROBOT_STEP2_STRAFE_LEFT)
                 .build();
         driveTrain.followTrajectory(strafeLeft);
 

@@ -64,7 +64,7 @@ public class Elevator {
     public void dropFreight(){
         carriage.setPosition(0.5);
 
-        sleep(1000);
+        sleep(900);
     }
 
     public void dropCarriageArmToHome() {

@@ -6,12 +6,12 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 
-@Autonomous
+@Autonomous(preselectTeleOp = "DriverOperatorRed")
 @Config
 public class RedCarousalParkingWarehouseThruBarriers extends BaseRedCarousal {
 
     public static double PARK_ROBOT_STEP1_BACK = 50;
-    public static double PARK_ROBOT_STEP2_STRAFE_RIGHT = 21;
+    public static double PARK_ROBOT_STEP2_STRAFE_RIGHT = 15;
     public static double PARK_ROBOT_STEP3_BACK = 65;
 
     public static double TURN_ANGLE = 160;

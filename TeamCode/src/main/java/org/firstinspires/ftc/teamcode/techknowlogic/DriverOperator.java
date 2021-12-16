@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.techknowlogic;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -50,7 +51,9 @@ public class DriverOperator extends OpMode {
     public final static double FLAG_DOWN_POSITION = 0.1;
 
     DistanceSensor cargoInBayDS; // tocheck whether cargo is in the carriage
-    public final static double MIN_CARGO_DISTANCE = 5;
+    public final static double MIN_CARGO_DISTANCE = 5.25;
+
+    public static double CAROUSAL_SPIN_POWER = 0.1;
 
     DistanceSensor rearCollisionDS;
 
@@ -65,7 +68,7 @@ public class DriverOperator extends OpMode {
     //For Team element capping mechanism
     Servo teamElementpickuparm = null;
     public final static double TEAM_ELEMENT_HOME_POS = 0.7;  //initial position of the arm at startup
-
+    AnalogInput fsrweight;
     double PICKUP_ARM_MIN = 0.2;
     double PICKUP_ARM_MAX = 0.706;
 
@@ -106,6 +109,7 @@ public class DriverOperator extends OpMode {
 
         borderCrossingCheckCS = hardwareMap.get(ColorSensor.class, "bordercheck");
 
+        fsrweight = hardwareMap.analogInput.get("fsrweight");
         //rearCollisionDS = hardwareMap.get(DistanceSensor.class,"rearcollision");
         //INITIAL STATE MUST BE 0.6
         teamElementpickuparm.setPosition(TEAM_ELEMENT_HOME_POS);
@@ -156,6 +160,8 @@ public class DriverOperator extends OpMode {
         if (gamepad1.b)
             drivepower = 2.2;
 
+        double voltreading = (float) fsrweight.getVoltage();
+        telemetry.addData("raw val", "voltage:  " + Double.toString(voltreading));
 
         denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), drivepower);
         double frontLeftPower = (y + x + rx) / denominator;
@@ -178,6 +184,13 @@ public class DriverOperator extends OpMode {
             servoIntakeArm.setPosition(INTAKE_ARM_HOME);
         }
 
+
+        if (voltreading > 0.65){
+            teamElementpickuparm.setPosition(0.7);
+
+        } else{
+            teamElementpickuparm.setPosition(0.35);
+        }
         //Carriage motions are handled by Operator (gamepad2)
         if (gamepad2.a)
             carriageArm.setPosition(CARRIAGE_HOME);
@@ -199,11 +212,11 @@ public class DriverOperator extends OpMode {
             elevatorpower=0.5;
         else
             elevatorpower=1;
-        if (gamepad1.left_trigger > 0.01){
-            carousel.setPower(0.6);
-        } else{
-            carousel.setPower(0);
-        }
+
+        //carousal spinner in the end game
+        spinCarousalInTheEndGame();
+
+
         //Elevator is handled by Operator (gamepad2)
         if (gamepad2.left_bumper) {
             elevator.setPower(elevatorpower);
@@ -256,17 +269,36 @@ public class DriverOperator extends OpMode {
 
 
         //Element pickup  arm movement for freight element pickup
-        if(gamepad2.dpad_down) {
-            tep_armposition = tep_armposition - CAARM_INCREMENT;
-        } else if(gamepad2.dpad_up) {
-            tep_armposition = tep_armposition + CAARM_INCREMENT;
-        }
-        tep_armposition = Range.clip(tep_armposition, PICKUP_ARM_MIN, PICKUP_ARM_MAX);
-        teamElementpickuparm.setPosition(tep_armposition);
+
+       // tep_armposition = Range.clip(tep_armposition, PICKUP_ARM_MIN, PICKUP_ARM_MAX);
+//        teamElementpickuparm.setPosition(tep_armposition);
 
         checkIfFreightIsInCarousal();
         checkBorderCrossing();
     }
+
+    private void spinCarousalInTheEndGame() {
+        if (gamepad1.left_trigger > 0.01){
+            carousel.setPower(CAROUSAL_SPIN_POWER);
+
+            CAROUSAL_SPIN_POWER = CAROUSAL_SPIN_POWER * 1.075;
+
+
+            if(CAROUSAL_SPIN_POWER > 0.7) {
+                CAROUSAL_SPIN_POWER = 0.7;
+            }
+
+            if(CAROUSAL_SPIN_POWER < 0.1) {
+                CAROUSAL_SPIN_POWER = 0.1;
+            }
+
+        } else {
+
+            carousel.setPower(0);
+            CAROUSAL_SPIN_POWER = 0;
+        }
+    }
+
     private void checkBorderCrossing(){
         if(carriageLimit.isPressed())
         {
@@ -325,6 +357,13 @@ public class DriverOperator extends OpMode {
 ////            elevator.setPower(0.5);
 //            //reverse the intake to avoid additional cargo getting inside the robot.
             intake.setPower(1.0);
+////            //raise the elevator
+        }
+        if(elapsedTime > 2000 & elapsedTime < 2500) {
+////            //carousel.setPower(0.5);
+////            elevator.setPower(0.5);
+//            //reverse the intake to avoid additional cargo getting inside the robot.
+            servoIntakeArm.setPosition(INTAKE_ARM_HOME);
 ////            //raise the elevator
         }
     }

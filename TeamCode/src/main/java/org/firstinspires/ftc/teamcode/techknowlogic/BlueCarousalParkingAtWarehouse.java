@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 
-@Autonomous
+@Autonomous(preselectTeleOp = "DriverOperatorBlue")
 @Config
 public class BlueCarousalParkingAtWarehouse extends BaseBlueCarousal {
 

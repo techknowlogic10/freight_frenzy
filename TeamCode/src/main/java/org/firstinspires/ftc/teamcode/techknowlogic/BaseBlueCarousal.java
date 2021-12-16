@@ -7,11 +7,12 @@ import org.firstinspires.ftc.teamcode.techknowlogic.util.RobotPosition;
 
 public abstract class BaseBlueCarousal extends BaseAutonomous {
 
-    public static double DRIVE_TO_HUB_STEP1_STRAFE_LEFT = 38;
+    public static double DRIVE_TO_HUB_STEP1_STRAFE_LEFT = 40;
     public static double DRIVE_TO_HUB_STEP2_BACK = 3;
 
-    public static double DRIVE_TO_CAROUSAL_STEP1_FORWARD = 25;
-    public static double DRIVE_TO_CAROUSAL_STEP2_STRAFE_RIGHT = 42;
+    public static double DRIVE_TO_CAROUSAL_STEP1_FORWARD = 26;
+    public static double DRIVE_TO_CAROUSAL_STEP2_STRAFE_RIGHT = 38;
+    public static double DRIVE_TO_CAROUSAL_STEP3_FORWARD = 2;
 
     @Override
     protected int getElevatorLevel(String shippingElementPosition) {
@@ -55,6 +56,11 @@ public abstract class BaseBlueCarousal extends BaseAutonomous {
                 .strafeRight(DRIVE_TO_CAROUSAL_STEP2_STRAFE_RIGHT)
                 .build();
         driveTrain.followTrajectory(step2StrafeRight);
+
+//        Trajectory step3forward = driveTrain.trajectoryBuilder(driveTrain.getPoseEstimate(), false)
+//                .forward(2)
+//                .build();
+//        driveTrain.followTrajectory(step3forward);
     }
 
     @Override

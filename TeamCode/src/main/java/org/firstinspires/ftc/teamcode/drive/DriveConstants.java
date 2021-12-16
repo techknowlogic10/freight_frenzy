@@ -36,7 +36,7 @@ public class DriveConstants {
     public static double p = 10;
     public static double i = 0;
     public static double d = 4;
-    public static double f = 25;
+    public static double f = 14.7;
     public static PIDFCoefficients MOTOR_VELO_PID = new PIDFCoefficients(p,i,d,f);
 
     /*
@@ -50,7 +50,7 @@ public class DriveConstants {
     public static double WHEEL_RADIUS = 2; // in
     //Todo we have to figure
     public static double GEAR_RATIO = 1.53; // output (wheel) speed / input (motor) speed
-    public static double TRACK_WIDTH = 9; // in
+    public static double TRACK_WIDTH = 8.5; // in
 
     /*
      * These are the feedforward parameters used to model the drive motor behavior. If you are using
@@ -69,8 +69,8 @@ public class DriveConstants {
      * small and gradually increase them later after everything is working. All distance units are
      * inches.
      */
-    public static double MAX_VEL = 55;
-    public static double MAX_ACCEL = 55;
+    public static double MAX_VEL = 50;
+    public static double MAX_ACCEL = 50;
     public static double MAX_ANG_VEL = Math.toRadians(180);
     public static double MAX_ANG_ACCEL = Math.toRadians(180);
 

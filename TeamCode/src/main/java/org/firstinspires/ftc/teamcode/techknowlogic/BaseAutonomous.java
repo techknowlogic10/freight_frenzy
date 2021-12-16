@@ -30,6 +30,14 @@ public abstract class BaseAutonomous extends LinearOpMode {
             elevator.dropELevatorToZero();
         }
     };
+    protected Runnable slowElevatorDropThread = new Runnable() {
+        @Override
+        public void run() {
+            elevator.dropCarriageArmToHome();
+            sleep(2500);
+            elevator.dropELevatorToZero();
+        }
+    };
 
     protected Runnable raiseTo3rdLevelThread = new Runnable() {
         @Override
@@ -99,6 +107,7 @@ public abstract class BaseAutonomous extends LinearOpMode {
             //Ignore since the carousal spinning is not supported for that
         }
 
+
         //Step-4 Park the robot in storage unit or warehouse
         parkRobot(driveTrain);
 
@@ -108,6 +117,7 @@ public abstract class BaseAutonomous extends LinearOpMode {
             //Ignore since the additional freight is done by only warehouse
         }
     }
+
 
     protected abstract void dropAdditionalFreight();
 

@@ -12,7 +12,7 @@ import org.firstinspires.ftc.teamcode.techknowlogic.util.RobotPosition;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 import org.opencv.core.Mat;
 
-@Autonomous(name = "Red Warehouse")
+@Autonomous(preselectTeleOp = "DriverOperatorRed")
 @Config
 public class RedWarehouse extends BaseAutonomous {
 
@@ -27,6 +27,8 @@ public class RedWarehouse extends BaseAutonomous {
 
     private Pose2d endRobotPosition;
     private Pose2d endPositionAtShippingHub;
+
+
 
     @Override
     protected void dropAdditionalFreight() {
@@ -80,10 +82,10 @@ public class RedWarehouse extends BaseAutonomous {
     protected void driveToShippingHub(SampleMecanumDrive driveTrain) {
         driveTrain.setPoseEstimate(new Pose2d(12, -64, Math.toRadians(0)));
         TrajectorySequence pathToShippingHub = driveTrain.trajectorySequenceBuilder(new Pose2d(12, -64, Math.toRadians(0)))
-                .back(5)
+                .back(4)
                 .strafeLeft(42
                 )
-                .back(1)
+           //     .back(1)
                 .build();
 
         endRobotPosition = pathToShippingHub.end();
@@ -134,7 +136,7 @@ public class RedWarehouse extends BaseAutonomous {
         TrajectorySequence backformore = driveTrain.trajectorySequenceBuilder(endRobotPosition)
                 .turn(Math.toRadians(12))
                 .back(40)
-                .splineToSplineHeading(new Pose2d(0, -50, Math.toRadians(-60)), Math.toRadians(90))
+                .splineToSplineHeading(new Pose2d(0, -48, Math.toRadians(-60)), Math.toRadians(90))
                 .build();
 
         servoIntakeArm.setPosition(0.8);
@@ -194,7 +196,7 @@ public class RedWarehouse extends BaseAutonomous {
                 // .strafeLeft(4)
                 .turn(Math.toRadians(20))
                 .back(34)
-                .splineToSplineHeading(new Pose2d(1.5, -64, Math.toRadians(-60)), Math.toRadians(90))
+                .splineToSplineHeading(new Pose2d(-1.5, -64, Math.toRadians(-60)), Math.toRadians(90))
                 .build();
         servoIntakeArm.setPosition(0.8);
         driveTrain.followTrajectorySequence(backforpark);
